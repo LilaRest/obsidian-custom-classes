@@ -1,6 +1,6 @@
 import { Plugin } from 'obsidian';
 
-const CLASSNAME_TAG = 'classname:';
+const CLASSNAME_TAG = 'class:';
 
 export default class extends Plugin {
 
