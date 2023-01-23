@@ -1,10 +1,11 @@
 {
-	"id": "obsidian-stylist",
-	"name": "Obsidian Stylist",
+	"id": "obsidian-custom-classes",
+	"name": "Obsidian Custom Classes",
 	"version": "1.2.0",
 	"minAppVersion": "0.15.0",
-	"description": "Obsidian plugin that allows to add classes and styles on markdown blocks",
-	"author": "Mikhail Menshikov <ainop@ya.ru>",
-	"authorUrl": "https://ixth.net/",
+	"description": "Custom Classes is a minimalist plugin that allows you to add custom HTML classes to markdown blocks",
+	"author": "Lila Rest <mail@lila.rest>",
+	"authorUrl": "https://lila.rest",
+	"fundingUrl": "https://lila.rest/donations",
 	"isDesktopOnly": false
 }
