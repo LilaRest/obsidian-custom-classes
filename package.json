@@ -1,0 +1,38 @@
+{
+	"name": "obsidian-custom-classes",
+	"version": "1.0.0",
+	"description": "Custom Classes is a minimalist Obsidian plugin that allows you to add custom HTML classes to markdown blocks",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"version": "node version-bump.mjs && git add manifest.json versions.json",
+		"release": "standard-version"
+	},
+	"standard-version": {
+		"t": ""
+	},
+	"keywords": [
+		"css",
+		"html",
+		"obsidian",
+		"style"
+	],
+	"author": "Lila Rest <mail@lila.rest>",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^16.11.6",
+		"builtin-modules": "3.3.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"esbuild": "0.14.47",
+		"obsidian": "latest",
+		"standard-version": "^9.5.0",
+		"tslib": "2.4.0",
+		"typescript": "4.7.4"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
+}

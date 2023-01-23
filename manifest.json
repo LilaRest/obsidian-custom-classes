@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-stylist",
+	"name": "Obsidian Stylist",
+	"version": "0.0.5",
+	"minAppVersion": "0.15.0",
+	"description": "Obsidian plugin that allows to add classes and styles on markdown blocks",
+	"author": "Mikhail Menshikov <ainop@ya.ru>",
+	"authorUrl": "https://ixth.net/",
+	"isDesktopOnly": false
+}
