@@ -1,6 +1,8 @@
 # Obsidian Custom Classes
 *Custom Classes* is a minimalist Obsidian plugin that allows you to add custom HTML classes to markdown blocks.
 
+<br>
+
 ## Demonstration
 ### Example 1: With a list block
 The following markdown :
@@ -47,7 +49,14 @@ will render like that in Reading mode :
 </div>
 ```
 
-### And this should works with any other type of block
+#### And this should works with any other type of block...
+
+<br>
 
 ## Known limitations
 The plugin currently doesn't work in Live Preview mode.
+
+<br>
+
+## Inspiration
+That plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) but has been entirely rewritten to focus exclusively on custom classes adding, and to fix many majors bugs experienced with the Obsidian Stylist plugin.
