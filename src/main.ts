@@ -1,6 +1,6 @@
 import { Plugin } from 'obsidian';
 
-const CLASSNAME_TAG = 'class:';
+const CUSTOM_CLASS_ANCHOR = 'class:';
 
 export default class extends Plugin {
 
@@ -8,7 +8,6 @@ export default class extends Plugin {
         // Render the custom block classes
         this.registerMarkdownPostProcessor(
             (element, context) => {
-
 
                 // Retrieve the blocks' container element 
                 // @ts-ignore
@@ -21,11 +20,11 @@ export default class extends Plugin {
                     if (blocksContainer.contains(element)) {
 
                         // And if the current block is a custom class block
-                        const classBlock = [...element.querySelectorAll('code')].find((codeEl) => codeEl.innerText.trim().startsWith(CLASSNAME_TAG));
+                        const classBlock = [...element.querySelectorAll('code')].find((codeEl) => codeEl.innerText.trim().startsWith(CUSTOM_CLASS_ANCHOR));
                         if (classBlock) {
 
                             // Retrieve the custom class name
-                            const nextBlockClass = classBlock.innerText.trim().replace(CLASSNAME_TAG, "").trim();
+                            const nextBlockClass = classBlock.innerText.trim().replace(CUSTOM_CLASS_ANCHOR, "").trim();
 
                             // Set the 'data-next-block-class' attribute with the custom class name
                             element.setAttribute("data-next-block-class", nextBlockClass);
