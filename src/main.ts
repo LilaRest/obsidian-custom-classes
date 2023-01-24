@@ -1,5 +1,5 @@
 import { Plugin } from 'obsidian';
-
+//
 const CUSTOM_CLASS_ANCHOR = 'class:';
 
 export default class extends Plugin {
