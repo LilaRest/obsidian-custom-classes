@@ -73,4 +73,4 @@ The plugin currently doesn't support Live Preview mode.
 <br>
 
 ## Inspiration
-That plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) but has been entirely rewritten and focus exclusively on custom HTML classes. By the way it fix many majors bugs like the one that prevented classes from being appended properly if the targetted block had been modified and then re-rendered.
+That plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) plugin but has been entirely rewritten and focus exclusively on custom HTML classes. By the way it fix many majors bugs like the one that prevented classes from being properly appended if the targetted block had been modified and then re-rendered.
