@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/LilaRest/obsidian-custom-classes/compare/1.4.0...1.4.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* empty css file ([b796493](https://github.com/LilaRest/obsidian-custom-classes/commit/b796493610e9a47bb2df7deafe93f736af31b3ad))
+
 ## [1.4.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.3.6...1.4.0) (2023-01-24)
 
 
