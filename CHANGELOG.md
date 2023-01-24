@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.4.0...1.5.0) (2023-01-24)
+
+
+### Features
+
+* allow editing custom classes without reloading Obsidian by re-rendering every custom class ([3768b74](https://github.com/LilaRest/obsidian-custom-classes/commit/3768b7422a69746f0da4071c92957527c2c5418a))
+
+
+### Bug Fixes
+
+* empty css file ([b796493](https://github.com/LilaRest/obsidian-custom-classes/commit/b796493610e9a47bb2df7deafe93f736af31b3ad))
+
 ### [1.4.1](https://github.com/LilaRest/obsidian-custom-classes/compare/1.4.0...1.4.1) (2023-01-24)
 
 
