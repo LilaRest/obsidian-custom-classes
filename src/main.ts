@@ -8,6 +8,7 @@ export default class extends Plugin {
         // Render the custom block classes
         this.registerMarkdownPostProcessor(
             (element, context) => {
+                console.log(element)
 
                 // Retrieve the blocks' container element 
                 // @ts-ignore
@@ -32,16 +33,27 @@ export default class extends Plugin {
                             // Remove the classBlock element from the render
                             element.innerHTML = "";
                         }
-
-                        // Or if the current block is not a custom class block
-                        else {
-
-                            // If it is preceded by a custom class block
-                            const previousElement = blocksContainer.children.item([...blocksContainer.children].indexOf(element) - 1)
-                            if (previousElement && previousElement.getAttribute("data-next-block-class")) {
+                        
+                        // Then ensure that all classes are properly applied in the context
+                        let nextBlockClass = null;
+                        for (const block of blocksContainer.children) {
+                            // Reset the block classes
+                            block.className = "";
                                 
-                                // Set the custom class to the current element
-                                element.classList.add(previousElement.getAttribute("data-next-block-class"))
+                            // If the block is a custom class block
+                            if (block.getAttribute("data-next-block-class")) {
+
+                                // Set the next block class
+                                nextBlockClass = block.getAttribute("data-next-block-class");
+                            }
+
+                            // Else if the block is preceded by a custom class block
+                            else if (nextBlockClass) {
+                                // Add the custom class
+                                block.classList.add(nextBlockClass)
+
+                                // Reset nextBlockClass
+                                nextBlockClass = null;
                             }
                         }
 
