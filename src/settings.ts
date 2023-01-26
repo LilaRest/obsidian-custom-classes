@@ -3,11 +3,13 @@ import CustomClasses from "./main";
 
 export interface SettingsData {
   customClassAnchor: string;
+  groupListItemInLivePreview: boolean;
   [index: string]: any;
 }
 
 const DEFAULT_SETTINGS: SettingsData = {
   customClassAnchor: "class:",
+  groupListItemInLivePreview: true,
 };
 
 export class CustomClassesSettings {
@@ -88,5 +90,17 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
             this.plugin.settings.set("customClassAnchor", value);
           })
       );
+
+    // Group list items settings
+    new Setting(containerEl)
+      .setName("Group list items in Live Preview")
+      .setDesc("If set, a custom class block above a list item will include all the items of the list in the block.")
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.get("groupListItemInLivePreview"))
+          .onChange(async (value) => {
+            this.plugin.settings.set("groupListItemInLivePreview", value);
+          });
+      });
   }
 }

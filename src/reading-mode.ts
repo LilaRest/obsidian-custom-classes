@@ -3,7 +3,6 @@ import { plugin } from "./main";
 export function readingModeRenderer (element: any, context: any) {
 
     // Retrieve the blocks' container element 
-    // @ts-ignore
     const blocksContainer = context.containerEl;
 
     // Listen for insertion of the element into the blocks' container
