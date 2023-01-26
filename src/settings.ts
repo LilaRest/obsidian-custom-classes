@@ -1,0 +1,1 @@
+const CUSTOM_CLASS_ANCHOR = 'class:';
