@@ -2,73 +2,47 @@
 
 <div align="center">
 	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/ci-cd.yml">
-	<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23cd98">
+	<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23ddccee">
 	<img alt="GitHub" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
 </div>
+
+<br>
 
 <p align="center"><b>Custom Classes is a minimalist Obsidian plugin that allows you to add<br>your own HTML classes to specific Markdown blocks in your notes.</b></p>
 
 <br>
 
 ## Usage
-To add a custom HTML class to a Markdown block simply precede it with an inline code block that starts with the `class:` anchor :
-```markdown
-`class:your-custom-class-here`
-Your block here
-```
+To add a custom class to a Markdown block, simply precede this one with an inline code-block in the format <code>\`class:\<customClass\>\`</code>.
 
+With a paragraph block this looks like :
+```markdown
+`class:fancy-text`
+I'm a so fancy paragraph !
+```
+	
+<br>
+	
+## Rendering
+Then in Read or Live Preview mode, _Custom Classes_ will simply append the specified class to the blocks's `div`.
+
+With the previous paragraph example, the render would be :
+```html
+<div class="fancy-text">
+	<p>I'm a so fancy paragraph !</p>
+</div>
+```
+	
+## Compatibility mode
+The Obsidian [Live Preview]() renders Markdown in a quite different way than the [Read mode]() does. In order to allow you to create CSS snippets that work in both modes the _Custom Classes_ plugin introduces a compatibility mode, which is enabled by default, but can be disabled from the plugin's settings.
+	
+More preciselly, if the compatibility mode is enabled :
+- Markdown block target by a custom class will render in Live Preview mode using the Read mode format
+- Lists items in Live Preview mode will be grouped instead of being considered individual (like in Read mode)
+	
 <br>
 
 ## Demonstration
-### _Example 1_: With a list block
-The following Markdown :
-```markdown
-`class:my-super-list`
-- first
-- second
-- third
-```
-will render in Reading mode :
-```html
-<div class="my-super-list">
-    <ul>
-        <li>first</li>
-        <li>second</li>
-        <li>third</li>
-    </ul>
-</div>
-```
-
-<br>
-
-### _Example 2_: With a heading block
-The following Markdown :
-```markdown
-`class:my-great-heading`
-## A level 2 heading
-```
-will render in Reading mode :
-```html
-<div class="my-great-heading">
-    <h2>A level 2 heading</h2>
-</div>
-```
-
-<br>
-
-### _Example 3_: With a paragraph block
-The following Markdown :
-```markdown
-`class:my-fancy-paragraph`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-```
-will render in Reading mode :
-```html
-<div class="my-fancy-paragraph">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
-```
-<br>
 
 #### And this should works with any other type of block...
 
