@@ -12,22 +12,6 @@ export function readingModeRenderer (element: any, context: any) {
         // If the element has been inserted
         if (blocksContainer.contains(element)) {
 
-            // And if the current block is a custom class block
-            const classBlock = element.querySelector('code');
-
-            if (classBlock && classBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
-
-                // Retrieve the custom class name
-                const nextBlockClass = classBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
-
-                // Set the 'data-next-block-class' attribute with the custom class name
-                element.setAttribute("data-next-block-class", nextBlockClass);
-
-                // Remove the classBlock element from the render
-                element.innerHTML = "";
-            }
-
-            // Then ensure that all classes are properly applied in the context
             let nextBlockClass = null;
             for (const block of blocksContainer.children) {
 
@@ -35,14 +19,18 @@ export function readingModeRenderer (element: any, context: any) {
                 block.removeAttribute("class");
 
                 // If the block is a custom class block
-                if (block.getAttribute("data-next-block-class")) {
+                const codeBlock = block.querySelector('code');
+                if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
-                    // Set the next block class
-                    nextBlockClass = block.getAttribute("data-next-block-class");
+                    // Retrieve the custom class name
+                    nextBlockClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+
+                    // Remove the classBlock element from the render
+                    block.style.display = "none";
                 }
 
-                // Else if the block is preceded by a custom class block
                 else if (nextBlockClass) {
+
                     // Add the custom class
                     block.classList.add(nextBlockClass);
 
