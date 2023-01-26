@@ -1,4 +1,4 @@
-const CUSTOM_CLASS_ANCHOR = ":class";
+const CUSTOM_CLASS_ANCHOR = "class:";
 
 export function readingModeRenderer (element: any, context: any) {
 
@@ -13,8 +13,9 @@ export function readingModeRenderer (element: any, context: any) {
         if (blocksContainer.contains(element)) {
 
             // And if the current block is a custom class block
-            const classBlock = [...element.querySelectorAll('code')].find((codeEl) => codeEl.innerText.trim().startsWith(CUSTOM_CLASS_ANCHOR));
-            if (classBlock) {
+            const classBlock = element.querySelector('code');
+
+            if (classBlock && classBlock.innerText.trim().startsWith(CUSTOM_CLASS_ANCHOR)) {
 
                 // Retrieve the custom class name
                 const nextBlockClass = classBlock.innerText.trim().replace(CUSTOM_CLASS_ANCHOR, "").trim();
@@ -29,8 +30,9 @@ export function readingModeRenderer (element: any, context: any) {
             // Then ensure that all classes are properly applied in the context
             let nextBlockClass = null;
             for (const block of blocksContainer.children) {
+
                 // Reset the block classes
-                block.className = "";
+                block.removeAttribute("class");
 
                 // If the block is a custom class block
                 if (block.getAttribute("data-next-block-class")) {

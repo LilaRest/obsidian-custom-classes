@@ -5,7 +5,7 @@ import {
   ViewPlugin,
 } from "@codemirror/view";
 
-const CUSTOM_CLASS_ANCHOR = ":class";
+const CUSTOM_CLASS_ANCHOR = "class:";
 
 class _LivePreviewModeRenderer implements PluginValue {
 
