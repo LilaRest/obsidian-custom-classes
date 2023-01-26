@@ -6,11 +6,15 @@ import {
 import { LivePreviewModeRenderer } from './live-preview-mode';
 import { readingModeRenderer } from './reading-mode';
 
+export let plugin: CustomClasses | null = null;
 
 export default class CustomClasses extends Plugin {
     settings: CustomClassesSettings;
 
     async onload () {
+        // Expose the plugin globally.
+        plugin = this;
+
         // Print console message
         console.log(`Loading "Custom Classes" plugin...`);
 

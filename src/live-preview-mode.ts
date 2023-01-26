@@ -4,13 +4,11 @@ import {
   EditorView,
   ViewPlugin,
 } from "@codemirror/view";
-
-const CUSTOM_CLASS_ANCHOR = "class:";
+import { plugin } from "./main";
 
 class _LivePreviewModeRenderer implements PluginValue {
 
   constructor (view: EditorView) {
-    // ...
   }
 
   update (update: ViewUpdate) {
@@ -18,7 +16,7 @@ class _LivePreviewModeRenderer implements PluginValue {
       const codeBlock = child.querySelector("span.cm-inline-code");
 
       //@ts-ignore
-      if (codeBlock && codeBlock.innerText.startsWith(CUSTOM_CLASS_ANCHOR)) {
+      if (codeBlock && codeBlock.innerText.startsWith(plugin.settings.get("customClassAnchor"))) {
         let lastSibling = null;
         let active = child.classList.contains("cm-active");
         while (!active) {
@@ -35,7 +33,7 @@ class _LivePreviewModeRenderer implements PluginValue {
         }
         if (active === false) {
           //@ts-ignore
-          const customClass = child.innerText.trim().replace(CUSTOM_CLASS_ANCHOR, "").trim();
+          const customClass = child.innerText.trim().replace(plugin.settings.get("customClassAnchor"), "").trim();
           child.classList.add(customClass);
 
           child.innerHTML = "";

@@ -1,4 +1,4 @@
-const CUSTOM_CLASS_ANCHOR = "class:";
+import { plugin } from "./main";
 
 export function readingModeRenderer (element: any, context: any) {
 
@@ -15,10 +15,10 @@ export function readingModeRenderer (element: any, context: any) {
             // And if the current block is a custom class block
             const classBlock = element.querySelector('code');
 
-            if (classBlock && classBlock.innerText.trim().startsWith(CUSTOM_CLASS_ANCHOR)) {
+            if (classBlock && classBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
                 // Retrieve the custom class name
-                const nextBlockClass = classBlock.innerText.trim().replace(CUSTOM_CLASS_ANCHOR, "").trim();
+                const nextBlockClass = classBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
 
                 // Set the 'data-next-block-class' attribute with the custom class name
                 element.setAttribute("data-next-block-class", nextBlockClass);
