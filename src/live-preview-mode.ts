@@ -3,55 +3,69 @@ import {
   PluginValue,
   ViewPlugin,
 } from "@codemirror/view";
-import { Component, MarkdownRenderer } from "obsidian";
+import { MarkdownRenderer } from "obsidian";
 import { plugin } from "./main";
 
 class _LivePreviewModeRenderer implements PluginValue {
 
-  getNextBlockElements (block: any) {
-    const nextBlockElements = [];
 
-    // Retrieve the next element sibling
-    let nextElement = block.nextElementSibling;
+  /**
+   * Returns an array of the blocks that are in the scope of a given custom class block
+   * @param classBlock HTMLElement
+   * @returns scopeBlocks Array<HTMLElement>
+   */
+  getScopeBlocks (classBlock: HTMLElement) {
 
-    // If the nextElement is not null and is not a line return
-    if (nextElement && nextElement.className !== "cm-line") {
+    // Create the array that will host all the blocs of the scope
+    const scopeBlocks: Array<HTMLElement> = [];
 
-      // Push the nextElement to the nextBlockElements list
-      nextBlockElements.push(nextElement);
+    // Retrieve the first block of the scope
+    const firstBlock = classBlock.nextElementSibling as HTMLElement;
 
-      // If the nextElement is a list item
-      if (nextElement.classList.contains("HyperMD-list-line")) {
+    // If the first block is neither null nor a line break
+    if (firstBlock && firstBlock.className !== "cm-line") {
 
-        // And if the groupListItemInLivePreview settings is set 
-        if (plugin?.settings.get("groupListItemInLivePreview")) {
+      // Append it to the scope blocks list
+      scopeBlocks.push(firstBlock);
 
-          // Retrieve list type
-          const listType = nextElement.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
+      // If the first block is a list item and the 'groupListItemInLivePreview' option is set
+      if (firstBlock.classList.contains("HyperMD-list-line") && plugin?.settings.get("groupListItemInLivePreview")) {
 
-          // Also append all others items of the list to nextBlockElements
-          while (true) {
-            nextElement = nextBlockElements[nextBlockElements.length - 1].nextElementSibling;
+        // Retrieve the first block list type
+        const firstBlockListType = firstBlock.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
 
-            // Retrieve next element list type 
-            const nextElementListType = nextElement.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
+        // And loop to append all others items of the list to scopeBlocks array
+        while (true) {
 
-            // Break if the nextElement is null, or not a list item or not of the same list type
-            if (!nextElement || !nextElement.classList.contains(`HyperMD-list-line`) || nextElementListType !== listType) break;
+          // Retrieve nextBlock
+          const nextBlock = scopeBlocks[scopeBlocks.length - 1].nextElementSibling as HTMLElement;
+
+          // If the next block is neither null nor a line break
+          if (nextBlock && firstBlock.className !== "cm-line") {
+
+            // Retrieve next block list type 
+            const nextBlockListType = nextBlock.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
+
+            // Break if the nextBlock is null, or not a list item or not of the same list type
+            if (nextBlockListType !== firstBlockListType) break;
 
             // Else append the element
-            nextBlockElements.push(nextElement);
+            scopeBlocks.push(nextBlock);
+          }
+          else {
+            break;
           }
         }
       }
     }
 
-    return nextBlockElements;
+    return scopeBlocks;
   }
 
+
   update (update: ViewUpdate) {
-    console.log(update);
-    // Retrieve the blocks' container element 
+
+    // Retrieve the blocks' container element
     const blocksContainer = update.view.contentDOM;
 
     // Iterate over each block of the view
@@ -62,7 +76,7 @@ class _LivePreviewModeRenderer implements PluginValue {
       if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
         // Retrieve the list of elements that composes the next block
-        const nextBlockElements = this.getNextBlockElements(block);
+        const nextBlockElements = this.getScopeBlocks(block as HTMLElement);
 
         // Build the code block scope elements
         const scopeElements = [block, ...nextBlockElements];
