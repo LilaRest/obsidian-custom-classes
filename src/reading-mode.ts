@@ -1,10 +1,11 @@
+const CUSTOM_CLASS_ANCHOR = ":class";
 
-export function readingModeRenderer(element: any, context: any) {
+export function readingModeRenderer (element: any, context: any) {
 
     // Retrieve the blocks' container element 
     // @ts-ignore
     const blocksContainer = context.containerEl;
-    
+
     // Listen for insertion of the element into the blocks' container
     const observer = new MutationObserver(() => {
 
@@ -20,17 +21,17 @@ export function readingModeRenderer(element: any, context: any) {
 
                 // Set the 'data-next-block-class' attribute with the custom class name
                 element.setAttribute("data-next-block-class", nextBlockClass);
-                
+
                 // Remove the classBlock element from the render
                 element.innerHTML = "";
             }
-            
+
             // Then ensure that all classes are properly applied in the context
             let nextBlockClass = null;
             for (const block of blocksContainer.children) {
                 // Reset the block classes
                 block.className = "";
-                    
+
                 // If the block is a custom class block
                 if (block.getAttribute("data-next-block-class")) {
 
@@ -41,7 +42,7 @@ export function readingModeRenderer(element: any, context: any) {
                 // Else if the block is preceded by a custom class block
                 else if (nextBlockClass) {
                     // Add the custom class
-                    block.classList.add(nextBlockClass)
+                    block.classList.add(nextBlockClass);
 
                     // Reset nextBlockClass
                     nextBlockClass = null;
