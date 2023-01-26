@@ -18,7 +18,6 @@ export default class CustomClasses extends Plugin {
         this.settings = new CustomClassesSettings(this);
         await this.settings.init();
 
-
         // Initialize the settings' tab
         this.addSettingTab(new CustomClassesSettingsTab(this.app, this));
 
