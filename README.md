@@ -34,18 +34,34 @@ With the previous paragraph example, the render would be :
 ```
 	
 ## Compatibility mode
-The Obsidian [Live Preview]() renders Markdown in a quite different way than the [Read mode]() does. In order to allow you to create CSS snippets that work in both modes the _Custom Classes_ plugin introduces a compatibility mode, which is enabled by default, but can be disabled from the plugin's settings.
+The Obsidian [Live Preview mode]() renders Markdown blocks in a quite different way than the [Read mode]() does. In order to allow you to create CSS snippets that work in both modes the _Custom Classes_ plugin introduces the "Compatibility mode", which is enabled by default but can be disabled from the plugin's settings.
 	
-More preciselly, if the compatibility mode is enabled :
-- Markdown block target by a custom class will render in Live Preview mode using the Read mode format
-- Lists items in Live Preview mode will be grouped instead of being considered individual (like in Read mode)
+More preciselly, if the compatibility mode is enabled _Custom Classes_ will :
+- use the Read mode format to render Markdown blocks targetted by a custom class in Live Preview mode
+- consider that list items are grouped in Live Preview mode (like in Read mode)
 	
 <br>
 
-## Demonstration
+## Showcase / Integrations
 
-#### And this should works with any other type of block...
-
+### The Lila's frontmatter
+The _Custom Classes_ plugin to render an unordered list (`ul`) as a clean frontmatter block in the [Lila's frontmatter](https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087).
+	
+#### In Edit mode
+```markdown
+`class:meta`
+- creation:: 2023-01-21T18:55:12
+- author:: [[John Doe]]
+- parents:: [[Note]], [[Another note]]
+- status:: #MayBePartial
+```
+	
+#### In Read / Live Preview modes
+| Theme | |
+| -- | -- |
+| Dark | ![](https://forum.obsidian.md/uploads/default/original/3X/1/4/1418a3659b033fcf8d925105d6a3da3c6b9984fc.gif) |
+| Light | ![](https://forum.obsidian.md/uploads/default/original/3X/3/5/35b209dfa79a2b3df13166e9ddd6d1b208480fca.gif) |
+	
 <br>
 
 ## Installation
@@ -59,10 +75,6 @@ But you can still install this one using the [BRAT plugin](https://github.com/Tf
 - Click on “Add Plugin” button to confirm
 3) Finally, go to your plugins list (Options > Community plugins) and enable the Custom Classes plugin
 
-<br>
-
-## Known limitations
-The plugin currently doesn't support Live Preview mode.
 
 <br>
 
