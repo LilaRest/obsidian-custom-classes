@@ -1,83 +1,111 @@
 import {
   ViewUpdate,
   PluginValue,
-  EditorView,
   ViewPlugin,
 } from "@codemirror/view";
+import { MarkdownRenderer } from "obsidian";
 import { plugin } from "./main";
 
 class _LivePreviewModeRenderer implements PluginValue {
 
-  constructor (view: EditorView) {
-  }
+  getNextBlockElements (block: any) {
+    const nextBlockElements = [];
 
-  update (update: ViewUpdate) {
-    for (const child of update.view.contentDOM.children) {
-      const codeBlock = child.querySelector("span.cm-inline-code");
+    // Retrieve the next element sibling
+    let nextElement = block.nextElementSibling;
 
-      //@ts-ignore
-      if (codeBlock && codeBlock.innerText.startsWith(plugin.settings.get("customClassAnchor"))) {
-        let lastSibling = null;
-        let active = child.classList.contains("cm-active");
-        while (!active) {
-          const block: any = lastSibling ? lastSibling.nextElementSibling : child.nextElementSibling;
-          lastSibling = block;
+    // If the nextElement is not null and is not a line return
+    if (nextElement && nextElement.className !== "cm-line") {
 
-          // console.log(block)
-          // Break if block is a blank line
-          if (!block || block.className === "cm-line") {
-            break;
-          }
+      // Push the nextElement to the nextBlockElements list
+      nextBlockElements.push(nextElement);
 
-          active = block.classList.contains("cm-active");
-        }
-        if (active === false) {
-          //@ts-ignore
-          const customClass = child.innerText.trim().replace(plugin.settings.get("customClassAnchor"), "").trim();
-          child.classList.add(customClass);
+      // If the nextElement is a list item
+      if (nextElement.classList.contains("HyperMD-list-line")) {
 
-          child.innerHTML = "";
+        // And if the groupListItemInLivePreview settings is set 
+        if (plugin?.settings.get("groupListItemInLivePreview")) {
 
-          // Build inner HTML 
-          lastSibling = null;
+          // Retrieve list type
+          const listType = nextElement.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
+
+          // Also append all others items of the list to nextBlockElements
           while (true) {
-            const block: any = lastSibling ? lastSibling.nextElementSibling : child.nextElementSibling;
-            lastSibling = block;
+            nextElement = nextBlockElements[nextBlockElements.length - 1].nextElementSibling;
 
-            // console.log(block)
-            // Break if block is a blank line
-            if (!block || block.className === "cm-line") {
-              break;
-            }
+            // Retrieve next element list type 
+            const nextElementListType = nextElement.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
 
-            block.style.display = "none";
-            const newBlock = document.createElement("p");
-            newBlock.innerHTML = block.innerHTML;
+            // Break if the nextElement is null, or not a list item or not of the same list type
+            if (!nextElement || !nextElement.classList.contains(`HyperMD-list-line`) || nextElementListType !== listType) break;
 
-            child.appendChild(newBlock);
-          }
-        }
-        else {
-          let lastSibling = null;
-          while (true) {
-            const block: any = lastSibling ? lastSibling.nextElementSibling : child.nextElementSibling;
-            lastSibling = block;
-
-            console.log(block);
-            // Break if block is a blank line
-            if (!block || block.className === "cm-line") {
-              break;
-            }
-
-            block.style.display = "block";
+            // Else append the element
+            nextBlockElements.push(nextElement);
           }
         }
       }
     }
+
+    return nextBlockElements;
   }
 
-  destroy () {
-    // ...
+  update (update: ViewUpdate) {
+    console.log(update);
+    // Retrieve the blocks' container element 
+    const blocksContainer = update.view.contentDOM;
+
+    // Iterate over each block of the view
+    for (const block of blocksContainer.children) {
+
+      // If the block is a custom class block
+      const codeBlock = block.querySelector('span.cm-inline-code');
+      if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+
+        // Retrieve the list of elements that composes the next block
+        const nextBlockElements = this.getNextBlockElements(block);
+
+        // Build the code block scope elements
+        const scopeElements = [block, ...nextBlockElements];
+
+        // Retrieve whether the codeBlock or the next block are active or not
+        const active = scopeElements.find(el => el.classList.contains("cm-active")) ? true : false;
+
+        // If the code block scope is active
+        if (active) {
+          for (const element of nextBlockElements) {
+            element.style.removeProperty("display");
+          }
+        }
+
+        // Else if the code block is not active
+        else {
+
+          // Reset the block HTML
+          block.innerHTML = "";
+
+          // Loop through every next block elements
+          let markdown = "";
+          for (const element of nextBlockElements) {
+
+            // Hide the element from the render
+            element.style.display = "none";
+
+            // Build the element markdown
+            markdown += update.state.doc.text[blocksContainer.indexOf(element)];
+            markdown += "\n";
+          }
+
+          // Render markdown into the custom class block
+          MarkdownRenderer.renderMarkdown(markdown, block);
+
+          // Retrieve the custom class name
+          const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+
+          // Append the class to the custom class block
+          block.className = customClass;
+        }
+      }
+    }
   }
 }
 export const LivePreviewModeRenderer = ViewPlugin.fromClass(_LivePreviewModeRenderer);
