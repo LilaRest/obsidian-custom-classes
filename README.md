@@ -32,20 +32,40 @@ With the previous paragraph example, the render would be :
 	<p>I'm a so fancy paragraph !</p>
 </div>
 ```
-	
+
+<br>
+
 ## Compatibility mode
-The Obsidian [Live Preview mode]() renders Markdown blocks in a quite different way than the [Read mode]() does. In order to allow you to create CSS snippets that work in both modes the _Custom Classes_ plugin introduces the "Compatibility mode", which is enabled by default but can be disabled from the plugin's settings.
+The Obsidian Live Preview mode renders Markdown blocks in a quite different way than Read mode. In order to allow you to create CSS snippets that work in both modes, the _Custom Classes_ plugin introduces the "Compatibility mode", which is enabled by default but can be disabled from the plugin's settings.
 	
 More preciselly, if the compatibility mode is enabled _Custom Classes_ will :
 - use the Read mode format to render Markdown blocks targetted by a custom class in Live Preview mode
 - consider that list items are grouped in Live Preview mode (like in Read mode)
 	
+	
+<br>
+
+## Installation
+The _Custom Classes_ plugin is currently not available in the official plugins list ([request](https://github.com/obsidianmd/obsidian-releases/pull/1576) has been sent but has not been reviewed yet).
+
+But you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
+1) Install and enable the BRAT plugin (which is available in the official plugins list)
+2) On the BRAT settings tab :
+- Click on “Add Beta plugin” button
+- Paste that URL : `https://github.com/LilaRest/obsidian-custom-classes`
+- Click on “Add Plugin” button to confirm
+3) Finally, go to your plugins list (Options > Community plugins) and enable the Custom Classes plugin
+
 <br>
 
 ## Showcase / Integrations
+That section displays some example of how people have integrated the _Custom Classes_ plugin in their workflows.
+Feel free to share yours by [opening an issue](https://github.com/LilaRest/obsidian-custom-classes/issues/new).
 
-### The Lila's frontmatter
-The _Custom Classes_ plugin to render an unordered list (`ul`) as a clean frontmatter block in the [Lila's frontmatter](https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087).
+### 1# The Lila's frontmatter
+Here the _Custom Classes_ plugin is used to render a Markdown unordered list (`ul`) as a clean frontmatter block.
+
+Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087
 	
 #### In Edit mode
 ```markdown
@@ -61,22 +81,11 @@ The _Custom Classes_ plugin to render an unordered list (`ul`) as a clean frontm
 | -- | -- |
 | Dark | ![](https://forum.obsidian.md/uploads/default/original/3X/1/4/1418a3659b033fcf8d925105d6a3da3c6b9984fc.gif) |
 | Light | ![](https://forum.obsidian.md/uploads/default/original/3X/3/5/35b209dfa79a2b3df13166e9ddd6d1b208480fca.gif) |
-	
-<br>
-
-## Installation
-The _Custom Classes_ plugin is currently not available in the official plugins list ([request](https://github.com/obsidianmd/obsidian-releases/pull/1576) has been sent but has not been reviewed yet).
-
-But you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
-1) Install and enable the BRAT plugin (which is available in the official plugins list)
-2) On the BRAT settings tab :
-- Click on “Add Beta plugin” button
-- Paste that URL : `https://github.com/LilaRest/obsidian-custom-classes`
-- Click on “Add Plugin” button to confirm
-3) Finally, go to your plugins list (Options > Community plugins) and enable the Custom Classes plugin
-
 
 <br>
 
 ## Inspiration
-That plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) plugin but has been entirely rewritten and focus exclusively on custom HTML classes. By the way it fix many majors bugs like the one that prevented classes from being properly appended if the targetted block had been modified and then re-rendered.
+This plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) plugin but has been entirely rewritten to :
+- focus exclusively on adding custom HTML classes,
+- support the Live Preview mode,
+- fix some majors bugs (e.g. classes were not properly appended if the targetted block was modified and then re-rendered).
