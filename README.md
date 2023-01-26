@@ -29,7 +29,7 @@ Then in Read or Live Preview mode, _Custom Classes_ will simply append the speci
 With the previous paragraph example, the render would be :
 ```html
 <div class="fancy-text">
-	<p>I'm a so fancy paragraph !</p>
+  <p>I'm a so fancy paragraph !</p>
 </div>
 ```
 
