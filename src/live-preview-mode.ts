@@ -3,7 +3,7 @@ import {
   PluginValue,
   ViewPlugin,
 } from "@codemirror/view";
-import { MarkdownRenderer } from "obsidian";
+import { Component, MarkdownRenderer } from "obsidian";
 import { plugin } from "./main";
 
 class _LivePreviewModeRenderer implements PluginValue {
@@ -58,7 +58,7 @@ class _LivePreviewModeRenderer implements PluginValue {
     for (const block of blocksContainer.children) {
 
       // If the block is a custom class block
-      const codeBlock = block.querySelector('span.cm-inline-code');
+      const codeBlock: HTMLElement | null = block.querySelector('span.cm-inline-code');
       if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
         // Retrieve the list of elements that composes the next block
@@ -91,12 +91,18 @@ class _LivePreviewModeRenderer implements PluginValue {
             element.style.display = "none";
 
             // Build the element markdown
+            //@ts-ignore
             markdown += update.state.doc.text[blocksContainer.indexOf(element)];
             markdown += "\n";
           }
 
           // Render markdown into the custom class block
-          MarkdownRenderer.renderMarkdown(markdown, block);
+          MarkdownRenderer.renderMarkdown(
+            markdown,
+            block as HTMLElement,
+            "",
+            //@ts-ignore
+            null);
 
           // Retrieve the custom class name
           const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
