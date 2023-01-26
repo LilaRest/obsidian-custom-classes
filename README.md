@@ -1,5 +1,12 @@
 <h1 align="center">Obsidian Custom Classes</h1>
-<p align="center"><b>Custom Classes</b> is a minimalist Obsidian plugin that allows you to add custom HTML classes to specific Markdown blocks.</p>
+
+<div align="center">
+	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/ci-cd.yml">
+	<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23cd98">
+	<img alt="GitHub" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
+</div>
+
+<p align="center"><b>Custom Classes is a minimalist Obsidian plugin that allows you to add<br>your own HTML classes to specific Markdown blocks in your notes.</b></p>
 
 <br>
 
