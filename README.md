@@ -67,6 +67,19 @@ will render in Reading mode :
 
 <br>
 
+## Installation
+The _Custom Classes_ plugin is currently not available in the official plugins list ([request](https://github.com/obsidianmd/obsidian-releases/pull/1576) has been sent but has not been reviewed yet).
+
+But you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
+1) Install and enable the BRAT plugin (which is available in the official plugins list)
+2) On the BRAT settings tab :
+- Click on “Add Beta plugin” button
+- Paste that URL : `https://github.com/LilaRest/obsidian-custom-classes`
+- Click on “Add Plugin” button to confirm
+3) Finally, go to your plugins list (Options > Community plugins) and enable the Custom Classes plugin
+
+<br>
+
 ## Known limitations
 The plugin currently doesn't support Live Preview mode.
 
