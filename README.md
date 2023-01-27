@@ -1,70 +1,48 @@
 <h1 align="center">Obsidian Custom Classes</h1>
-<p align="center"><b>Custom Classes</b> is a minimalist Obsidian plugin that allows you to add custom HTML classes to specific Markdown blocks.</p>
+
+<div align="center">
+	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/ci-cd.yml">
+	<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23ddccee">
+	<img alt="GitHub" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
+</div>
+
+<br>
+
+<p align="center"><b>Custom Classes is a minimalist Obsidian plugin that allows you to add<br>your own HTML classes to specific Markdown blocks in your notes.</b></p>
 
 <br>
 
 ## Usage
-To add a custom HTML class to a Markdown block simply precede it with an inline code block that starts with the `class:` anchor :
-```markdown
-`class:your-custom-class-here`
-Your block here
-```
+To add a custom class to a Markdown block, simply precede this one with an inline code-block in the format <code>\`class:\<customClass\>\`</code>.
 
+With a paragraph block this looks like :
+```markdown
+`class:fancy-text`
+I'm a so fancy paragraph !
+```
+	
 <br>
+	
+## Rendering
+Then in Read or Live Preview mode, _Custom Classes_ will simply append the specified class to the blocks's `div`.
 
-## Demonstration
-### _Example 1_: With a list block
-The following Markdown :
-```markdown
-`class:my-super-list`
-- first
-- second
-- third
-```
-will render in Reading mode :
+With the previous paragraph example, the render would be :
 ```html
-<div class="my-super-list">
-    <ul>
-        <li>first</li>
-        <li>second</li>
-        <li>third</li>
-    </ul>
+<div class="fancy-text">
+  <p>I'm a so fancy paragraph !</p>
 </div>
 ```
 
 <br>
 
-### _Example 2_: With a heading block
-The following Markdown :
-```markdown
-`class:my-great-heading`
-## A level 2 heading
-```
-will render in Reading mode :
-```html
-<div class="my-great-heading">
-    <h2>A level 2 heading</h2>
-</div>
-```
-
-<br>
-
-### _Example 3_: With a paragraph block
-The following Markdown :
-```markdown
-`class:my-fancy-paragraph`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-```
-will render in Reading mode :
-```html
-<div class="my-fancy-paragraph">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
-```
-<br>
-
-#### And this should works with any other type of block...
-
+## Compatibility mode
+The Obsidian Live Preview mode renders Markdown blocks in a quite different way than Read mode. In order to allow you to create CSS snippets that work in both modes, the _Custom Classes_ plugin introduces the "Compatibility mode", which is enabled by default but can be disabled from the plugin's settings.
+	
+More preciselly, if the compatibility mode is enabled _Custom Classes_ will :
+- use the Read mode format to render Markdown blocks targetted by a custom class in Live Preview mode
+- consider that list items are grouped in Live Preview mode (like in Read mode)
+	
+	
 <br>
 
 ## Installation
@@ -80,10 +58,34 @@ But you can still install this one using the [BRAT plugin](https://github.com/Tf
 
 <br>
 
-## Known limitations
-The plugin currently doesn't support Live Preview mode.
+## Showcase / Integrations
+That section displays some example of how people have integrated the _Custom Classes_ plugin in their workflows.
+Feel free to share yours by [opening an issue](https://github.com/LilaRest/obsidian-custom-classes/issues/new).
+
+### 1# The Lila's frontmatter
+Here the _Custom Classes_ plugin is used to render a Markdown unordered list (`ul`) as a clean frontmatter block.
+
+Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087
+	
+#### In Edit mode
+```markdown
+`class:meta`
+- creation:: 2023-01-21T18:55:12
+- author:: [[John Doe]]
+- parents:: [[Note]], [[Another note]]
+- status:: #MayBePartial
+```
+	
+#### In Read / Live Preview modes
+| Theme | |
+| -- | -- |
+| Dark | ![](https://forum.obsidian.md/uploads/default/original/3X/1/4/1418a3659b033fcf8d925105d6a3da3c6b9984fc.gif) |
+| Light | ![](https://forum.obsidian.md/uploads/default/original/3X/3/5/35b209dfa79a2b3df13166e9ddd6d1b208480fca.gif) |
 
 <br>
 
 ## Inspiration
-That plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) plugin but has been entirely rewritten and focus exclusively on custom HTML classes. By the way it fix many majors bugs like the one that prevented classes from being properly appended if the targetted block had been modified and then re-rendered.
+This plugin is originally inspired by the [Obsidian Stylist](https://github.com/ixth/obsidian-stylist) plugin but has been entirely rewritten to :
+- focus exclusively on adding custom HTML classes,
+- support the Live Preview mode,
+- fix some majors bugs (e.g. classes were not properly appended if the targetted block was modified and then re-rendered).
