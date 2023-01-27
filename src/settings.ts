@@ -78,7 +78,7 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
 
     containerEl.empty();
 
-    // Anchor settings
+    // "Anchor" settings
     new Setting(containerEl)
       .setName("Anchor / Prefix string")
       .setDesc("Defines the inline code-block anchor / prefix string that will be detected as a custom class block")
@@ -91,18 +91,18 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
           })
       );
 
-    // Group list items settings
+    // "Compatibility mode" settings
     new Setting(containerEl)
       .setName("Compatibility mode")
-      .setDesc("If enabled, in Live Preview _Custom Classes_ will render markdown blocks targetted by a custom class in the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read mode.")
+      .setDesc("If enabled, blocks targetted by a custom class in Live Preview will be rendered in the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read mode.")
       .addToggle((toggle) => {
         toggle
-          .setValue(this.plugin.settings.get("groupListItemInLivePreview"))
+          .setValue(this.plugin.settings.get("compatibilityMode"))
           .onChange(async (value) => {
-            this.plugin.settings.set("groupListItemInLivePreview", value);
+            this.plugin.settings.set("compatibilityMode", value);
           });
       });
 
-
+    containerEl.createEl("p", { text: "To learn more, see : " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes#compatibility-mode", text: "Compatibility mode documentation" });
   }
 }
