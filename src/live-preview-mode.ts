@@ -29,7 +29,7 @@ class _LivePreviewModeRenderer implements PluginValue {
       scopeBlocks.push(firstBlock);
 
       // If the first block is a list item and the 'groupListItemInLivePreview' option is set
-      if (firstBlock.classList.contains("HyperMD-list-line") && plugin?.settings.get("groupListItemInLivePreview")) {
+      if (firstBlock.classList.contains("HyperMD-list-line") && plugin?.settings.get("compatibilityMode")) {
 
         // Retrieve the first block list type
         const firstBlockListType = firstBlock.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
@@ -78,54 +78,74 @@ class _LivePreviewModeRenderer implements PluginValue {
         // Retrieve the list of elements that composes the next block
         const nextBlockElements = this.getScopeBlocks(block as HTMLElement);
 
-        // Build the code block scope elements
-        const scopeElements = [block, ...nextBlockElements];
-
         // Retrieve whether the codeBlock or the next block are active or not
-        const active = scopeElements.find(el => el.classList.contains("cm-active")) ? true : false;
+        const active = [block, ...nextBlockElements].find(el => el.classList.contains("cm-active")) ? true : false;
 
         // If the code block scope is active
         if (active) {
-          for (const element of nextBlockElements) {
-            element.style.removeProperty("display");
+
+          // If compatibility mode is enabled display the next block elements again
+          if (plugin?.settings.get("compatibilityMode")) {
+            for (const element of nextBlockElements) {
+              element.style.removeProperty("display");
+            }
+          }
+
+          // Else display the class code block again
+          else {
+            //@ts-ignore
+            block.style.removeProperty("display");
           }
         }
 
         // Else if the code block is not active
         else {
 
-          // Reset the block HTML
-          block.innerHTML = "";
-
-          // Loop through every next block elements
-          let markdown = "";
-          for (const element of nextBlockElements) {
-
-            // Hide the element from the render
-            element.style.display = "none";
-
-            // Build the element markdown
-            //@ts-ignore
-            markdown += update.state.doc.text[blocksContainer.indexOf(element)];
-            markdown += "\n";
-          }
-
-          // Render markdown into the custom class block
-          MarkdownRenderer.renderMarkdown(
-            markdown,
-            block as HTMLElement,
-            "",
-            //@ts-ignore
-            null);
-
           // Retrieve the custom class name
           const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
 
-          // Append the class to the custom class block
-          block.className = customClass;
+          // If compatibility mode is enabled simulate reading mode render
+          if (plugin?.settings.get("compatibilityMode")) {
+
+            // Reset the block HTML
+            block.innerHTML = "";
+
+            // Loop through every next block elements
+            let markdown = "";
+            for (const element of nextBlockElements) {
+
+              // Hide the element from the render
+              element.style.display = "none";
+
+              // Build the element markdown
+              //@ts-ignore
+              markdown += update.state.doc.text[blocksContainer.indexOf(element)];
+              markdown += "\n";
+            }
+
+            // Render markdown into the custom class block
+            MarkdownRenderer.renderMarkdown(
+              markdown,
+              block as HTMLElement,
+              "",
+              //@ts-ignore
+              null);
+
+            // Append the class to the custom class block
+            block.className = customClass;
+          }
+
+          // Else simply add the custom class to the next element sibling
+          else {
+
+            if (nextBlockElements.length > 0) {
+              nextBlockElements[0].classList.add(customClass);
+            }
+          }
         }
       }
     }
   }
 }
+
 export const LivePreviewModeRenderer = ViewPlugin.fromClass(_LivePreviewModeRenderer);
