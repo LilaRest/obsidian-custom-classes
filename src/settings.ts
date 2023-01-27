@@ -78,6 +78,9 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
 
     containerEl.empty();
 
+    // Configuration section
+    containerEl.createEl("h2", { text: "Configurations", cls: "settings-header" });
+
     // "Anchor" settings
     new Setting(containerEl)
       .setName("Anchor / Prefix string")
@@ -104,5 +107,16 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
       });
 
     containerEl.createEl("p", { text: "To learn more, see : " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes#compatibility-mode", text: "Compatibility mode documentation" });
+
+    // Support section's title
+    containerEl.createEl("h2", { text: "Support my work", cls: "settings-header" });
+
+    // Support message
+    containerEl.createEl("p", { text: "That plugin is provided for free to everyone under the MIT license. If it has been helpful to you, you can thank me for free by :" });
+    const supportMethods = containerEl.createEl("ul");
+    supportMethods.createEl("li", { text: "Following me on Twitter " }).createEl("a", { href: "https://twitter.com/LilaRest", text: "twitter.com/LilaRest" });
+    supportMethods.createEl("li", { text: "Following me on Github " }).createEl("a", { href: "https://github.com/LilaRest", text: "github.com/LilaRest" });
+    supportMethods.createEl("li", { text: "Starring that plugin " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes", text: "LilaRest/obsidian-custom-classes" });
+    containerEl.createEl("p", { text: "Also, I accept donations on my personal website : " }).createEl("a", { href: "https://lila.rest/donations", text: "https://lila.rest/donations" });
   }
 }

@@ -1,3 +1,6 @@
-body {
-  outline-width: 0px;
+h2.settings-header {
+  font-size: 18px;
+  margin-left: -10px;
+  font-weight: 900;
+  margin-top: 60px;
 }
