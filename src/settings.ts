@@ -3,13 +3,13 @@ import CustomClasses from "./main";
 
 export interface SettingsData {
   customClassAnchor: string;
-  groupListItemInLivePreview: boolean;
+  compatibilityMode: boolean;
   [index: string]: any;
 }
 
 const DEFAULT_SETTINGS: SettingsData = {
   customClassAnchor: "class:",
-  groupListItemInLivePreview: true,
+  compatibilityMode: true,
 };
 
 export class CustomClassesSettings {
@@ -93,8 +93,8 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
 
     // Group list items settings
     new Setting(containerEl)
-      .setName("Group list items in Live Preview")
-      .setDesc("If set, a custom class block above a list item will include all the items of the list in the block.")
+      .setName("Compatibility mode")
+      .setDesc("If enabled, in Live Preview _Custom Classes_ will render markdown blocks targetted by a custom class in the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read mode.")
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.get("groupListItemInLivePreview"))
@@ -102,5 +102,7 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
             this.plugin.settings.set("groupListItemInLivePreview", value);
           });
       });
+
+
   }
 }
