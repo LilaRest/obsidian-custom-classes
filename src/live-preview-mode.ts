@@ -24,7 +24,7 @@ class _LivePreviewModeRenderer implements PluginValue {
     const firstBlock = classBlock.nextElementSibling as HTMLElement;
 
     // If the first block is neither null nor a line break
-    if (firstBlock && firstBlock.className !== "cm-line") {
+    if (firstBlock && firstBlock.innerHTML !== "<br>") {
 
       // Append it to the scope blocks list
       scopeBlocks.push(firstBlock);
@@ -42,7 +42,7 @@ class _LivePreviewModeRenderer implements PluginValue {
           const nextBlock = scopeBlocks[scopeBlocks.length - 1].nextElementSibling as HTMLElement;
 
           // If the next block is neither null nor a line break
-          if (nextBlock && firstBlock.className !== "cm-line") {
+          if (nextBlock && firstBlock.innerHTML !== "<br>") {
 
             // Retrieve next block list type 
             const nextBlockListType = nextBlock.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
@@ -68,7 +68,6 @@ class _LivePreviewModeRenderer implements PluginValue {
 
     // Unhide hidden blocks if the user has switched from Live Preview mode to Source mode
     const currentEditingMode = app?.workspace?.activeLeaf?.getViewState().state.source ? "source" : "preview";
-    console.log(currentEditingMode);
     if (this.prevEditingMode === "preview") {
       if (currentEditingMode === "source") {
         app.workspace.iterateRootLeaves((leaf) => {
