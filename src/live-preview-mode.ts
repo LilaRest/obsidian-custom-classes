@@ -7,7 +7,7 @@ import { MarkdownRenderer } from "obsidian";
 import { plugin } from "./main";
 
 class _LivePreviewModeRenderer implements PluginValue {
-  lastBlocksContainer: Element;
+  prevEditingMode: string;
 
 
   /**
@@ -66,14 +66,28 @@ class _LivePreviewModeRenderer implements PluginValue {
 
   update (update: ViewUpdate) {
 
+    // Unhide hidden blocks if the user has switched from Live Preview mode to Source mode
+    const currentEditingMode = app?.workspace?.activeLeaf?.getViewState().state.source ? "source" : "preview";
+    console.log(currentEditingMode);
+    if (this.prevEditingMode === "preview") {
+      if (currentEditingMode === "source") {
+        app.workspace.iterateRootLeaves((leaf) => {
+          // Ensure that every block of the container is displayed
+          //@ts-ignore
+          for (const element of leaf.view.containerEl.querySelector(".cm-content")?.children) {
+            //@ts-ignore
+            element.style.removeProperty("display");
+          }
+        });
+      }
+    }
+    this.prevEditingMode = currentEditingMode;
+
     // Proceed to render only if the update has changed the cursor position on the document (performance reasons)
     if (update.selectionSet) {
 
       // Retrieve the blocks' container element
       const blocksContainer = update.view.contentDOM;
-
-      // Set the lastBlocksContainer
-      this.lastBlocksContainer = blocksContainer;
 
       // Iterate over each block of the view
       for (const block of blocksContainer.children) {
@@ -154,19 +168,6 @@ class _LivePreviewModeRenderer implements PluginValue {
       }
     }
   }
-
-  /*destroy (): void {
-    console.log("DESTROY");
-    console.log(this.lastBlocksContainer);
-
-    if (this.lastBlocksContainer) {
-      // Ensure that every block of the container is displayed
-      for (const element of this.lastBlocksContainer.children) {
-        //@ts-ignore
-        element.style.removeProperty("display");
-      }
-    }
-  }*/
 }
 
 export const LivePreviewModeRenderer = ViewPlugin.fromClass(_LivePreviewModeRenderer);
