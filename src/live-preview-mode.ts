@@ -7,6 +7,7 @@ import { MarkdownRenderer } from "obsidian";
 import { plugin } from "./main";
 
 class _LivePreviewModeRenderer implements PluginValue {
+  lastBlocksContainer: Element;
 
 
   /**
@@ -65,87 +66,107 @@ class _LivePreviewModeRenderer implements PluginValue {
 
   update (update: ViewUpdate) {
 
-    // Retrieve the blocks' container element
-    const blocksContainer = update.view.contentDOM;
+    // Proceed to render only if the update has changed the cursor position on the document (performance reasons)
+    if (update.selectionSet) {
 
-    // Iterate over each block of the view
-    for (const block of blocksContainer.children) {
+      // Retrieve the blocks' container element
+      const blocksContainer = update.view.contentDOM;
 
-      // If the block is a custom class block
-      const codeBlock: HTMLElement | null = block.querySelector('span.cm-inline-code');
-      if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+      // Set the lastBlocksContainer
+      this.lastBlocksContainer = blocksContainer;
 
-        // Retrieve the list of elements that composes the next block
-        const nextBlockElements = this.getScopeBlocks(block as HTMLElement);
+      // Iterate over each block of the view
+      for (const block of blocksContainer.children) {
 
-        // Retrieve whether the codeBlock or the next block are active or not
-        const active = [block, ...nextBlockElements].find(el => el.classList.contains("cm-active")) ? true : false;
+        // If the block is a custom class block
+        const codeBlock: HTMLElement | null = block.querySelector('span.cm-inline-code');
+        if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
-        // If the code block scope is active
-        if (active) {
+          // Retrieve the list of elements that composes the next block
+          const nextBlockElements = this.getScopeBlocks(block as HTMLElement);
 
-          // If compatibility mode is enabled display the next block elements again
-          if (plugin?.settings.get("compatibilityMode")) {
-            for (const element of nextBlockElements) {
-              element.style.removeProperty("display");
+          // Retrieve whether the codeBlock or the next block are active or not
+          const active = [block, ...nextBlockElements].find(el => el.classList.contains("cm-active")) ? true : false;
+
+          // If the code block scope is active
+          if (active) {
+
+            // If compatibility mode is enabled display the next block elements again
+            if (plugin?.settings.get("compatibilityMode")) {
+              for (const element of nextBlockElements) {
+                element.style.removeProperty("display");
+              }
+            }
+
+            // Else display the class code block again
+            else {
+              //@ts-ignore
+              block.style.removeProperty("display");
             }
           }
 
-          // Else display the class code block again
+          // Else if the code block is not active
           else {
-            //@ts-ignore
-            block.style.removeProperty("display");
-          }
-        }
 
-        // Else if the code block is not active
-        else {
+            // Retrieve the custom class name
+            const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
 
-          // Retrieve the custom class name
-          const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+            // If compatibility mode is enabled simulate reading mode render
+            if (plugin?.settings.get("compatibilityMode")) {
 
-          // If compatibility mode is enabled simulate reading mode render
-          if (plugin?.settings.get("compatibilityMode")) {
+              // Reset the block HTML
+              block.innerHTML = "";
 
-            // Reset the block HTML
-            block.innerHTML = "";
+              // Loop through every next block elements
+              let markdown = "";
+              for (const element of nextBlockElements) {
 
-            // Loop through every next block elements
-            let markdown = "";
-            for (const element of nextBlockElements) {
+                // Hide the element from the render
+                element.style.display = "none";
 
-              // Hide the element from the render
-              element.style.display = "none";
+                // Build the element markdown
+                //@ts-ignore
+                markdown += update.state.doc.text[blocksContainer.indexOf(element)];
+                markdown += "\n";
+              }
 
-              // Build the element markdown
-              //@ts-ignore
-              markdown += update.state.doc.text[blocksContainer.indexOf(element)];
-              markdown += "\n";
+              // Render markdown into the custom class block
+              MarkdownRenderer.renderMarkdown(
+                markdown,
+                block as HTMLElement,
+                "",
+                //@ts-ignore
+                null);
+
+              // Append the class to the custom class block
+              block.className = customClass;
             }
 
-            // Render markdown into the custom class block
-            MarkdownRenderer.renderMarkdown(
-              markdown,
-              block as HTMLElement,
-              "",
-              //@ts-ignore
-              null);
+            // Else simply add the custom class to the next element sibling
+            else {
 
-            // Append the class to the custom class block
-            block.className = customClass;
-          }
-
-          // Else simply add the custom class to the next element sibling
-          else {
-
-            if (nextBlockElements.length > 0) {
-              nextBlockElements[0].classList.add(customClass);
+              if (nextBlockElements.length > 0) {
+                nextBlockElements[0].classList.add(customClass);
+              }
             }
           }
         }
       }
     }
   }
+
+  /*destroy (): void {
+    console.log("DESTROY");
+    console.log(this.lastBlocksContainer);
+
+    if (this.lastBlocksContainer) {
+      // Ensure that every block of the container is displayed
+      for (const element of this.lastBlocksContainer.children) {
+        //@ts-ignore
+        element.style.removeProperty("display");
+      }
+    }
+  }*/
 }
 
 export const LivePreviewModeRenderer = ViewPlugin.fromClass(_LivePreviewModeRenderer);
