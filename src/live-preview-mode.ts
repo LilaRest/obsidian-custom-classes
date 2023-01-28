@@ -82,6 +82,18 @@ class _LivePreviewModeRenderer implements PluginValue {
     }
     this.prevEditingMode = currentEditingMode;
 
+    // If the editor content has changed unhide all hidden elements
+    if (update.docChanged) {
+
+      // Retrieve the blocks' container element
+      const blocksContainer = update.view.contentDOM;
+
+      for (const block of blocksContainer.children) {
+        //@ts-ignore
+        block.style.removeProperty("display");
+      }
+    }
+
     // Proceed to render only if the update has changed the cursor position on the document (performance reasons)
     if (update.selectionSet) {
 
@@ -98,67 +110,91 @@ class _LivePreviewModeRenderer implements PluginValue {
           // Retrieve the list of elements that composes the next block
           const nextBlockElements = this.getScopeBlocks(block as HTMLElement);
 
-          // Retrieve whether the codeBlock or the next block are active or not
-          const active = [block, ...nextBlockElements].find(el => el.classList.contains("cm-active")) ? true : false;
+          // If the custom class block target some elements
+          if (nextBlockElements.length > 0) {
 
-          // If the code block scope is active
-          if (active) {
+            // Retrieve whether the codeBlock or the next block are active or not
+            const active = [block, ...nextBlockElements].find(el => el.classList.contains("cm-active")) ? true : false;
 
-            // If compatibility mode is enabled display the next block elements again
-            if (plugin?.settings.get("compatibilityMode")) {
-              for (const element of nextBlockElements) {
-                element.style.removeProperty("display");
+            // If the code block scope is active
+            if (active) {
+
+              // If compatibility mode is enabled display the next block elements again
+              if (plugin?.settings.get("compatibilityMode")) {
+                console.log("unhide next block elements");
+                console.log(nextBlockElements);
+                for (const element of nextBlockElements) {
+                  element.style.removeProperty("display");
+                }
+              }
+
+              // Else display the class code block again
+              else {
+                //@ts-ignore
+                block.style.removeProperty("display");
               }
             }
 
-            // Else display the class code block again
+            // Else if the code block is not active
             else {
-              //@ts-ignore
-              block.style.removeProperty("display");
-            }
-          }
 
-          // Else if the code block is not active
-          else {
+              // Retrieve the custom class name
+              const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+              console.log(customClass);
+              console.log(nextBlockElements);
 
-            // Retrieve the custom class name
-            const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+              // If compatibility mode is enabled simulate reading mode render
+              if (plugin?.settings.get("compatibilityMode")) {
 
-            // If compatibility mode is enabled simulate reading mode render
-            if (plugin?.settings.get("compatibilityMode")) {
+                // Reset the block HTML
+                block.innerHTML = "";
 
-              // Reset the block HTML
-              block.innerHTML = "";
+                // Retrieve the Markdown file lines
+                let markdownLines: Array<string> = [];
+                if (update.state.doc.children) {
+                  for (const childDoc of update.state.doc.children) {
+                    //@ts-ignore
+                    markdownLines = [...markdownLines, ...childDoc.text];
+                  }
+                }
+                else {
+                  //@ts-ignore
+                  markdownLines = update.state.doc.text;
+                }
 
-              // Loop through every next block elements
-              let markdown = "";
-              for (const element of nextBlockElements) {
+                // Loop through every next block elements
+                let markdown = "";
+                for (const element of nextBlockElements) {
 
-                // Hide the element from the render
-                element.style.display = "none";
+                  // Hide the element from the render
+                  element.style.display = "none";
 
-                // Build the element markdown
-                //@ts-ignore
-                markdown += update.state.doc.text[blocksContainer.indexOf(element)];
-                markdown += "\n";
+
+                  // Build the element markdown
+                  //@ts-ignore
+                  markdown += markdownLines[blocksContainer.indexOf(element)] + "\n";
+                }
+
+                // Render markdown into the custom class block
+                MarkdownRenderer.renderMarkdown(
+                  markdown,
+                  block as HTMLElement,
+                  "",
+                  //@ts-ignore
+                  null);
+
+                // Append the class to the custom class block
+                block.className = customClass;
               }
 
-              // Render markdown into the custom class block
-              MarkdownRenderer.renderMarkdown(
-                markdown,
-                block as HTMLElement,
-                "",
+              // Else simply add the custom class to the next element sibling
+              else {
+
+                // Hide the class block
                 //@ts-ignore
-                null);
+                block.style.display = "none";
 
-              // Append the class to the custom class block
-              block.className = customClass;
-            }
-
-            // Else simply add the custom class to the next element sibling
-            else {
-
-              if (nextBlockElements.length > 0) {
+                // Add class to the next element
                 nextBlockElements[0].classList.add(customClass);
               }
             }
