@@ -97,7 +97,7 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
     // "Compatibility mode" settings
     new Setting(containerEl)
       .setName("Compatibility mode")
-      .setDesc("If enabled, blocks targetted by a custom class in Live Preview will be rendered in the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read mode.")
+      .setDesc("If enabled, blocks targetted by a custom class in Live Preview will be rendered in the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read modes.")
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.get("compatibilityMode"))
