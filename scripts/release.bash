@@ -1,1 +1,1 @@
-npm run release && npm run version && git push --follow-tags --tags origin main
+npm run release && git push --follow-tags --tags origin main
