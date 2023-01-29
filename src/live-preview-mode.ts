@@ -1,208 +1,196 @@
-import {
-  ViewUpdate,
-  PluginValue,
-  ViewPlugin,
-} from "@codemirror/view";
 import { MarkdownRenderer } from "obsidian";
 import { plugin } from "./main";
+import {
+  Extension,
+  RangeSetBuilder,
+  StateField,
+  Transaction,
+} from "@codemirror/state";
+import {
+  Decoration,
+  DecorationSet,
+  EditorView,
+  WidgetType,
+} from "@codemirror/view";
 
-class _LivePreviewModeRenderer implements PluginValue {
-  prevEditingMode: string;
 
+class CompatibilityModeRenderWidget extends WidgetType {
+  customClass: string;
+  lineNumber: number;
+  targettedLines: number;
 
-  /**
-   * Returns an array of the blocks that are in the scope of a given custom class block
-   * @param classBlock HTMLElement
-   * @returns scopeBlocks Array<HTMLElement>
-   */
-  getScopeBlocks (classBlock: HTMLElement) {
-
-    // Create the array that will host all the blocs of the scope
-    const scopeBlocks: Array<HTMLElement> = [];
-
-    // Retrieve the first block of the scope
-    const firstBlock = classBlock.nextElementSibling as HTMLElement;
-
-    // If the first block is neither null nor a line break
-    if (firstBlock && firstBlock.innerHTML !== "<br>") {
-
-      // Append it to the scope blocks list
-      scopeBlocks.push(firstBlock);
-
-      // If the first block is a list item and the 'groupListItemInLivePreview' option is set
-      if (firstBlock.classList.contains("HyperMD-list-line") && plugin?.settings.get("compatibilityMode")) {
-
-        // Retrieve the first block list type
-        const firstBlockListType = firstBlock.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
-
-        // And loop to append all others items of the list to scopeBlocks array
-        while (true) {
-
-          // Retrieve nextBlock
-          const nextBlock = scopeBlocks[scopeBlocks.length - 1].nextElementSibling as HTMLElement;
-
-          // If the next block is neither null nor a line break
-          if (nextBlock && firstBlock.innerHTML !== "<br>") {
-
-            // Retrieve next block list type 
-            const nextBlockListType = nextBlock.querySelector(".cm-formatting-list-ul") ? "ul" : "ol";
-
-            // Break if the nextBlock is null, or not a list item or not of the same list type
-            if (nextBlockListType !== firstBlockListType) break;
-
-            // Else append the element
-            scopeBlocks.push(nextBlock);
-          }
-          else {
-            break;
-          }
-        }
-      }
-    }
-
-    return scopeBlocks;
+  constructor (customClass: string, lineNumber: number, targettedLines: number) {
+    super();
+    this.customClass = customClass;
+    this.lineNumber = lineNumber;
+    this.targettedLines = targettedLines;
   }
 
+  toDOM (view: EditorView): HTMLElement {
 
-  update (update: ViewUpdate) {
+    // Create the Read mode render element
+    const readModeRender = document.createElement("div");
+    readModeRender.classList.add(
+      "custom-classes-renderer",
+      this.customClass,
+    );
 
-    // Unhide hidden blocks if the user has switched from Live Preview mode to Source mode
-    const currentEditingMode = app?.workspace?.activeLeaf?.getViewState().state.source ? "source" : "preview";
-    if (this.prevEditingMode === "preview") {
-      if (currentEditingMode === "source") {
-        app.workspace.iterateRootLeaves((leaf) => {
-          // Ensure that every block of the container is displayed
-          //@ts-ignore
-          for (const element of leaf.view.containerEl.querySelector(".cm-content")?.children) {
-            //@ts-ignore
-            element.style.removeProperty("display");
-          }
-        });
+    // Loop through every next block elements
+    let markdown = view.state.doc.slice(
+      view.state.doc.line(this.lineNumber + 1).from,
+      view.state.doc.line(this.lineNumber + this.targettedLines).to
+      //@ts-ignore
+    ).text.join("\n");
+
+    // Render markdown into the custom class block
+    MarkdownRenderer.renderMarkdown(
+      markdown,
+      readModeRender,
+      "",
+      //@ts-ignore
+      null);
+
+    return readModeRender;
+  }
+
+  ignoreEvent (e: Event | MouseEvent) {
+
+    // Support clicks on links
+    if (e.type === "mousedown") {
+      e = e as MouseEvent;
+      //@ts-ignore
+      if (e.target?.nodeName === "A") {
+        e.preventDefault();
+        return true;
       }
     }
-    this.prevEditingMode = currentEditingMode;
-
-    // If the editor content has changed unhide all hidden elements
-    if (update.docChanged) {
-
-      // Retrieve the blocks' container element
-      const blocksContainer = update.view.contentDOM;
-
-      for (const block of blocksContainer.children) {
-        //@ts-ignore
-        block.style.removeProperty("display");
-      }
-    }
-
-    // Proceed to render only if the update has changed the cursor position on the document (performance reasons)
-    if (update.selectionSet) {
-
-      // Retrieve the blocks' container element
-      const blocksContainer = update.view.contentDOM;
-
-      // Iterate over each block of the view
-      for (const block of blocksContainer.children) {
-
-        // If the block is a custom class block
-        const codeBlock: HTMLElement | null = block.querySelector('span.cm-inline-code');
-        if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
-
-          // Retrieve the list of elements that composes the next block
-          const nextBlockElements = this.getScopeBlocks(block as HTMLElement);
-
-          // If the custom class block target some elements
-          if (nextBlockElements.length > 0) {
-
-            // Retrieve whether the codeBlock or the next block are active or not
-            const active = [block, ...nextBlockElements].find(el => el.classList.contains("cm-active")) ? true : false;
-
-            // If the code block scope is active
-            if (active) {
-
-              // If compatibility mode is enabled display the next block elements again
-              if (plugin?.settings.get("compatibilityMode")) {
-                console.log("unhide next block elements");
-                console.log(nextBlockElements);
-                for (const element of nextBlockElements) {
-                  element.style.removeProperty("display");
-                }
-              }
-
-              // Else display the class code block again
-              else {
-                //@ts-ignore
-                block.style.removeProperty("display");
-              }
-            }
-
-            // Else if the code block is not active
-            else {
-
-              // Retrieve the custom class name
-              const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
-              console.log(customClass);
-              console.log(nextBlockElements);
-
-              // If compatibility mode is enabled simulate reading mode render
-              if (plugin?.settings.get("compatibilityMode")) {
-
-                // Reset the block HTML
-                block.innerHTML = "";
-
-                // Retrieve the Markdown file lines
-                let markdownLines: Array<string> = [];
-                if (update.state.doc.children) {
-                  for (const childDoc of update.state.doc.children) {
-                    //@ts-ignore
-                    markdownLines = [...markdownLines, ...childDoc.text];
-                  }
-                }
-                else {
-                  //@ts-ignore
-                  markdownLines = update.state.doc.text;
-                }
-
-                // Loop through every next block elements
-                let markdown = "";
-                for (const element of nextBlockElements) {
-
-                  // Hide the element from the render
-                  element.style.display = "none";
-
-
-                  // Build the element markdown
-                  //@ts-ignore
-                  markdown += markdownLines[blocksContainer.indexOf(element)] + "\n";
-                }
-
-                // Render markdown into the custom class block
-                MarkdownRenderer.renderMarkdown(
-                  markdown,
-                  block as HTMLElement,
-                  "",
-                  //@ts-ignore
-                  null);
-
-                // Append the class to the custom class block
-                block.className = customClass;
-              }
-
-              // Else simply add the custom class to the next element sibling
-              else {
-
-                // Hide the class block
-                //@ts-ignore
-                block.style.display = "none";
-
-                // Add class to the next element
-                nextBlockElements[0].classList.add(customClass);
-              }
-            }
-          }
-        }
-      }
-    }
+    return false;
   }
 }
 
-export const LivePreviewModeRenderer = ViewPlugin.fromClass(_LivePreviewModeRenderer);
+function getTargettedLinesNumber (doc: any, lineNumber: number): number {
+  let numberOfLines = 0;
+  let lastLineWasList = false;
+  let lastListType = null;
+
+  for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
+
+    // Break if one line is already targetted but wasn't a list item
+    if (numberOfLines > 0 && !lastLineWasList) break;
+
+    // Retrieve line
+    const line = doc.line(lineNumber + offset);
+
+    // Break if the line is empty
+    if (line.text.trim() === "") break;
+
+    // Figure whether the line is a list item and if yes, its type
+    let listType = null;
+    if (/^(\s*)(\-)(\s+)(.*)/.test(line.text)) listType = "ul";
+    else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(line.text)) listType = "ol";
+    const isList = listType ? true : false;
+
+    // Break if the 
+    if (lastLineWasList && listType !== lastListType) break;
+
+    // Increment the number of lines
+    numberOfLines++;
+
+    // Update last list was line and last list type
+    lastLineWasList = isList;
+    lastListType = listType;
+  }
+
+  return numberOfLines;
+}
+
+
+export const customClassField = StateField.define<DecorationSet>({
+
+  create (state): DecorationSet {
+    return Decoration.none;
+  },
+
+  update (oldState: DecorationSet, tx: Transaction): DecorationSet {
+    const builder = new RangeSetBuilder<Decoration>();
+
+    // If live preview mode 
+    const sourceViewEl = document.querySelector("div.markdown-source-view");
+    if (sourceViewEl && sourceViewEl.classList.contains("is-live-preview")) {
+
+      for (let i = 1; i <= tx.state.doc.lines; i++) {
+        const line = tx.state.doc.line(i);
+
+        // If the line is an inline code-block
+        if (line.text.startsWith("`") && line.text.endsWith("`")) {
+
+          // If the code block is a Custom Classes code block
+          if (line.text.replace("`", "").trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+
+            // Retrieve the list of elements that composes the next block
+            const targettedLinesNumber = getTargettedLinesNumber(tx.state.doc, line.number);
+
+            // If the custom class block target some lines
+            if (targettedLinesNumber > 0) {
+
+              // Retrieve whether the custom class line or the lines it targets are active
+              let active = false;
+              if (tx.selection) {
+                const to = tx.state.doc.line(line.number + targettedLinesNumber).to;
+                for (const range of tx.selection?.ranges) {
+                  if (range.from >= line.from && range.to <= to) {
+                    active = true;
+                  }
+                }
+              }
+
+              // If the code block is not active render it
+              if (!active) {
+
+                // Build the custom class name
+                const customClass = line.text
+                  .replaceAll("`", "")
+                  .trim()
+                  .replace(plugin?.settings.get("customClassAnchor"), "")
+                  .trim();
+
+                // If compatibility mode is enabled simulate reading mode render
+                if (plugin?.settings.get("compatibilityMode")) {
+                  builder.add(
+                    line.from,
+                    tx.state.doc.line(line.number + targettedLinesNumber).to,
+                    Decoration.replace({
+                      widget: new CompatibilityModeRenderWidget(
+                        customClass,
+                        line.number,
+                        targettedLinesNumber
+                      ),
+                    })
+                  );
+                }
+
+                // Else simply add the custom class to the next element sibling
+                else {
+                  builder.add(
+                    line.from,
+                    line.to,
+                    Decoration.replace({})
+                  );
+
+                  // TODO addclass widget
+                  // Add class to the next element
+                  // nextBlockElements[0].classList.add(customClass);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return builder.finish();
+  },
+
+  provide (field: StateField<DecorationSet>): Extension {
+    return EditorView.decorations.from(field);
+  }
+});

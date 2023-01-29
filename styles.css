@@ -4,3 +4,19 @@ h2.settings-header {
   font-weight: 900;
   margin-top: 60px;
 }
+
+.custom-classes-renderer {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.custom-classes-renderer > * {
+  margin: 0;
+  padding: 0;
+  white-space: normal;
+}
+
+.custom-classes-renderer > ul,
+.custom-classes-renderer > ol {
+  padding-inline-start: 24px;
+}

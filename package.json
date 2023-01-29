@@ -21,6 +21,7 @@
 	"author": "Lila Rest <mail@lila.rest>",
 	"license": "MIT",
 	"devDependencies": {
+		"@codemirror/language": "^6.4.0",
 		"@types/node": "^16.11.6",
 		"builtin-modules": "3.3.0",
 		"cz-conventional-changelog": "^3.3.0",

@@ -3,7 +3,7 @@ import {
     CustomClassesSettings,
     CustomClassesSettingsTab
 } from './settings';
-import { LivePreviewModeRenderer } from './live-preview-mode';
+import { customClassField } from './live-preview-mode';
 import { readingModeRenderer } from './reading-mode';
 
 export let plugin: CustomClasses | null = null;
@@ -26,7 +26,7 @@ export default class CustomClasses extends Plugin {
         this.addSettingTab(new CustomClassesSettingsTab(this.app, this));
 
         // Start the Live Preview mode renderer
-        this.registerEditorExtension([LivePreviewModeRenderer]);
+        this.registerEditorExtension([customClassField]);
 
         // Start the Reading mode renderer
         this.registerMarkdownPostProcessor(readingModeRenderer);

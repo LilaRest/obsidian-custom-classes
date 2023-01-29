@@ -16,7 +16,8 @@
       "dom.iterable",
       "es5",
       "es6",
-      "es7"
+      "es7",
+      "ES2021"
     ]
   },
   "include": [
