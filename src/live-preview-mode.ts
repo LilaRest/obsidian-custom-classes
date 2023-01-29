@@ -17,13 +17,22 @@ import {
 class CompatibilityModeRenderWidget extends WidgetType {
   customClass: string;
   lineNumber: number;
-  targettedLines: number;
+  targettedLines: Array<string>;
 
-  constructor (customClass: string, lineNumber: number, targettedLines: number) {
+  constructor (customClass: string, lineNumber: number, targettedLines: Array<string>) {
     super();
     this.customClass = customClass;
     this.lineNumber = lineNumber;
     this.targettedLines = targettedLines;
+  }
+
+  eq (widget: CompatibilityModeRenderWidget): boolean {
+    if (widget.customClass === this.customClass) {
+      if (widget.targettedLines.every((v, i) => v === this.targettedLines[i])) {
+        return true;
+      }
+    }
+    return false;
   }
 
   toDOM (view: EditorView): HTMLElement {
@@ -36,11 +45,7 @@ class CompatibilityModeRenderWidget extends WidgetType {
     );
 
     // Loop through every next block elements
-    let markdown = view.state.doc.slice(
-      view.state.doc.line(this.lineNumber + 1).from,
-      view.state.doc.line(this.lineNumber + this.targettedLines).to
-      //@ts-ignore
-    ).text.join("\n");
+    let markdown = this.targettedLines.join("\n");
 
     // Render markdown into the custom class block
     MarkdownRenderer.renderMarkdown(
@@ -232,7 +237,11 @@ export const customClassField = StateField.define<DecorationSet>({
                       widget: new CompatibilityModeRenderWidget(
                         customClass,
                         line.number,
-                        targettedLinesNumber
+                        tx.state.doc.slice(
+                          tx.state.doc.line(line.number + 1).from,
+                          tx.state.doc.line(line.number + targettedLinesNumber).to
+                          //@ts-ignore
+                        ).text
                       ),
                     })
                   );
