@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.1...1.16.0) (2023-01-30)
+
+
+### Features
+
+* fake feature to test GH workflow ([20be7e7](https://github.com/LilaRest/obsidian-custom-classes/commit/20be7e73a5becec07b1ab16db603abb5bb3148fb))
+
+### [1.15.1](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.0...1.15.1) (2023-01-29)
+
+
+### Bug Fixes
+
+* limit the scope of the post processor to prevent broking plugins that use renderMarkdown() ([62276dd](https://github.com/LilaRest/obsidian-custom-classes/commit/62276ddc3acaf720326244b3126e4d12dd0b5ab3)), closes [#1](https://github.com/LilaRest/obsidian-custom-classes/issues/1)
+
 ## [1.15.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.14.0...1.15.0) (2023-01-29)
 
 
