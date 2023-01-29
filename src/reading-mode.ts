@@ -5,42 +5,50 @@ export function readingModeRenderer (element: any, context: any) {
     // Retrieve the blocks' container element 
     const blocksContainer = context.containerEl;
 
-    // Listen for insertion of the element into the blocks' container
-    const observer = new MutationObserver(() => {
+    /* That if statement limits the scope the elements (rendered Markdown blocks) that are directly inserted into a Markdown preview section. 
+    Without this :
+      - Some plugins that use the MarkdownRenderer.renderMarkdown() method will be broken (e.g. for Dataview see : https://github.com/LilaRest/obsidian-custom-classes/issues/1)
+      - The post processor will process much more elements that what is really needed, directly impacting performances
+    */
+    if (blocksContainer.classList.contains("markdown-preview-section")) {
 
-        // If the element has been inserted
-        if (blocksContainer.contains(element)) {
+        // Listen for insertion of the element into the blocks' container
+        const observer = new MutationObserver(() => {
 
-            let nextBlockClass = null;
-            for (const block of blocksContainer.children) {
+            // If the element has been inserted
+            if (blocksContainer.contains(element)) {
 
-                // Reset the block classes
-                block.removeAttribute("class");
+                let nextBlockClass = null;
+                for (const block of blocksContainer.children) {
 
-                // If the block is a custom class block
-                const codeBlock = block.querySelector('code');
-                if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+                    // Reset the block classes
+                    block.removeAttribute("class");
 
-                    // Retrieve the custom class name
-                    nextBlockClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+                    // If the block is a custom class block
+                    const codeBlock = block.querySelector('code');
+                    if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
-                    // Remove the classBlock element from the render
-                    block.style.display = "none";
+                        // Retrieve the custom class name
+                        nextBlockClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+
+                        // Remove the classBlock element from the render
+                        block.style.display = "none";
+                    }
+
+                    else if (nextBlockClass) {
+
+                        // Add the custom class
+                        block.classList.add(nextBlockClass);
+
+                        // Reset nextBlockClass
+                        nextBlockClass = null;
+                    }
                 }
 
-                else if (nextBlockClass) {
-
-                    // Add the custom class
-                    block.classList.add(nextBlockClass);
-
-                    // Reset nextBlockClass
-                    nextBlockClass = null;
-                }
+                // Finally, stop listening for element insertion.
+                observer.disconnect();
             }
-
-            // Finally, stop listening for element insertion.
-            observer.disconnect();
-        }
-    });
-    observer.observe(blocksContainer, { attributes: false, childList: true, characterData: false, subtree: true });
+        });
+        observer.observe(blocksContainer, { attributes: false, childList: true, characterData: false, subtree: true });
+    }
 }
