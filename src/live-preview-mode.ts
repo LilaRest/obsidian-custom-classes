@@ -209,13 +209,21 @@ export const customClassField = StateField.define<DecorationSet>({
 
               // Retrieve whether the custom class line or the lines it targets are active
               let active = false;
+              // - Build the bounds of the concerned range
+              const from = line.from;
+              const to = tx.state.doc.line(line.number + targettedLinesNumber).to;
+              // - Detect if selection is in the concerned range
               if (tx.selection) {
-                const to = tx.state.doc.line(line.number + targettedLinesNumber).to;
                 for (const range of tx.selection?.ranges) {
-                  if (range.from >= line.from && range.to <= to) {
+                  if (range.from >= from && range.to <= to) {
                     active = true;
+                    break;
                   }
                 }
+              }
+              // - Detect if changes are touching the concerned range
+              if (tx.changes.touchesRange(from, to)) {
+                active = true;
               }
 
               // If the code block is not active render it
