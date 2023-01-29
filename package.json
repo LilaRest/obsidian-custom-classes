@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-custom-classes",
-	"version": null,
+	"version": "1.14.0",
 	"description": "Custom Classes is a minimalist Obsidian plugin that allows you to add custom HTML classes to markdown blocks",
 	"main": "main.js",
 	"scripts": {
@@ -10,10 +10,7 @@
 		"release": "standard-version"
 	},
 	"standard-version": {
-		"t": "",
-		"scripts": {
-			"prebump": "npm run version"
-		}
+		"t": ""
 	},
 	"keywords": [
 		"css",
