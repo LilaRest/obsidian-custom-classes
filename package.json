@@ -6,11 +6,14 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json && git commit --amend --no-edit",
+		"version": "node version-bump.mjs",
 		"release": "standard-version"
 	},
 	"standard-version": {
-		"t": ""
+		"t": "",
+		"scripts": {
+			"prebump": "npm run version"
+		}
 	},
 	"keywords": [
 		"css",
