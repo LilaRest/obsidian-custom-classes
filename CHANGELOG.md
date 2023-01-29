@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.4.0...1.13.0) (2023-01-29)
+
+
+### Features
+
+* add Live Preview support (beta) ([fe22a90](https://github.com/LilaRest/obsidian-custom-classes/commit/fe22a907ff73c81aa307752fe1624da5ada1a0a9))
+* allow editing custom classes without reloading Obsidian by re-rendering every custom class ([3768b74](https://github.com/LilaRest/obsidian-custom-classes/commit/3768b7422a69746f0da4071c92957527c2c5418a))
+* allow to add classes to multiline code blocks and tables in Live Prev. with compatibility mode ([901cb2e](https://github.com/LilaRest/obsidian-custom-classes/commit/901cb2e863214b84de2ca6c7ca89628b50e2267d))
+* also consider a the lines range as active if some changes of the transaction are touching it ([8fab0c2](https://github.com/LilaRest/obsidian-custom-classes/commit/8fab0c2fa7c6be777f2b91fcd84a1610877c20ca))
+* entire rewrite of the Live Preview support ([0c5f5c8](https://github.com/LilaRest/obsidian-custom-classes/commit/0c5f5c877e308033622f82137e1ff366e95f9873))
+* expose the plugin globally + replace hardcoded anchor by the one defined in settings ([da1041d](https://github.com/LilaRest/obsidian-custom-classes/commit/da1041dc185928e7fe983246feef93a017a7c536))
+* finish the compatibility mode ([25ef2f8](https://github.com/LilaRest/obsidian-custom-classes/commit/25ef2f87a0c29186fc600b2ad1f08de0913fa733))
+* implement settings + Allow users to customize the anchor / prefix string from settings ([a4f24b7](https://github.com/LilaRest/obsidian-custom-classes/commit/a4f24b788a580540bc5037df4bc5f36001cb43de))
+* improve the Reading mode rendered code (increased performances) ([524b98b](https://github.com/LilaRest/obsidian-custom-classes/commit/524b98bb701f216a070ecbdce0d11769f89a0855))
+* in Live Preview, ignore custom class block that doesn't target any non-empty element ([a39f132](https://github.com/LilaRest/obsidian-custom-classes/commit/a39f1329cff79d5b2f3c3a614068add233a58b19))
+* live Preview support : Unhide blocks if user has switched from Live Preview to Source mode ([9def645](https://github.com/LilaRest/obsidian-custom-classes/commit/9def6455ab9d71a4de80cdb61de287775ea790ab))
+
+
+### Bug Fixes
+
+* empty css file ([b796493](https://github.com/LilaRest/obsidian-custom-classes/commit/b796493610e9a47bb2df7deafe93f736af31b3ad))
+* empty line / line break detection was also detecting paragraphs ([60095b1](https://github.com/LilaRest/obsidian-custom-classes/commit/60095b1d9a06898a744c012116240406b5401be9))
+* patch Typescript errors ([7f1d73c](https://github.com/LilaRest/obsidian-custom-classes/commit/7f1d73c8f10ebf1c805c63995e231f8e012c4b8f))
+* remove of live preview mode code file ([d31125d](https://github.com/LilaRest/obsidian-custom-classes/commit/d31125d20f0efb8f2dc69f80d8fad2b0b8f41fd1))
+* wrong static anchor key + unuseful code to test code blocks ([657d1a8](https://github.com/LilaRest/obsidian-custom-classes/commit/657d1a818a05faf427f99aebc3b06eb652910dcb))
+
 ## [1.12.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.4.0...1.12.0) (2023-01-29)
 
 
