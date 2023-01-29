@@ -68,39 +68,108 @@ class CompatibilityModeRenderWidget extends WidgetType {
   }
 }
 
+
+function isLineContent (line: any): boolean {
+  return line.text.trim() !== "";
+}
+
+function isLineList (line: any): Array<boolean | string | null> {
+  let listType = null;
+  if (/^(\s*)(\-)(\s+)(.*)/.test(line.text)) listType = "ul";
+  else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(line.text)) listType = "ol";
+  const isList = listType ? true : false;
+  return [isList, listType];
+}
+
+function isLineCodeblockBounds (line: any): boolean {
+  return line.text.trim().startsWith("```");
+}
+
+function isTableLine (line: any): boolean {
+  return line.text.trim().startsWith("|") && line.text.trim().endsWith("|");
+}
+
+
 function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   let numberOfLines = 0;
-  let lastLineWasList = false;
-  let lastListType = null;
 
-  for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
+  // Retrieve first line
+  const firstLine = doc.line(lineNumber + 1);
 
-    // Break if one line is already targetted but wasn't a list item
-    if (numberOfLines > 0 && !lastLineWasList) break;
+  // Return numberOfLine if the firstLine is a line break or empty line
+  if (!isLineContent(firstLine)) return numberOfLines;
 
-    // Retrieve line
-    const line = doc.line(lineNumber + offset);
+  // Else increment the number of targetted lines
+  numberOfLines++;
 
-    // Break if the line is empty
-    if (line.text.trim() === "") break;
+  // If first line is a list item
+  const [firstLineIsList, firstListListType] = isLineList(firstLine);
+  if (firstLineIsList) {
 
-    // Figure whether the line is a list item and if yes, its type
-    let listType = null;
-    if (/^(\s*)(\-)(\s+)(.*)/.test(line.text)) listType = "ul";
-    else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(line.text)) listType = "ol";
-    const isList = listType ? true : false;
+    // Iterate over next lines
+    let lastListType = firstListListType;
+    for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
 
-    // Break if the 
-    if (lastLineWasList && listType !== lastListType) break;
+      // Retrieve next line
+      const nextLine = doc.line(firstLine.number + offset);
 
-    // Increment the number of lines
-    numberOfLines++;
+      // Return numberOfLines if the nextLine is a line break or empty line
+      if (!isLineContent(nextLine)) return numberOfLines;
 
-    // Update last list was line and last list type
-    lastLineWasList = isList;
-    lastListType = listType;
+      // If nextLine is a list item
+      const [nextLineIsList, nextListListType] = isLineList(nextLine);
+      if (nextLineIsList) {
+
+        // Return numberOfLines if the listType has changed
+        if (lastListType !== nextListListType) return numberOfLines;
+
+        // Else simply increment the numberOfLines
+        numberOfLines++;
+
+        // And update the last list item type
+        lastListType = nextListListType;
+      }
+
+      // Else return the numberOfLines
+      else return numberOfLines;
+    }
   }
 
+  // Else if first line is a multiline code block bounds
+  else if (isLineCodeblockBounds(firstLine)) {
+
+    // Iterate over next lines
+    for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
+
+      // Retrieve next line
+      const nextLine = doc.line(firstLine.number + offset);
+
+      // Increment the number of Lines
+      numberOfLines++;
+
+      // Return numberOfLines if the other bound is encoutered
+      if (isLineCodeblockBounds(nextLine)) return numberOfLines;
+    }
+  }
+
+  // Else if first line is a table
+  else if (isTableLine(firstLine)) {
+
+    // Iterate over next lines
+    for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
+
+      // Retrieve next line
+      const nextLine = doc.line(firstLine.number + offset);
+
+      // Return if the nextLine is not anymore a table line
+      if (!isTableLine(nextLine)) return numberOfLines;
+
+      // Else increment the numberOfLines
+      numberOfLines++;
+    }
+  }
+
+  // Else return the number of lines
   return numberOfLines;
 }
 
