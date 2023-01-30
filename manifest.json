@@ -1,7 +1,7 @@
 {
 	"id": "custom-classes",
 	"name": "Custom Classes",
-	"version": "1.16.1",
+	"version": "1.16.2",
 	"minAppVersion": "0.15.0",
 	"description": "Custom Classes is a minimalist plugin that allows you to add custom HTML classes to markdown blocks",
 	"author": "Lila Rest <mail@lila.rest>",

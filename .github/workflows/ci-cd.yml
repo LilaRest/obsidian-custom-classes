@@ -30,9 +30,12 @@ jobs:
           ls
           echo "::set-output name=tag_name::$(git tag --sort version:refname | tail -n 1)"
 
-      - name: Parse CHANGELOG entry
+      - name: Parse Changelog Entry
         id: changelog
-        uses: coditory/changelog-parser@v1
+        uses: artlaman/conventional-changelog-reader-action@v1.1.0
+        with:
+          version: ${{ steps.build.outputs.tag_name }}
+          path: ./CHANGELOG.md
 
       - name: Create Release
         id: create_release
@@ -45,7 +48,7 @@ jobs:
           release_name: ${{ github.ref }}
           draft: false
           prerelease: false
-          body: ${{ steps.changelog.outputs.description }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: Upload zip file
         id: upload-zip
