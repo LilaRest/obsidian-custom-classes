@@ -79,6 +79,12 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
     containerEl.empty();
 
     // Configuration section
+    containerEl.createEl("h2", { text: "Documentation", cls: "settings-header" });
+
+    containerEl.createEl("p", { text: "You can learn more about the usage and configurations of the plugin by reading its " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes", text: "documentation page." });
+
+
+    // Configuration section
     containerEl.createEl("h2", { text: "Configurations", cls: "settings-header" });
 
     // "Anchor" settings
@@ -97,7 +103,7 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
     // "Compatibility mode" settings
     new Setting(containerEl)
       .setName("Compatibility mode")
-      .setDesc("If enabled, blocks targetted by a custom class in Live Preview will be rendered in the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read modes.")
+      .setDesc("If enabled, blocks targetted by a custom class in Live Preview will be rendered using the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read modes, but also to target whole lists, multiline code blocks and tables. Keep it enabled if you don't explicitely require a different behavior.")
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.get("compatibilityMode"))
@@ -105,8 +111,6 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
             this.plugin.settings.set("compatibilityMode", value);
           });
       });
-
-    containerEl.createEl("p", { text: "To learn more, see : " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes#compatibility-mode", text: "Compatibility mode documentation" });
 
     // Support section's title
     containerEl.createEl("h2", { text: "Support my work", cls: "settings-header" });

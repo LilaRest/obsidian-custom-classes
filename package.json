@@ -12,7 +12,17 @@
 		"t": "",
 		"scripts": {
 			"postbump": "node version-bump.mjs && git add versions.json"
-		}
+		},
+		"types": [
+			{"type": "feat", "section": "Features"},
+			{"type": "perf", "section": "Features"},
+			{"type": "fix", "section": "Bug Fixes"},
+			{"type": "chore", "hidden": true},
+			{"type": "docs", "hidden": true},
+			{"type": "style", "hidden": true},
+			{"type": "refactor", "hidden": true},
+			{"type": "test", "hidden": true}
+		]
 	},
 	"keywords": [
 		"css",

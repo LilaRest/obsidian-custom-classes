@@ -5,6 +5,10 @@ h2.settings-header {
   margin-top: 60px;
 }
 
+h2.settings-header:nth-of-type(2) {
+  margin-top: 71.25px;
+}
+
 .custom-classes-renderer {
   white-space: nowrap;
   display: inline-block;
