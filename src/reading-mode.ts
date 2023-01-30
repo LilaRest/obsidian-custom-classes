@@ -1,4 +1,8 @@
 import { plugin } from "./main";
+import { MDLine } from "./md-line";
+import { MarkdownRenderer } from "obsidian";
+import { table } from "console";
+
 
 export function readingModeRenderer (element: any, context: any) {
 
@@ -24,15 +28,43 @@ export function readingModeRenderer (element: any, context: any) {
                     // Reset the block classes
                     block.removeAttribute("class");
 
+                    // Reset the block display
+                    block.style.removeProperty("display");
+
                     // If the block is a custom class block
                     const codeBlock = block.querySelector('code');
                     if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
 
                         // Retrieve the custom class name
-                        nextBlockClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+                        const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
 
-                        // Remove the classBlock element from the render
-                        block.style.display = "none";
+                        // If the code block is just above a table (and so prevent the table from rendering properly)
+                        // Render the table in the custom class block
+                        const splitInnerText = block.innerText.split("\n");
+                        if (splitInnerText.length > 1 && MDLine.isTableRow(splitInnerText[1])) {
+                            splitInnerText.shift();
+                            const tableMarkdown = splitInnerText.join("\n");
+                            const tableBlock = document.createElement("div");
+
+                            MarkdownRenderer.renderMarkdown(
+                                tableMarkdown,
+                                tableBlock,
+                                "",
+                                //@ts-ignore
+                                null);
+
+                            block.innerHTML = tableBlock.innerHTML;
+                            block.classList.add(customClass);
+                        }
+
+                        // In other cases
+                        else {
+                            // Store the custom class for the next block
+                            nextBlockClass = customClass;
+
+                            // Remove the classBlock element from the render
+                            block.style.display = "none";
+                        }
                     }
 
                     else if (nextBlockClass) {

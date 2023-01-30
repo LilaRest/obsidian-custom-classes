@@ -75,10 +75,6 @@ class RendererWidget extends WidgetType {
   }
 }
 
-
-
-
-
 function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   let numberOfLines = 0;
 
@@ -86,13 +82,13 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   const firstLine = doc.line(lineNumber + 1);
 
   // Return numberOfLine if the firstLine is a line break or empty line
-  if (MDLine.isEmpty(firstLine)) return numberOfLines;
+  if (MDLine.isEmpty(firstLine.text)) return numberOfLines;
 
   // Else increment the number of targetted lines
   numberOfLines++;
 
   // If first line is a list item
-  const [firstLineIsList, firstListListType] = MDLine.isListItem(firstLine);
+  const [firstLineIsList, firstListListType] = MDLine.isListItem(firstLine.text);
   if (firstLineIsList) {
 
     // Iterate over next lines
@@ -103,10 +99,10 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
       const nextLine = doc.line(firstLine.number + offset);
 
       // Return numberOfLines if the nextLine is a line break or empty line
-      if (MDLine.isEmpty(nextLine)) return numberOfLines;
+      if (MDLine.isEmpty(nextLine.text)) return numberOfLines;
 
       // If nextLine is a list item
-      const [nextLineIsList, nextListListType] = MDLine.isListItem(nextLine);
+      const [nextLineIsList, nextListListType] = MDLine.isListItem(nextLine.text);
       if (nextLineIsList) {
 
         // Return numberOfLines if the listType has changed
@@ -125,7 +121,7 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   }
 
   // Else if first line is a multiline code block bounds
-  else if (MDLine.isCodeBlockBound(firstLine)) {
+  else if (MDLine.isCodeBlockBound(firstLine.text)) {
 
     // Iterate over next lines
     for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
@@ -137,12 +133,12 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
       numberOfLines++;
 
       // Return numberOfLines if the other bound is encoutered
-      if (MDLine.isCodeBlockBound(nextLine)) return numberOfLines;
+      if (MDLine.isCodeBlockBound(nextLine.text)) return numberOfLines;
     }
   }
 
   // Else if first line is a table row
-  else if (MDLine.isTableRow(firstLine)) {
+  else if (MDLine.isTableRow(firstLine.text)) {
 
     // Iterate over next lines
     for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
@@ -151,7 +147,7 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
       const nextLine = doc.line(firstLine.number + offset);
 
       // Return if the nextLine is not anymore a table line
-      if (!MDLine.isTableRow(nextLine)) return numberOfLines;
+      if (!MDLine.isTableRow(nextLine.text)) return numberOfLines;
 
       // Else increment the numberOfLines
       numberOfLines++;

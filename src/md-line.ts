@@ -3,23 +3,23 @@
  */
 export class MDLine {
 
-  static isEmpty (line: any): boolean {
-    return line.text.trim() === "";
+  static isEmpty (lineText: string): boolean {
+    return lineText.trim() === "";
   }
 
-  static isListItem (line: any): Array<boolean | string | null> {
+  static isListItem (lineText: string): Array<boolean | string | null> {
     let listType = null;
-    if (/^(\s*)(\-)(\s+)(.*)/.test(line.text)) listType = "ul";
-    else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(line.text)) listType = "ol";
+    if (/^(\s*)(\-)(\s+)(.*)/.test(lineText)) listType = "ul";
+    else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(lineText)) listType = "ol";
     const isList = listType ? true : false;
     return [isList, listType];
   }
 
-  static isCodeBlockBound (line: any): boolean {
-    return line.text.trim().startsWith("```");
+  static isCodeBlockBound (lineText: string): boolean {
+    return lineText.trim().startsWith("```");
   }
 
-  static isTableRow (line: any): boolean {
-    return line.text.trim().startsWith("|") && line.text.trim().endsWith("|");
+  static isTableRow (lineText: string): boolean {
+    return lineText.trim().startsWith("|") && lineText.trim().endsWith("|");
   }
 }
