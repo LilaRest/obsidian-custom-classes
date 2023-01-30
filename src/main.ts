@@ -6,7 +6,6 @@ import {
 import { customClassField } from './live-preview-mode';
 import { readingModeRenderer } from './reading-mode';
 
-// 
 
 export let plugin: CustomClasses | null = null;
 

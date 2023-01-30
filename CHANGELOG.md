@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.16.1](https://github.com/LilaRest/obsidian-custom-classes/compare/1.16.0...1.16.1) (2023-01-30)
+
+
+### Bug Fixes
+
+* fake fix to test GH workflow on patch versions ([07d0abc](https://github.com/LilaRest/obsidian-custom-classes/commit/07d0abcea8f5f9d1b3af530b169d1144ecca9d0a))
+
 ## [1.16.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.1...1.16.0) (2023-01-30)
 
 
