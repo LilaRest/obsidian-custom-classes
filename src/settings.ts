@@ -2,14 +2,11 @@ import { App, PluginSettingTab, Setting } from "obsidian";
 import CustomClasses from "./main";
 
 export interface SettingsData {
-  customClassAnchor: string;
-  compatibilityMode: boolean;
   [index: string]: any;
 }
 
 const DEFAULT_SETTINGS: SettingsData = {
   customClassAnchor: "class:",
-  compatibilityMode: true,
 };
 
 export class CustomClassesSettings {
@@ -99,18 +96,6 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
             this.plugin.settings.set("customClassAnchor", value);
           })
       );
-
-    // "Compatibility mode" settings
-    new Setting(containerEl)
-      .setName("Compatibility mode")
-      .setDesc("If enabled, blocks targetted by a custom class in Live Preview will be rendered using the Read mode format. This allows you to have CSS snippets that work in both Live Preview and Read modes, but also to target whole lists, multiline code blocks and tables. Keep it enabled if you don't explicitely require a different behavior.")
-      .addToggle((toggle) => {
-        toggle
-          .setValue(this.plugin.settings.get("compatibilityMode"))
-          .onChange(async (value) => {
-            this.plugin.settings.set("compatibilityMode", value);
-          });
-      });
 
     // Support section's title
     containerEl.createEl("h2", { text: "Support my work", cls: "settings-header" });

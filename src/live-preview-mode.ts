@@ -14,7 +14,7 @@ import {
 } from "@codemirror/view";
 
 
-class CompatibilityModeRenderWidget extends WidgetType {
+class RendererWidget extends WidgetType {
   customClass: string;
   lineNumber: number;
   targettedLines: Array<string>;
@@ -26,7 +26,7 @@ class CompatibilityModeRenderWidget extends WidgetType {
     this.targettedLines = targettedLines;
   }
 
-  eq (widget: CompatibilityModeRenderWidget): boolean {
+  eq (widget: RendererWidget): boolean {
     if (widget.customClass === this.customClass) {
       if (widget.targettedLines.every((v, i) => v === this.targettedLines[i])) {
         return true;
@@ -236,37 +236,22 @@ export const customClassField = StateField.define<DecorationSet>({
                   .replace(plugin?.settings.get("customClassAnchor"), "")
                   .trim();
 
-                // If compatibility mode is enabled simulate reading mode render
-                if (plugin?.settings.get("compatibilityMode")) {
-                  builder.add(
-                    line.from,
-                    tx.state.doc.line(line.number + targettedLinesNumber).to,
-                    Decoration.replace({
-                      widget: new CompatibilityModeRenderWidget(
-                        customClass,
-                        line.number,
-                        tx.state.doc.slice(
-                          tx.state.doc.line(line.number + 1).from,
-                          tx.state.doc.line(line.number + targettedLinesNumber).to
-                          //@ts-ignore
-                        ).text
-                      ),
-                    })
-                  );
-                }
-
-                // Else simply add the custom class to the next element sibling
-                else {
-                  builder.add(
-                    line.from,
-                    line.to,
-                    Decoration.replace({})
-                  );
-
-                  // TODO addclass widget
-                  // Add class to the next element
-                  // nextBlockElements[0].classList.add(customClass);
-                }
+                // Initiate the render
+                builder.add(
+                  line.from,
+                  tx.state.doc.line(line.number + targettedLinesNumber).to,
+                  Decoration.replace({
+                    widget: new RendererWidget(
+                      customClass,
+                      line.number,
+                      tx.state.doc.slice(
+                        tx.state.doc.line(line.number + 1).from,
+                        tx.state.doc.line(line.number + targettedLinesNumber).to
+                        //@ts-ignore
+                      ).text
+                    ),
+                  })
+                );
               }
             }
           }
