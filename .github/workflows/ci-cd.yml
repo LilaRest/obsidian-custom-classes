@@ -48,7 +48,7 @@ jobs:
           release_name: ${{ github.ref }}
           draft: false
           prerelease: false
-          body: ${{ steps.changelog_reader.outputs.changes }}
+          body: ${{ steps.changelog.outputs.changes }}
 
       - name: Upload zip file
         id: upload-zip
