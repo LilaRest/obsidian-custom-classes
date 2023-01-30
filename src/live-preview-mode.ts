@@ -1,5 +1,4 @@
 import { MarkdownRenderer } from "obsidian";
-import { plugin } from "./main";
 import {
   Extension,
   RangeSetBuilder,
@@ -12,6 +11,9 @@ import {
   EditorView,
   WidgetType,
 } from "@codemirror/view";
+import { plugin } from "./main";
+import { MDLine } from "./md-line";
+
 
 
 class RendererWidget extends WidgetType {
@@ -74,25 +76,7 @@ class RendererWidget extends WidgetType {
 }
 
 
-function isLineContent (line: any): boolean {
-  return line.text.trim() !== "";
-}
 
-function isLineList (line: any): Array<boolean | string | null> {
-  let listType = null;
-  if (/^(\s*)(\-)(\s+)(.*)/.test(line.text)) listType = "ul";
-  else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(line.text)) listType = "ol";
-  const isList = listType ? true : false;
-  return [isList, listType];
-}
-
-function isLineCodeblockBounds (line: any): boolean {
-  return line.text.trim().startsWith("```");
-}
-
-function isTableLine (line: any): boolean {
-  return line.text.trim().startsWith("|") && line.text.trim().endsWith("|");
-}
 
 
 function getTargettedLinesNumber (doc: any, lineNumber: number): number {
@@ -102,13 +86,13 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   const firstLine = doc.line(lineNumber + 1);
 
   // Return numberOfLine if the firstLine is a line break or empty line
-  if (!isLineContent(firstLine)) return numberOfLines;
+  if (MDLine.isEmpty(firstLine)) return numberOfLines;
 
   // Else increment the number of targetted lines
   numberOfLines++;
 
   // If first line is a list item
-  const [firstLineIsList, firstListListType] = isLineList(firstLine);
+  const [firstLineIsList, firstListListType] = MDLine.isListItem(firstLine);
   if (firstLineIsList) {
 
     // Iterate over next lines
@@ -119,10 +103,10 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
       const nextLine = doc.line(firstLine.number + offset);
 
       // Return numberOfLines if the nextLine is a line break or empty line
-      if (!isLineContent(nextLine)) return numberOfLines;
+      if (MDLine.isEmpty(nextLine)) return numberOfLines;
 
       // If nextLine is a list item
-      const [nextLineIsList, nextListListType] = isLineList(nextLine);
+      const [nextLineIsList, nextListListType] = MDLine.isListItem(nextLine);
       if (nextLineIsList) {
 
         // Return numberOfLines if the listType has changed
@@ -141,7 +125,7 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   }
 
   // Else if first line is a multiline code block bounds
-  else if (isLineCodeblockBounds(firstLine)) {
+  else if (MDLine.isCodeBlockBound(firstLine)) {
 
     // Iterate over next lines
     for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
@@ -153,12 +137,12 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
       numberOfLines++;
 
       // Return numberOfLines if the other bound is encoutered
-      if (isLineCodeblockBounds(nextLine)) return numberOfLines;
+      if (MDLine.isCodeBlockBound(nextLine)) return numberOfLines;
     }
   }
 
-  // Else if first line is a table
-  else if (isTableLine(firstLine)) {
+  // Else if first line is a table row
+  else if (MDLine.isTableRow(firstLine)) {
 
     // Iterate over next lines
     for (let offset = 1; lineNumber + offset <= doc.lines; offset++) {
@@ -167,7 +151,7 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
       const nextLine = doc.line(firstLine.number + offset);
 
       // Return if the nextLine is not anymore a table line
-      if (!isTableLine(nextLine)) return numberOfLines;
+      if (!MDLine.isTableRow(nextLine)) return numberOfLines;
 
       // Else increment the numberOfLines
       numberOfLines++;
