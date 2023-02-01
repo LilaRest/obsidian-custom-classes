@@ -28,7 +28,7 @@
       [
         "@semantic-release/exec", 
         {
-          "prepare": "node version-bump.mjs && git add versions.json"
+          "prepare": "node version-bump.mjs && git add versions.json manifest.json"
         }
       ],
 			[
