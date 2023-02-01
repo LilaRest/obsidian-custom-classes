@@ -37,7 +37,7 @@ Here are some ways to use this plugin that may inspire you for your workflows :
 <ol>
 <li>
 <details>
-  <summary><h3>To style a table</h3></summary>
+  <summary><b>On a table</b></summary>
 
   ```md
   `class: mytable`
@@ -63,89 +63,65 @@ Here are some ways to use this plugin that may inspire you for your workflows :
           <td>222</td>
           <td>333</td>
         </tr>
-    </tbody>
+      </tbody>
     </table>
-  </div>
-  
-  Which you can then easily select
+  </div>  
   ```
+  <br>
 </details>
 </li>
-
 <li><details>
-  <summary><h3>To style a list</h3></summary>
+	<summary><b>On a list</b></summary>
 
   ```md
-  `class: mytable`
-  | AAA | BBB | CCC |
-  | --- | --- | --- |
-  | 111 | 222 | 333 |
+  `class: my-great-list`
+  - First item
+  - Second item
+  - Third item
   ```
   
   In Live Preview or Read modes it will be rendered :
   ```html
-  <div class="mytable">
-    <table>
-      <thead>
-        <tr>
-          <th>AAA</th>
-          <th>BBB</th>
-          <th>CCC</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>111</td>
-          <td>222</td>
-          <td>333</td>
-        </tr>
-    </tbody>
-    </table>
+  <div class="my-great-list">
+    <ul>
+      <li>First item</li>
+      <li>Second item</li>
+      <li>Third item</li>
+    </ul>
   </div>
-  
-  Which you can then easily select
   ```
+  <br>
 </details>
 </li>
-
 <li>
 <details>
-  <summary><h3>To style a Dataview render</h3></summary>
+  <summary><b>On a Dataview query</b></summary>
 
-  ```md
-  `class: mytable`
-  | AAA | BBB | CCC |
-  | --- | --- | --- |
-  | 111 | 222 | 333 |
+  ````md
+  `class: my-dv-list`
+  ```dataview
+  LIST
+  WHERE author
   ```
+  ````
   
   In Live Preview or Read modes it will be rendered :
   ```html
-  <div class="mytable">
-    <table>
-      <thead>
-        <tr>
-          <th>AAA</th>
-          <th>BBB</th>
-          <th>CCC</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>111</td>
-          <td>222</td>
-          <td>333</td>
-        </tr>
-    </tbody>
-    </table>
+  <div class="mu-dv-list">
+    <div class="block-language-dataview node-insert-event">
+      <ul class="dataview list-view-ul">
+        // The results of your query 
+        // <li>...</li>
+        // ...
+      </ul>
+    </div>
   </div>
-  
-  Which you can then easily select
   ```
+  <br>
 </details>
 </li>
 </ol>
-
+  
 <br>
 
 ## Installation
