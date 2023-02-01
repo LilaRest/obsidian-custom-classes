@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"release": "standard-version -a"
+		"release": "standard-version -a --dry-run"
 	},
 	"standard-version": {
 		"t": "",
