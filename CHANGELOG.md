@@ -2,44 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [3.0.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.3.5...3.0.0) (2023-02-01)
-
-
-### ⚠ BREAKING CHANGES
-
-* No more compatibility mode
-
-### Features
-
-* add Live Preview support (beta) ([dda5239](https://github.com/LilaRest/obsidian-custom-classes/commit/dda52394f59333b6885d7fa8ce2f816c9b186aeb))
-* add support for custom class on tables in Read mode ([56758f5](https://github.com/LilaRest/obsidian-custom-classes/commit/56758f577cffae5d3c1e7192c3f05b7a8978890a))
-* allow editing custom classes without reloading Obsidian by re-rendering every custom class ([4c15f9f](https://github.com/LilaRest/obsidian-custom-classes/commit/4c15f9f265f9d239b0e75bb9292ae894fcf0cfb3))
-* allow to add classes to multiline code blocks and tables in Live Prev. with compatibility mode ([dbb5da9](https://github.com/LilaRest/obsidian-custom-classes/commit/dbb5da96768ba3af5fb3fafb0ee1973fcd5c9e9f))
-* also consider a the lines range as active if some changes of the transaction are touching it ([f92d4c6](https://github.com/LilaRest/obsidian-custom-classes/commit/f92d4c6f4741fa4688fc2b3475935ef9e3cb731f))
-* entire rewrite of the Live Preview support ([4fb14bd](https://github.com/LilaRest/obsidian-custom-classes/commit/4fb14bd290c349c309deabda9220278120ee1a67))
-* expose the plugin globally + replace hardcoded anchor by the one defined in settings ([352c7e8](https://github.com/LilaRest/obsidian-custom-classes/commit/352c7e8bacc35cdbb90af56cd31d85d62a5f617a))
-* fake commit to test release ([23614f0](https://github.com/LilaRest/obsidian-custom-classes/commit/23614f023b44a3e63e6b61ff296f24778a67ea5e))
-* fake update to test CI/CD ([92bb088](https://github.com/LilaRest/obsidian-custom-classes/commit/92bb08879dbe5437f5e79612ea376ea8fce7f459))
-* finish the compatibility mode ([0727655](https://github.com/LilaRest/obsidian-custom-classes/commit/0727655df2ca84bdd9879c2a589259995c956f45))
-* implement settings + Allow users to customize the anchor / prefix string from settings ([c14d7c2](https://github.com/LilaRest/obsidian-custom-classes/commit/c14d7c20e61d1683bb62c9c7d4cc446511724f71))
-* improve performances of Live Preview support by limiting script to cursor position changes ([81d86cd](https://github.com/LilaRest/obsidian-custom-classes/commit/81d86cd741977e4790a51d33588426ff14bbaa76))
-* improve the Reading mode rendered code (increased performances) ([2a49809](https://github.com/LilaRest/obsidian-custom-classes/commit/2a49809c46f3ec6eaa3fe0f17052fbb7491fa480))
-* in Live Preview, ignore custom class block that doesn't target any non-empty element ([8cf871e](https://github.com/LilaRest/obsidian-custom-classes/commit/8cf871e58c674030fe2d393f7f50a24735ab3547))
-* live Preview support : Unhide blocks if user has switched from Live Preview to Source mode ([1d711cb](https://github.com/LilaRest/obsidian-custom-classes/commit/1d711cbcc29f73e294ac13bc290fec82ed1ebf8a))
-* make the table support generic to also paragraphs or any other element not properly rendered ([2484135](https://github.com/LilaRest/obsidian-custom-classes/commit/24841355679d93484653b97df2a5f5fd8102580c))
-* prevent re-render of widgets if the content hasn't changed by implementing eq() function ([2f7dc7e](https://github.com/LilaRest/obsidian-custom-classes/commit/2f7dc7eb86113f5d797dc58da79df3022c24b299))
-* totally remove compatibility mode and set it as default behavior to make things clearer ([a81cacc](https://github.com/LilaRest/obsidian-custom-classes/commit/a81cacc00d733936bb6cc349c0146236f9120aec))
-
-
-### Bug Fixes
-
-* empty css file ([025c2c1](https://github.com/LilaRest/obsidian-custom-classes/commit/025c2c1cfa53bdfa067bd58c3bc069645b511ba2))
-* empty line / line break detection was also detecting paragraphs ([211958f](https://github.com/LilaRest/obsidian-custom-classes/commit/211958f3878772ddd9ee2822a4bc4f015e764bae))
-* limit the scope of the post processor to prevent broking plugins that use renderMarkdown() ([128290c](https://github.com/LilaRest/obsidian-custom-classes/commit/128290cce60a692926ad377beb9da51f0b1670b6)), closes [#1](https://github.com/LilaRest/obsidian-custom-classes/issues/1)
-* patch Typescript errors ([e084cfd](https://github.com/LilaRest/obsidian-custom-classes/commit/e084cfdc804d89bc779fcc19f3d9facc51bcf7b9))
-* remove of live preview mode code file ([df5f819](https://github.com/LilaRest/obsidian-custom-classes/commit/df5f8190c036959e6964298cdc0eeb5fce0437e4))
-* repair broken changelog file ([eb2ec4c](https://github.com/LilaRest/obsidian-custom-classes/commit/eb2ec4cf2d83be8990f7f8f969c68ecdc2ab5ff2))
-* wrong static anchor key + unuseful code to test code blocks ([1fd1a4e](https://github.com/LilaRest/obsidian-custom-classes/commit/1fd1a4eb60fc719ffe4b6f57dcb02ce56caefa3d))
 
 ## [2.0.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.1...2.0.0) (2023-01-30)
 
