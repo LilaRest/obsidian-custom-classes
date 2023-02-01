@@ -5,24 +5,7 @@
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"release": "standard-version -a --dry-run"
-	},
-	"standard-version": {
-		"t": "",
-		"scripts": {
-			"postbump": "node version-bump.mjs && git add versions.json"
-		},
-		"types": [
-			{"type": "feat", "section": "Features"},
-			{"type": "perf", "section": "Features"},
-			{"type": "fix", "section": "Bug Fixes"},
-			{"type": "chore", "hidden": true},
-			{"type": "docs", "hidden": true},
-			{"type": "style", "hidden": true},
-			{"type": "refactor", "hidden": true},
-			{"type": "test", "hidden": true}
-		]
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
 	},
 	"keywords": [
 		"css",
@@ -34,12 +17,15 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@codemirror/language": "^6.4.0",
+		"@semantic-release/changelog": "^6.0.2",
+		"@semantic-release/exec": "^6.0.3",
+		"@semantic-release/git": "^10.0.1",
 		"@types/node": "^16.11.6",
 		"builtin-modules": "3.3.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"esbuild": "0.14.47",
 		"obsidian": "latest",
-		"standard-version": "^9.5.0",
+		"semantic-release": "^20.1.0",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
 	},

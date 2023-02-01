@@ -1,0 +1,57 @@
+	{
+  	"branches": [
+			"+([0-9])?(.{+([0-9]),x}).x", 
+			"main",
+			"next",
+			"next-major", 
+			{"name": "beta", "prerelease": true},
+			{"name": "alpha", "prerelease": true}
+		],
+		"tagFormat": "${version}",
+		"plugins": [
+			[
+				"@semantic-release/commit-analyzer",
+				{
+					"releaseRules": [
+						{ "type": "perf", "release": "patch" }
+					]
+				}
+   		],
+			"@semantic-release/release-notes-generator",
+			"@semantic-release/changelog",
+      [
+        "@semantic-release/npm", 
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "@semantic-release/exec", 
+        {
+          "prepare": "node version-bump.mjs && git add versions.json"
+        }
+      ],
+			[
+				"@semantic-release/git",
+				{
+					"assets": ["package.json", "package-lock.json", "CHANGELOG.md", "manifest.json", "versions.json"],
+					"message": "chore(release): Custom Classes ${nextRelease.version} [skip ci]"
+				}
+			],
+			[
+				"@semantic-release/github",
+				{
+					"assets": [
+						"main.js", 
+						"manifest.json", 
+						"styles.css",
+						{
+							"path": ["main.js", "manifest.json", "styles.css"],
+							"name": "obsidian-custom-classes-${nextRelease.gitTag}.js"
+						}
+					]
+				}
+			]
+		],
+		"preset": "angular"
+	}

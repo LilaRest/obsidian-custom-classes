@@ -30,7 +30,7 @@ export default class CustomClasses extends Plugin {
         this.registerEditorExtension([customClassField]);
 
         // Start the Reading mode renderer
-        this.registerMarkdownPostProcessor(readingModeRenderer, 99999999999999999);
+        this.registerMarkdownPostProcessor(readingModeRenderer);
 
         // Print console message
         console.log(`"Custom Classes" plugin successfully loaded.`);

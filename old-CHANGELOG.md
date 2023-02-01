@@ -2,7 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-
 ## [2.0.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.1...2.0.0) (2023-01-30)
 
 
@@ -12,8 +11,43 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* fake feature to test GH workflow ([20be7e7](https://github.com/LilaRest/obsidian-custom-classes/commit/20be7e73a5becec07b1ab16db603abb5bb3148fb))
 * totally remove compatibility mode and set it as default behavior to make things clearer ([a67299d](https://github.com/LilaRest/obsidian-custom-classes/commit/a67299d4bc9c9255f0bbeb17b9018b97ee92d0be))
 
+
+### Bug Fixes
+
+* fake fix to test CI ([ac00273](https://github.com/LilaRest/obsidian-custom-classes/commit/ac002734f58b8713d7f29b503954f9ee2b95db83))
+* fake fix to test CI ([c726363](https://github.com/LilaRest/obsidian-custom-classes/commit/c726363b393e5d89ccff066c9d67c1c9cf64d540))
+* fake fix to test GH workflow on patch versions ([07d0abc](https://github.com/LilaRest/obsidian-custom-classes/commit/07d0abcea8f5f9d1b3af530b169d1144ecca9d0a))
+
+### [1.16.3](https://github.com/LilaRest/obsidian-custom-classes/compare/1.16.2...1.16.3) (2023-01-30)
+
+
+### Bug Fixes
+
+* fake fix to test CI ([ac00273](https://github.com/LilaRest/obsidian-custom-classes/commit/ac002734f58b8713d7f29b503954f9ee2b95db83))
+
+### [1.16.2](https://github.com/LilaRest/obsidian-custom-classes/compare/1.16.1...1.16.2) (2023-01-30)
+
+
+### Bug Fixes
+
+* fake fix to test CI ([c726363](https://github.com/LilaRest/obsidian-custom-classes/commit/c726363b393e5d89ccff066c9d67c1c9cf64d540))
+
+### [1.16.1](https://github.com/LilaRest/obsidian-custom-classes/compare/1.16.0...1.16.1) (2023-01-30)
+
+
+### Bug Fixes
+
+* fake fix to test GH workflow on patch versions ([07d0abc](https://github.com/LilaRest/obsidian-custom-classes/commit/07d0abcea8f5f9d1b3af530b169d1144ecca9d0a))
+
+## [1.16.0](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.1...1.16.0) (2023-01-30)
+
+
+### Features
+
+* fake feature to test GH workflow ([20be7e7](https://github.com/LilaRest/obsidian-custom-classes/commit/20be7e73a5becec07b1ab16db603abb5bb3148fb))
 
 ### [1.15.1](https://github.com/LilaRest/obsidian-custom-classes/compare/1.15.0...1.15.1) (2023-01-29)
 
