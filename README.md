@@ -2,47 +2,33 @@
 
 <div align="center">
 	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/ci-cd.yml">
-	<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23ddccee">
-	<img alt="GitHub" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
+	<img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23ddccee">
+	<img alt="GitHub License" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
+	<img alt="Semantic-release: angular" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release">
 </div>
 
 <br>
 
-<p align="center"><b>Custom Classes is a minimalist Obsidian plugin that allows you to add<br>your own HTML classes to specific Markdown blocks in your notes.</b></p>
+<p align="center"><b>A simple Obsidian plugin that allows you to add your own HTML<br>classes to chosen Markdown blocks directly from your notes.</b></p>
 
 <br>
 
 ## Usage
-To add a custom class to a Markdown block, simply precede this one with an inline code-block in the format <code>\`class:\<customClass\>\`</code>.
+Simply precede the targetted Markdown block with an inline code-block in the format <code>\`class: \<yourCustomClass\>\`</code>. 
 
-With a paragraph block this looks like :
+_Example :_
+- To add the `fancy-text` class to a paragraph block, use :
 ```markdown
-`class:fancy-text`
+`class: fancy-text`
 I'm a so fancy paragraph !
 ```
-	
-<br>
-	
-## Rendering
-Then in Read or Live Preview mode, _Custom Classes_ will simply append the specified class to the blocks's `div`.
-
-With the previous paragraph example, the render would be :
+- In Live Preview or Read modes it will be rendered :
 ```html
 <div class="fancy-text">
   <p>I'm a so fancy paragraph !</p>
 </div>
 ```
 
-<br>
-
-## Compatibility mode
-The Obsidian Live Preview mode renders Markdown blocks in a quite different way than Read mode. In order to allow you to create CSS snippets that work in both modes, the _Custom Classes_ plugin introduces the "Compatibility mode", which is enabled by default but can be disabled from the plugin's settings.
-	
-More preciselly, if the compatibility mode is enabled _Custom Classes_ will :
-- use the Read mode format to render Markdown blocks targetted by a custom class in Live Preview mode
-- consider that list items are grouped in Live Preview mode (like in Read mode)
-	
-	
 <br>
 
 ## Installation
