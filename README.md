@@ -1,7 +1,7 @@
 <h1 align="center">Obsidian Custom Classes</h1>
 
 <div align="center">
-	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/ci-cd.yml">
+	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/semantic-release.yml">
 	<img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23ddccee">
 	<img alt="GitHub License" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
 	<img alt="Semantic-release: angular" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release">
@@ -9,38 +9,156 @@
 
 <br>
 
-<p align="center"><b>A simple Obsidian plugin that allows you to add your own HTML<br>classes to chosen Markdown blocks directly from your notes.</b></p>
+<p align="center"><b>A minimal Obsidian plugin that allows you to add your own HTML<br>classes to chosen Markdown blocks directly from your notes.</b></p>
 
 <br>
 
 ## Usage
-Simply precede the targetted Markdown block with an inline code-block in the format <code>\`class: \<yourCustomClass\>\`</code>. 
+Simply precede the targeted Markdown block with an inline code-block in the format <code>\`class: \<yourCustomClass\>\`</code>. 
 
 _Example :_
 - To add the `fancy-text` class to a paragraph block, use :
 ```markdown
 `class: fancy-text`
-I'm a so fancy paragraph !
+I'm the paragraph and you ?
 ```
 - In Live Preview or Read modes it will be rendered :
 ```html
 <div class="fancy-text">
-  <p>I'm a so fancy paragraph !</p>
+  <p>I'm the paragraph and you ?</p>
 </div>
 ```
 
 <br>
 
-## Installation
-The _Custom Classes_ plugin is currently not available in the official plugins list ([request](https://github.com/obsidianmd/obsidian-releases/pull/1576) has been sent but has not been reviewed yet).
+## Demonstrations
+Here are some ways to use this plugin that may inspire you for your workflows :
 
-But you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
-1) Install and enable the BRAT plugin (which is available in the official plugins list)
+<ol>
+<li>
+<details>
+  <summary><h3>To style a table</h3></summary>
+
+  ```md
+  `class: mytable`
+  | AAA | BBB | CCC |
+  | --- | --- | --- |
+  | 111 | 222 | 333 |
+  ```
+  
+  In Live Preview or Read modes it will be rendered :
+  ```html
+  <div class="mytable">
+    <table>
+      <thead>
+        <tr>
+          <th>AAA</th>
+          <th>BBB</th>
+          <th>CCC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>111</td>
+          <td>222</td>
+          <td>333</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  
+  Which you can then easily select
+  ```
+</details>
+</li>
+
+<li><details>
+  <summary><h3>To style a list</h3></summary>
+
+  ```md
+  `class: mytable`
+  | AAA | BBB | CCC |
+  | --- | --- | --- |
+  | 111 | 222 | 333 |
+  ```
+  
+  In Live Preview or Read modes it will be rendered :
+  ```html
+  <div class="mytable">
+    <table>
+      <thead>
+        <tr>
+          <th>AAA</th>
+          <th>BBB</th>
+          <th>CCC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>111</td>
+          <td>222</td>
+          <td>333</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  
+  Which you can then easily select
+  ```
+</details>
+</li>
+
+<li>
+<details>
+  <summary><h3>To style a Dataview render</h3></summary>
+
+  ```md
+  `class: mytable`
+  | AAA | BBB | CCC |
+  | --- | --- | --- |
+  | 111 | 222 | 333 |
+  ```
+  
+  In Live Preview or Read modes it will be rendered :
+  ```html
+  <div class="mytable">
+    <table>
+      <thead>
+        <tr>
+          <th>AAA</th>
+          <th>BBB</th>
+          <th>CCC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>111</td>
+          <td>222</td>
+          <td>333</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  
+  Which you can then easily select
+  ```
+</details>
+</li>
+</ol>
+
+<br>
+
+## Installation
+**The _Custom Classes_ plugin is currently not available from the official plugins list** (see [this PR](https://github.com/obsidianmd/obsidian-releases/pull/1576) for updates).
+
+However, you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
+1) Install and enable the BRAT plugin (which is available from the official plugins list)
 2) On the BRAT settings tab :
-- Click on “Add Beta plugin” button
-- Paste that URL : `https://github.com/LilaRest/obsidian-custom-classes`
-- Click on “Add Plugin” button to confirm
-3) Finally, go to your plugins list (Options > Community plugins) and enable the Custom Classes plugin
+   - Click the `Add Beta plugin` button
+   - Paste this URL in the input field : https://github.com/LilaRest/obsidian-custom-classes
+   - Click the `Add Plugin` button
+3) Finally, go to your plugins list (Options > Community plugins) and enable the _Custom Classes_ plugin
+4) Enjoy !
 
 <br>
 
