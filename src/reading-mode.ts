@@ -1,8 +1,31 @@
 import { plugin } from "./main";
 import { MDLine } from "./md-line";
-import { MarkdownRenderer } from "obsidian";
+import { MarkdownRenderChild, MarkdownRenderer } from "obsidian";
 import { table } from "console";
 
+
+export class TestRenderChild extends MarkdownRenderChild {
+    constructor (containerEl: HTMLElement) {
+        super(containerEl);
+    }
+
+    onload () {
+        const nextBlock = this.containerEl.nextElementSibling;
+
+        if (nextBlock) {
+
+            const codeBlock = nextBlock.querySelector('code');
+
+            if (!codeBlock || !codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+
+                const customClass = this.containerEl.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+
+                nextBlock.classList.add(customClass, "meta");
+            }
+        }
+
+    }
+}
 
 export function readingModeRenderer (element: any, context: any) {
 
@@ -22,11 +45,15 @@ export function readingModeRenderer (element: any, context: any) {
             // If the element has been inserted
             if (blocksContainer.contains(element)) {
 
-                let nextBlockClass = null;
+                let lastClassBlock = null;
+                let lastCustomClass = null;
                 for (const block of blocksContainer.children) {
 
-                    // Reset the block classes
-                    block.removeAttribute("class");
+
+                    if (!block.getAttribute("cc-ignore")) {
+                        // Reset the block classes
+                        block.removeAttribute("class");
+                    }
 
                     // Reset the block display
                     block.style.removeProperty("display");
@@ -38,42 +65,53 @@ export function readingModeRenderer (element: any, context: any) {
                         // Retrieve the custom class name
                         const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
 
-                        // If the code block is just above a table (and so prevent the table from rendering properly)
-                        // Render the table in the custom class block
+                        /* If the code block is just above a table / a paragraph or any other element that requires a blank line above to be rendered separately in Read mode, render the element in the custom class block element.
+                            
+                        For tables that's a buggy behavior of the Obsidian Read mode, see: https://forum.obsidian.md/t/tables-arent-showing-up-in-reading-mode/35689, https://forum.obsidian.md/t/table-renders-in-editing-mode-live-preview-but-not-reading-mode/38667) */
                         const splitInnerText = block.innerText.split("\n");
-                        if (splitInnerText.length > 1 && MDLine.isTableRow(splitInnerText[1])) {
-                            splitInnerText.shift();
-                            const tableMarkdown = splitInnerText.join("\n");
-                            const tableBlock = document.createElement("div");
+                        splitInnerText.shift();
+                        if (splitInnerText.length > 0) {
+                            const markdown = splitInnerText.join("\n");
+                            const renderBlock = document.createElement("div");
 
                             MarkdownRenderer.renderMarkdown(
-                                tableMarkdown,
-                                tableBlock,
+                                markdown,
+                                renderBlock,
                                 "",
                                 //@ts-ignore
                                 null);
 
-                            block.innerHTML = tableBlock.innerHTML;
+                            block.firstChild.replaceWith(renderBlock.firstChild);
                             block.classList.add(customClass);
+                            block.setAttribute("cc-ignore", "true");
                         }
 
                         // In other cases
                         else {
                             // Store the custom class for the next block
-                            nextBlockClass = customClass;
+                            lastCustomClass = customClass;
 
-                            // Remove the classBlock element from the render
-                            block.style.display = "none";
+                            //
+                            lastClassBlock = block;
                         }
                     }
 
-                    else if (nextBlockClass) {
-
-                        // Add the custom class
-                        block.classList.add(nextBlockClass);
+                    else if (block.getAttribute("cc-ignore")) {
 
                         // Reset nextBlockClass
-                        nextBlockClass = null;
+                        lastCustomClass = null;
+                    }
+
+                    else if (lastCustomClass) {
+
+                        // Add the custom class
+                        block.classList.add(lastCustomClass);
+
+                        // Reset nextBlockClass
+                        lastCustomClass = null;
+
+                        // Remove the classBlock element from the render;
+                        lastClassBlock.style.display = "none";
                     }
                 }
 
