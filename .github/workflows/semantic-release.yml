@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+env:
+  PLUGIN_NAME: obsidian-custom-classes
+
 jobs:
   release:
     name: Release
@@ -27,6 +30,12 @@ jobs:
         run: |
           npm install
           npm run build
+
+      - name: Create ZIP file
+        id: zip
+        run: |
+          cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
+          zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
 
       - name: Release
         env:

@@ -45,10 +45,7 @@
 						"main.js", 
 						"manifest.json", 
 						"styles.css",
-						{
-							"path": ["main.js", "manifest.json", "styles.css"],
-							"name": "obsidian-custom-classes-${nextRelease.gitTag}.js"
-						}
+						{ "path": "obsidian-custom-classes.zip", "name": "obsidian-custom-classes-${nextRelease.version}.zip" }
 					]
 				}
 			]
