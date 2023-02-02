@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir zip_content
           cp main.js manifest.json styles.css zip_content
-          zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
+          zip -r ${{ env.PLUGIN_NAME }}.zip zip_content
 
       - name: Release
         env:
