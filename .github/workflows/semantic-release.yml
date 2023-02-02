@@ -34,7 +34,8 @@ jobs:
       - name: Create ZIP file
         id: zip
         run: |
-          cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
+          mkdir zip_content
+          cp main.js manifest.json styles.css zip_content
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
 
       - name: Release
