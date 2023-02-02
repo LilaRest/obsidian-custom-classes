@@ -14,7 +14,7 @@
 <br>
 
 ## Usage
-Simply precede the targeted Markdown block with an inline code-block in the format <code>\`class: \<yourCustomClass\>\`</code>. 
+Simply precede a Markdown block with an inline code-block in the format <code>\`class: &lt;customClass&gt;\`</code> to add a custom class to it.
 
 _Example :_
 - To add the `fancy-text` class to a paragraph block, use :
@@ -28,7 +28,11 @@ I'm the paragraph and you ?
   <p>I'm the paragraph and you ?</p>
 </div>
 ```
+<br>
 
+> #### ℹ️ &nbsp; For advanced usages and/or informations see the [FAQ section](#FAQ).
+
+<br>
 <br>
 
 ## Demonstrations
@@ -107,7 +111,7 @@ Here are some ways to use this plugin that may inspire you for your workflows :
   
   In Live Preview or Read modes it will be rendered :
   ```html
-  <div class="mu-dv-list">
+  <div class="my-dv-list">
     <div class="block-language-dataview node-insert-event">
       <ul class="dataview list-view-ul">
         // The results of your query 
@@ -123,6 +127,7 @@ Here are some ways to use this plugin that may inspire you for your workflows :
 </ol>
   
 <br>
+<br>
 
 ## Installation
 **The _Custom Classes_ plugin is currently not available from the official plugins list** (see [this PR](https://github.com/obsidianmd/obsidian-releases/pull/1576) for updates).
@@ -137,12 +142,14 @@ However, you can still install this one using the [BRAT plugin](https://github.c
 4) Enjoy !
 
 <br>
+<br>
 
 ## Showcase / Integrations
 That section displays some example of how people have integrated the _Custom Classes_ plugin in their workflows.
 Feel free to share yours by [opening an issue](https://github.com/LilaRest/obsidian-custom-classes/issues/new).
 
-### 1# The Lila's frontmatter
+<ol>
+	<li><h3>The Lila's frontmatter</h3>
 Here the _Custom Classes_ plugin is used to render a Markdown unordered list (`ul`) as a clean frontmatter block.
 
 Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087
@@ -162,6 +169,60 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
 | Dark | ![](https://forum.obsidian.md/uploads/default/original/3X/1/4/1418a3659b033fcf8d925105d6a3da3c6b9984fc.gif) |
 | Light | ![](https://forum.obsidian.md/uploads/default/original/3X/3/5/35b209dfa79a2b3df13166e9ddd6d1b208480fca.gif) |
 
+</li>
+</ol>
+
+<br>
+<br>
+
+## ❔ FAQ
+<details>
+  <summary><b>Why not to use a simple <code>&lt;div class="my-custom-class"&gt;</code> instead ?</b></summary>
+  <blockquote align="center">
+  <br>
+    
+  In Obsidian, wrapping a Markdown element in a `div` will break its render in Live Preview and Read modes, but will also makes links unclickable in Edit mode. Also writing HTML into your notes makes them less readable. This solution is therefore not viable.
+    
+  **Thanks to the _Custom Classes_ plugin you're able to add a custom classes to Markdown elements without breaking anything and using plain-markdown format !** :tada:
+  </blockquote>
+  <br>
+</details>
+
+<details>
+  <summary><b>Will it works in other Markdown editors ?</b></summary>
+  <blockquote align="center">
+  <br>
+    
+  Since this plugin is exclusive to Obsidian, the custom classes will not be applied in other editors.
+    
+  However since the custom classes blocks (<code>\`class: ...\`</code>) are simple Markdown inline code-blocks, they will properly render as code blocks in other Markdown editors.
+  </blockquote>
+  <br>
+</details>
+
+
+<details>
+  <summary><b>Is it possible to add multiple classes to a Markdown block ?</b></summary>
+  <blockquote align="center">
+  <br>
+    
+   Yes, just separate each class using a comma :
+  ```markdown
+  `class: first-class, second-class, third-one`
+  I'm the paragraph and you ?
+  ```
+  
+  In Live Preview or Read modes it will be rendered :
+  ```html
+  <div class="first-class second-class third-one">
+    <p>I'm the paragraph and you ?</p>
+  </div>
+  ```
+  </blockquote>
+  <br>
+</details>
+
+<br>
 <br>
 
 ## Inspiration
