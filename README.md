@@ -30,7 +30,7 @@ I'm the paragraph and you ?
 ```
 <br>
 
-> #### ℹ️ &nbsp; For advanced usages and/or informations see the [FAQ section](#FAQ).
+> #### ℹ️ &nbsp; For advanced usages and/or informations see the [FAQ section](#-FAQ).
 
 <br>
 <br>
@@ -129,21 +129,6 @@ Here are some ways to use this plugin that may inspire you for your workflows :
 <br>
 <br>
 
-## Installation
-**The _Custom Classes_ plugin is currently not available from the official plugins list** (see [this PR](https://github.com/obsidianmd/obsidian-releases/pull/1576) for updates).
-
-However, you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
-1) Install and enable the BRAT plugin (which is available from the official plugins list)
-2) On the BRAT settings tab :
-   - Click the `Add Beta plugin` button
-   - Paste this URL in the input field : https://github.com/LilaRest/obsidian-custom-classes
-   - Click the `Add Plugin` button
-3) Finally, go to your plugins list (Options > Community plugins) and enable the _Custom Classes_ plugin
-4) Enjoy !
-
-<br>
-<br>
-
 ## Showcase / Integrations
 That section displays some example of how people have integrated the _Custom Classes_ plugin in their workflows.
 Feel free to share yours by [opening an issue](https://github.com/LilaRest/obsidian-custom-classes/issues/new).
@@ -206,7 +191,7 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
   <blockquote align="center">
   <br>
     
-   Yes, just separate each class using a comma :
+  Yes, just separate each class using a comma :
   ```markdown
   `class: first-class, second-class, third-one`
   I'm the paragraph and you ?
@@ -221,6 +206,22 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
   </blockquote>
   <br>
 </details>
+
+<br>
+<br>
+
+
+## Installation
+**The _Custom Classes_ plugin is currently not available from the official plugins list** (see [this PR](https://github.com/obsidianmd/obsidian-releases/pull/1576) for updates).
+
+However, you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
+1) Install and enable the BRAT plugin (which is available from the official plugins list)
+2) On the BRAT settings tab :
+   - Click the `Add Beta plugin` button
+   - Paste this URL in the input field : https://github.com/LilaRest/obsidian-custom-classes
+   - Click the `Add Plugin` button
+3) Finally, go to your plugins list (Options > Community plugins) and enable the _Custom Classes_ plugin
+4) Enjoy !
 
 <br>
 <br>
