@@ -159,7 +159,7 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
 }
 
 
-export const customClassField = StateField.define<DecorationSet>({
+export const customClassLivePreviewMode = StateField.define<DecorationSet>({
 
   create (state): DecorationSet {
     return Decoration.none;

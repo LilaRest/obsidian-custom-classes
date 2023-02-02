@@ -14,7 +14,7 @@ function retrieveCustomClasses (codeEl: HTMLElement | null): Array<string> {
 }
 
 
-export function readingModeRenderer (element: any, context: any) {
+export function customClassReadMode (element: any, context: any) {
 
     // Retrieve the blocks' container element 
     const blocksContainer = context.containerEl;
