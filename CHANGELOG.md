@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.1.0...2.2.0) (2023-02-02)
+
+
+### Features
+
+* **read mode:** support multiple classes, inline custom classes, and improve general behavior ([e84e6b8](https://github.com/LilaRest/obsidian-custom-classes/commit/e84e6b8a9188cadb257d61e7c23456e6d28d682a))
+
 # [2.1.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.0.0...2.1.0) (2023-02-01)
 
 
