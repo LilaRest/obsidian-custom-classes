@@ -1,17 +1,5 @@
-import { plugin } from "./main";
 import { MarkdownRenderer } from "obsidian";
-
-
-function isCustomClassBlock (codeEl: HTMLElement): boolean {
-    return codeEl && codeEl.innerText.trim().startsWith("class:");
-}
-
-function retrieveCustomClasses (codeEl: HTMLElement | null): Array<string> {
-    return codeEl ? codeEl.innerText
-        .replaceAll(" ", "")
-        .replace("class:", "")
-        .split(",") : [];
-}
+import { isCustomClassBlock, retrieveCustomClasses } from "./utils";
 
 
 export function customClassReadMode (element: any, context: any) {
@@ -20,12 +8,12 @@ export function customClassReadMode (element: any, context: any) {
     const blocksContainer = context.containerEl;
 
     /* 
-     That if statement limits the scope to elements that are directly inserted into a Markdown preview section. 
-     Without this :
-      - Some plugins that rely on MarkdownRenderer.renderMarkdown() method will be broken (e.g. for Dataview see : https://github.com/LilaRest/obsidian-custom-classes/issues/1)
-      - The post-processor will process much more elements that what is really needed, impacting performances
+     Only consider elements inserted in Read mode section or in cc-renderer create by the Custom Classes Live Preview renderer.
+     Not doing so will :
+      - break some plugins that rely on MarkdownRenderer.renderMarkdown() (e.g. for Dataview see : https://github.com/LilaRest/obsidian-custom-classes/issues/1)
+      - impact performance by treating more elements that what is needed
     */
-    if (blocksContainer.classList.contains("markdown-preview-section")) {
+    if (blocksContainer.classList.contains("markdown-preview-section") || blocksContainer.classList.contains("cc-renderer")) {
 
         // Listen for the element insertion into the blocks' container
         const observer = new MutationObserver(() => {

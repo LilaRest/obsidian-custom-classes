@@ -9,18 +9,19 @@ h2.settings-header:nth-of-type(2) {
   margin-top: 71.25px;
 }
 
-.custom-classes-renderer {
+.cc-renderer,
+.cc-renderer > div {
   white-space: nowrap;
   display: inline-block;
 }
 
-.custom-classes-renderer > * {
+.cc-renderer > div > * {
   margin: 0;
   padding: 0;
   white-space: normal;
 }
 
-.custom-classes-renderer > ul,
-.custom-classes-renderer > ol {
+.cc-renderer > div > ul,
+.cc-renderer > div > ol {
   padding-inline-start: 24px;
 }

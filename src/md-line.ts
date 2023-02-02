@@ -23,7 +23,7 @@ export class MDLine {
     return lineText.trim().startsWith("|") && lineText.trim().endsWith("|");
   }
 
-  static containsCustomClassesBlock (lineText: string): string | null {
+  static findCustomClassesBlock (lineText: string): string | null {
     const regexpExtraction = lineText.match(/`class:\s*([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/);
     return regexpExtraction ? regexpExtraction[0] : null;
   }
