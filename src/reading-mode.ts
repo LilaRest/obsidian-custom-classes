@@ -1,121 +1,113 @@
 import { plugin } from "./main";
-import { MDLine } from "./md-line";
-import { MarkdownRenderChild, MarkdownRenderer } from "obsidian";
-import { table } from "console";
+import { MarkdownRenderer } from "obsidian";
 
 
-export class TestRenderChild extends MarkdownRenderChild {
-    constructor (containerEl: HTMLElement) {
-        super(containerEl);
-    }
-
-    onload () {
-        const nextBlock = this.containerEl.nextElementSibling;
-
-        if (nextBlock) {
-
-            const codeBlock = nextBlock.querySelector('code');
-
-            if (!codeBlock || !codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
-
-                const customClass = this.containerEl.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
-
-                nextBlock.classList.add(customClass, "meta");
-            }
-        }
-
-    }
+function isCustomClassBlock (codeEl: HTMLElement): boolean {
+    return codeEl && codeEl.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"));
 }
+
+function retrieveCustomClasses (codeEl: HTMLElement | null): Array<string> {
+    return codeEl ? codeEl.innerText
+        .replaceAll(" ", "")
+        .replace(plugin?.settings.get("customClassAnchor"), "")
+        .split(",") : [];
+}
+
 
 export function readingModeRenderer (element: any, context: any) {
 
     // Retrieve the blocks' container element 
     const blocksContainer = context.containerEl;
 
-    /* That if statement limits the scope the elements (rendered Markdown blocks) that are directly inserted into a Markdown preview section. 
-    Without this :
-      - Some plugins that use the MarkdownRenderer.renderMarkdown() method will be broken (e.g. for Dataview see : https://github.com/LilaRest/obsidian-custom-classes/issues/1)
-      - The post processor will process much more elements that what is really needed, directly impacting performances
+    /* 
+     That if statement limits the scope to elements that are directly inserted into a Markdown preview section. 
+     Without this :
+      - Some plugins that rely on MarkdownRenderer.renderMarkdown() method will be broken (e.g. for Dataview see : https://github.com/LilaRest/obsidian-custom-classes/issues/1)
+      - The post-processor will process much more elements that what is really needed, impacting performances
     */
     if (blocksContainer.classList.contains("markdown-preview-section")) {
 
-        // Listen for insertion of the element into the blocks' container
+        // Listen for the element insertion into the blocks' container
         const observer = new MutationObserver(() => {
 
             // If the element has been inserted
             if (blocksContainer.contains(element)) {
 
-                let lastClassBlock = null;
-                let lastCustomClass = null;
+                // Loop over every inserted block
+                let lastCustomClassesBlock: null | HTMLElement = null;
                 for (const block of blocksContainer.children) {
 
+                    // Set up a function that applies the last custom classes to the block
+                    function applyLastCustomClasses () {
+                        if (lastCustomClassesBlock) {
 
-                    if (!block.getAttribute("cc-ignore")) {
-                        // Reset the block classes
-                        block.removeAttribute("class");
+                            // Ignore block with already rendered classes (cc-ignore) and footer of the note
+                            if (!block.getAttribute("cc-ignore") && !block.classList.contains("mod-footer")) {
+
+                                // Add the custom classes
+                                block.classList.add(...retrieveCustomClasses(lastCustomClassesBlock.querySelector("code")));
+
+                                // Remove the classBlock element from the render;
+                                lastCustomClassesBlock.style.display = "none";
+                            }
+                            // Reset lastClassEl
+                            lastCustomClassesBlock = null;
+                        }
                     }
 
-                    // Reset the block display
-                    block.style.removeProperty("display");
+                    // Clone the block element for manipulating without affecting it
+                    const clonedBlock = block.cloneNode(true);
 
-                    // If the block is a custom class block
-                    const codeBlock = block.querySelector('code');
-                    if (codeBlock && codeBlock.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+                    // If the cloned block contains a custom class block
+                    const codeEl = clonedBlock.querySelector('code');
+                    if (isCustomClassBlock(codeEl)) {
 
-                        // Retrieve the custom class name
-                        const customClass = codeBlock.innerText.trim().replace(plugin?.settings.get("customClassAnchor"), "").trim();
+                        // Remove the custom class block for the clone block
+                        codeEl.remove();
 
-                        /* If the code block is just above a table / a paragraph or any other element that requires a blank line above to be rendered separately in Read mode, render the element in the custom class block element.
-                            
-                        For tables that's a buggy behavior of the Obsidian Read mode, see: https://forum.obsidian.md/t/tables-arent-showing-up-in-reading-mode/35689, https://forum.obsidian.md/t/table-renders-in-editing-mode-live-preview-but-not-reading-mode/38667) */
-                        const splitInnerText = block.innerText.split("\n");
-                        splitInnerText.shift();
-                        if (splitInnerText.length > 0) {
-                            const markdown = splitInnerText.join("\n");
-                            const renderBlock = document.createElement("div");
+                        // Support standalone custom class blocks
+                        const blockHTML = clonedBlock.innerHTML.trim();
+                        if (blockHTML === "<p></p>") lastCustomClassesBlock = block;
 
-                            MarkdownRenderer.renderMarkdown(
-                                markdown,
-                                renderBlock,
-                                "",
-                                //@ts-ignore
-                                null);
-
-                            block.firstChild.replaceWith(renderBlock.firstChild);
-                            block.classList.add(customClass);
-                            block.setAttribute("cc-ignore", "true");
-                        }
-
-                        // In other cases
+                        // Support custom class block nested in a bigger block
                         else {
-                            // Store the custom class for the next block
-                            lastCustomClass = customClass;
 
-                            //
-                            lastClassBlock = block;
+                            // If this bigger block is a paragraph
+                            if (blockHTML.startsWith("<p>")) {
+
+                                /* Render the paragraph content as Markdown in case it as not been properly rendered the first time (e.g. tables require a blank line above them in Obsidian's Read mode, see this bug report : https://forum.obsidian.md/t/table-renders-in-editing-mode-live-preview-but-not-reading-mode/38667)
+                                */
+                                block.innerHTML = "";
+                                MarkdownRenderer.renderMarkdown(
+                                    clonedBlock.innerText.trim(),
+                                    block,
+                                    "",
+                                    //@ts-ignore
+                                    null);
+                                block.classList.add(...retrieveCustomClasses(codeEl));
+                                block.setAttribute("cc-ignore", "true");
+                            }
+
+                            // Else if it's any other element
+                            else {
+
+                                // Apply last custom classes to it
+                                applyLastCustomClasses();
+
+                                // And apply the nested custom classes block's classes to the nearest parent element
+                                // (e.g. This allows to add custom classes to a single element of a list)
+                                const realCodeEl = block.querySelector('code');
+                                realCodeEl.parentElement.classList.add(...retrieveCustomClasses(codeEl));
+                                realCodeEl.style.display = "none";
+                            }
                         }
                     }
 
-                    else if (block.getAttribute("cc-ignore")) {
-
-                        // Reset nextBlockClass
-                        lastCustomClass = null;
-                    }
-
-                    else if (lastCustomClass) {
-
-                        // Add the custom class
-                        block.classList.add(lastCustomClass);
-
-                        // Reset nextBlockClass
-                        lastCustomClass = null;
-
-                        // Remove the classBlock element from the render;
-                        lastClassBlock.style.display = "none";
-                    }
+                    // Else apply the last custom classes to it
+                    else applyLastCustomClasses();
                 }
 
-                // Finally, stop listening for element insertion.
+                // Finally, stop listening for element insertion
                 observer.disconnect();
             }
         });
