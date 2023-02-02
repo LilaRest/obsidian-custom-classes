@@ -187,7 +187,7 @@ export const customClassLivePreviewMode = StateField.define<DecorationSet>({
         if (line.text.startsWith("`") && line.text.endsWith("`")) {
 
           // If the code block is a Custom Classes code block
-          if (line.text.replace("`", "").trim().startsWith(plugin?.settings.get("customClassAnchor"))) {
+          if (line.text.replace("`", "").trim().startsWith("class:")) {
 
             // Retrieve the list of elements that composes the next block
             const targettedLinesNumber = getTargettedLinesNumber(tx.state.doc, line.number);
@@ -221,7 +221,7 @@ export const customClassLivePreviewMode = StateField.define<DecorationSet>({
                 const customClass = line.text
                   .replaceAll("`", "")
                   .trim()
-                  .replace(plugin?.settings.get("customClassAnchor"), "")
+                  .replace("class:", "")
                   .trim();
 
                 // Initiate the render

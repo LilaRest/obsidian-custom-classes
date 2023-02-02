@@ -3,13 +3,13 @@ import { MarkdownRenderer } from "obsidian";
 
 
 function isCustomClassBlock (codeEl: HTMLElement): boolean {
-    return codeEl && codeEl.innerText.trim().startsWith(plugin?.settings.get("customClassAnchor"));
+    return codeEl && codeEl.innerText.trim().startsWith("class:");
 }
 
 function retrieveCustomClasses (codeEl: HTMLElement | null): Array<string> {
     return codeEl ? codeEl.innerText
         .replaceAll(" ", "")
-        .replace(plugin?.settings.get("customClassAnchor"), "")
+        .replace("class:", "")
         .split(",") : [];
 }
 

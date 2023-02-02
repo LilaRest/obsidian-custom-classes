@@ -6,7 +6,6 @@ export interface SettingsData {
 }
 
 const DEFAULT_SETTINGS: SettingsData = {
-  customClassAnchor: "class:",
 };
 
 export class CustomClassesSettings {
@@ -78,24 +77,11 @@ export class CustomClassesSettingsTab extends PluginSettingTab {
     // Configuration section
     containerEl.createEl("h2", { text: "Documentation", cls: "settings-header" });
 
-    containerEl.createEl("p", { text: "You can learn more about the usage and configurations of the plugin by reading its " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes", text: "documentation page." });
+    containerEl.createEl("p", { text: "You can learn more about the usage of the plugin by reading its " }).createEl("a", { href: "https://github.com/LilaRest/obsidian-custom-classes", text: "documentation page." });
 
 
     // Configuration section
-    containerEl.createEl("h2", { text: "Configurations", cls: "settings-header" });
-
-    // "Anchor" settings
-    new Setting(containerEl)
-      .setName("Anchor / Prefix string")
-      .setDesc("Defines the inline code-block anchor / prefix string that will be detected as a custom class block")
-      .addText((text) =>
-        text
-          .setPlaceholder('e.g. "class:", "cls=", "customCls=>", ...')
-          .setValue(this.plugin.settings.get("customClassAnchor"))
-          .onChange(async (value) => {
-            this.plugin.settings.set("customClassAnchor", value);
-          })
-      );
+    // containerEl.createEl("h2", { text: "Configurations", cls: "settings-header" });
 
     // Support section's title
     containerEl.createEl("h2", { text: "Support my work", cls: "settings-header" });

@@ -1,6 +1,3 @@
-import { plugin } from "./main";
-
-
 /**
  * This class contains some utils to deal with Markdown raw text lines
  */
