@@ -1,3 +1,6 @@
+import { plugin } from "./main";
+
+
 /**
  * This class contains some utils to deal with Markdown raw text lines
  */
@@ -21,5 +24,10 @@ export class MDLine {
 
   static isTableRow (lineText: string): boolean {
     return lineText.trim().startsWith("|") && lineText.trim().endsWith("|");
+  }
+
+  static containsCustomClassesBlock (lineText: string): string | null {
+    const regexpExtraction = lineText.match(/`class:\s*([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/);
+    return regexpExtraction ? regexpExtraction[0] : null;
   }
 }

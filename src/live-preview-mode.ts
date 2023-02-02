@@ -172,8 +172,16 @@ export const customClassLivePreviewMode = StateField.define<DecorationSet>({
     const sourceViewEl = document.querySelector("div.markdown-source-view");
     if (sourceViewEl && sourceViewEl.classList.contains("is-live-preview")) {
 
+      // Loop over each line of the Markdown note
       for (let i = 1; i <= tx.state.doc.lines; i++) {
+
+        // Retrieve the line object
         const line = tx.state.doc.line(i);
+
+        // If the line contains a custom class block
+        if (new RegExp().test(line.text)) {
+
+        }
 
         // If the line is an inline code-block
         if (line.text.startsWith("`") && line.text.endsWith("`")) {
