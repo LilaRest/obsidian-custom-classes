@@ -1,3 +1,16 @@
+# [2.3.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.2.0...2.3.0) (2023-02-02)
+
+
+### Features
+
+* add support for multiple classes and inline custom classes in Live Preview mode ([f9361c7](https://github.com/LilaRest/obsidian-custom-classes/commit/f9361c7fa9048736fa5508ad09061c5e1138b09f))
+* start rewriting live preview support to support multiple classes and inline custom classes ([c6a4463](https://github.com/LilaRest/obsidian-custom-classes/commit/c6a4463d0ea0528de240624f403b36470b0b1d1c))
+
+
+### Reverts
+
+* remove the dynamic anchor configuration to keep things simple and improve code performances ([ab6e4e2](https://github.com/LilaRest/obsidian-custom-classes/commit/ab6e4e2868456e7e56f7a87cb394b2635367fa66))
+
 # [2.2.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.1.0...2.2.0) (2023-02-02)
 
 
