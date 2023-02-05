@@ -43,6 +43,10 @@ function applyLastCC (targetBlock: HTMLElement, ccBlock: HTMLElement) {
     }
 }
 
+function isLineBreak (element: ChildNode | HTMLElement | null): boolean {
+    return Boolean(element && (element.nodeValue === "\n" || element.nodeName === "BR"));
+}
+
 
 export function customClassReadMode (element: any, context: any) {
 
@@ -84,36 +88,32 @@ export function customClassReadMode (element: any, context: any) {
                     let newLastCCBlock = null;
 
                     // Loop over the CC blocks until all of them have been rendered (changesOccured === false)
-                    let changesOccured = true;
-                    while (changesOccured) {
-                        changesOccured = false;
+                    let haveChangesOccured = true;
+                    while (haveChangesOccured) {
+                        haveChangesOccured = false;
 
                         let nextIsNonNestedFirstBlock = false;
                         for (const ccBlock of getAllCCBlocks(block)) {
 
                             // If the custom classes block has not been already processed
                             if (ccBlock.isConnected && !ccBlock.getAttribute("cc-processed")) {
-                                changesOccured = true;
 
-                                const isStandalone = block.firstChild.innerHTML.replace(ccBlock.outerHTML, "").trim() === "";
+                                let isStandalone = false;
                                 let isNonNestedLastBlock = false;
-                                //@ts-ignore
-                                if (block.children.length > 1 || ccBlock.parentElement?.parentElement?.children.length > 1 || ccBlock.parentElement?.children.length > 1) {
-                                    if (block.lastElementChild === ccBlock.parentElement || block.lastElementChild === ccBlock.parentElement?.parentElement) {
-                                        if (ccBlock.parentElement?.parentElement?.lastElementChild === ccBlock.parentElement) {
-                                            if (ccBlock.parentElement?.lastElementChild === ccBlock) {
-                                                isNonNestedLastBlock = true;
-                                            }
-                                        }
+                                let isNonNestedFirstBlock = false;
+                                const parent = ccBlock.parentElement;
+
+                                // If the parent's parent is a direct child of the blocksContainer, else consider the ccBlock as nested
+                                if ([...blocksContainer.children].contains(parent?.parentElement)) {
+                                    isStandalone = parent?.firstChild === ccBlock && parent?.lastChild === ccBlock;
+
+                                    isNonNestedLastBlock = parent?.lastChild === ccBlock && parent?.firstChild !== ccBlock && isLineBreak(ccBlock.previousSibling);
+
+                                    if (!isNonNestedLastBlock) {
+                                        isNonNestedFirstBlock = nextIsNonNestedFirstBlock || (parent?.firstChild === ccBlock && parent?.lastChild !== ccBlock && isLineBreak(ccBlock.nextSibling));
+
                                     }
                                 }
-
-                                const isNonNestedFirstBlock = (isNonNestedLastBlock ? false : nextIsNonNestedFirstBlock) || !ccBlock.previousElementSibling && ccBlock.nextElementSibling && ccBlock.nextElementSibling.nodeName == "BR";
-
-                                console.log(retrieveCustomClasses(ccBlock));
-                                console.log(isStandalone);
-                                console.log(isNonNestedFirstBlock);
-                                console.log(isNonNestedLastBlock);
 
                                 // If ccBlock is a sort standalone custom classes block
                                 if (isStandalone || isNonNestedFirstBlock || isNonNestedLastBlock) {
@@ -186,8 +186,9 @@ export function customClassReadMode (element: any, context: any) {
                                     }
                                 }
 
-                                // Mark the CC block as processed
+                                // Mark the CC block as processed and set haveChangesOccured
                                 ccBlock.setAttribute("cc-processed", "true");
+                                haveChangesOccured = true;
                             }
                         }
                     }
