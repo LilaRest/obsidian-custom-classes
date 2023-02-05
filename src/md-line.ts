@@ -23,8 +23,14 @@ export class MDLine {
     return lineText.trim().startsWith("|") && lineText.trim().endsWith("|");
   }
 
-  static findCustomClassesBlock (lineText: string): string | null {
-    const regexpExtraction = lineText.match(/`class:\s*([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/);
-    return regexpExtraction ? regexpExtraction[0] : null;
+  static isBlockquote (lineText: string): boolean {
+    return lineText.trim().startsWith(">");
+  }
+
+  static findCustomClassesBlocks (lineText: string): Array<string> {
+    const customClassesBlocks: Array<string> = [];
+    [...lineText.matchAll(/`(class|cls):\s*([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/g)]
+      .forEach(m => customClassesBlocks.push(m[0]));
+    return customClassesBlocks;
   }
 }

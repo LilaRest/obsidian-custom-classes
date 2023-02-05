@@ -1,4 +1,4 @@
-import { MarkdownRenderer } from "obsidian";
+import { MarkdownPostProcessorContext, MarkdownRenderer } from "obsidian";
 import { isCustomClassBlock, retrieveCustomClasses } from "./utils";
 
 /**
@@ -48,160 +48,176 @@ function isLineBreak (element: ChildNode | HTMLElement | null): boolean {
 }
 
 
-export function customClassReadMode (element: any, context: any) {
+function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLivePreview: boolean) {
+
+    // If the element has been inserted
+    if (blocksContainer.contains(element)) {
+
+        // This variable will hold the latest standalone CC block
+        let lastCCBlock: null | HTMLElement = null;
+
+        // Reset applied custom classes
+        for (const block of blocksContainer.querySelectorAll("[cc-classes]")) {
+            const classes = block.getAttribute("cc-classes");
+            if (classes?.trim()) block.classList.remove(...classes.split(","));
+        }
+
+        // Loop over every inserted block
+        for (const block of [...blocksContainer.children] as Array<HTMLElement>) {
+            // Unhide and every custom classes block as unprocessed 
+            for (const ccBlock of getAllCCBlocks(block)) {
+                ccBlock.removeAttribute("cc-processed");
+                ccBlock.parentElement?.style.removeProperty("display");
+            }
+
+            // This variable holds the new last cc blocks that will be applied after the while loop
+            let newLastCCBlock = null;
+
+            // Loop over the CC blocks until all of them have been rendered (changesOccured === false)
+            let haveChangesOccured = true;
+            while (haveChangesOccured) {
+                haveChangesOccured = false;
+
+                let nextIsNonNestedFirstBlock = false;
+                for (const ccBlock of getAllCCBlocks(block)) {
+
+                    // If the custom classes block has been inserted but not already processed
+                    // --> Ignore insertion check if called from Live Preview
+                    if ((ccBlock.isConnected || callFromLivePreview) && !ccBlock.getAttribute("cc-processed")) {
+
+                        let isStandalone = false;
+                        let isNonNestedLastBlock = false;
+                        let isNonNestedFirstBlock = false;
+                        const parent = ccBlock.parentElement as HTMLElement;
+                        const parentParent = ccBlock.parentElement?.parentElement as HTMLElement;
+
+                        console.log(retrieveCustomClasses(ccBlock));
+                        console.log(isStandalone);
+                        console.log(isNonNestedFirstBlock);
+                        console.log(isNonNestedLastBlock);
+
+                        // If the parent's parent is a direct child of the blocksContainer, else consider the ccBlock as nested (e.g. in a blockquote)
+                        if ((!callFromLivePreview && [...blocksContainer.children].contains(parentParent)) || (callFromLivePreview && [...blocksContainer.children].contains(parent))) {
+                            isStandalone = parent?.firstChild === ccBlock && parent?.lastChild === ccBlock;
+
+                            isNonNestedLastBlock = parent?.lastChild === ccBlock && parent?.firstChild !== ccBlock && isLineBreak(ccBlock.previousSibling);
+
+                            if (!isNonNestedLastBlock) {
+                                isNonNestedFirstBlock = nextIsNonNestedFirstBlock || (parent?.firstChild === ccBlock && parent?.lastChild !== ccBlock && isLineBreak(ccBlock.nextSibling));
+
+                            }
+                        }
+
+                        // If ccBlock is a sort standalone custom classes block
+                        if (isStandalone || isNonNestedFirstBlock || isNonNestedLastBlock) {
+                            newLastCCBlock = ccBlock;
+
+                            // Start by a standalone custom classes block
+                            if (!isNonNestedLastBlock) {
+                                block.setAttribute("cc-standalone", "true");
+                            }
+                        }
+
+                        // If it is a non-nested first block
+                        if (isNonNestedFirstBlock) {
+
+                            // Note that we don't have to test that ccBlock.nextElementSibling is a <br> element
+                            // because this is already done while figuring isNonNestedFirstBlock
+                            if (!isCustomClassBlock(ccBlock.nextElementSibling?.nextElementSibling as HTMLElement)) {
+
+                                // Build the remaining HTML after the current ccBlock has been removed
+                                let remainingHTML = block.firstChild?.nodeName == "P" ? block.firstElementChild?.innerHTML : block.innerHTML;
+
+                                if (remainingHTML) {
+                                    remainingHTML = remainingHTML
+                                        .replace(ccBlock.outerHTML, "")
+                                        .replaceAll("<br>", "")
+                                        .trim();
+
+                                    /* If some contents remains, render it as Markdown in case it as not been properly rendered the first time (e.g. tables require a blank line above them in Obsidian's Read mode, see this bug report : https://forum.obsidian.md/t/table-renders-in-editing-mode-live-preview-but-not-reading-mode/38667)
+                                    */
+                                    if (remainingHTML?.replaceAll("\n", "") !== "") {
+                                        block.innerHTML = "";
+                                        MarkdownRenderer.renderMarkdown(
+                                            remainingHTML,
+                                            block,
+                                            "",
+                                            //@ts-ignore
+                                            null);
+                                        if (isNonNestedFirstBlock) block.classList.add(...retrieveCustomClasses(ccBlock));
+                                    }
+                                }
+                            }
+
+                            // If the next element sibling is a CC block, don't render that one and consider the next one as non-nested first block
+                            else {
+                                newLastCCBlock = null;
+                                nextIsNonNestedFirstBlock = true;
+                            }
+                        }
+
+                        // Or if it is nested in the middle of a bigger block (a.k.a inline custom classes block)
+                        if (!isStandalone && !isNonNestedFirstBlock && !isNonNestedLastBlock) {
+                            if (ccBlock.parentElement) {
+
+                                // Retrive the targetted parent element
+                                let parentElement: HTMLElement = ccBlock.parentElement;
+                                // Support list items
+                                if (ccBlock.parentElement.parentElement) {
+                                    if (ccBlock.parentElement.parentElement.nodeName === "LI") {
+                                        parentElement = ccBlock.parentElement.parentElement;
+                                    }
+                                }
+                                // Note: support of table cells is implicit since the `td` element is the first parent
+
+                                // Append custom classes to the parent element
+                                parentElement.classList.add(...retrieveCustomClasses(ccBlock));
+
+                                // Hide the inline custom classes block
+                                ccBlock.style.display = "none";
+                            }
+                        }
+
+                        // Mark the CC block as processed and set haveChangesOccured
+                        ccBlock.setAttribute("cc-processed", "true");
+                        haveChangesOccured = true;
+                    }
+                }
+            }
+
+            // If the block is not a standalone custom classes block, apply last custom classes to it
+            if (lastCCBlock) applyLastCC(block, lastCCBlock);
+            lastCCBlock = newLastCCBlock;
+        }
+    }
+}
+
+export function customClassReadMode (element: HTMLElement, context: any) {
 
     // Retrieve the blocks' container element 
     const blocksContainer = context.containerEl;
+    console.log(blocksContainer);
+    console.log(element);
 
-    /* 
-     Only consider elements inserted in Read mode section. This prevent :
-      - breaking plugins that rely on MarkdownRenderer.renderMarkdown() (e.g. for Dataview see : https://github.com/LilaRest/obsidian-custom-classes/issues/1)
-      - treating more elements that what is needed (performances)
-    */
+    // If element has been inserted in Read mode's preview section
     if (blocksContainer.classList.contains("markdown-preview-section")) {
 
         // Listen for the element insertion into the blocks' container
         const observer = new MutationObserver(() => {
 
-            // If the element has been inserted
-            if (blocksContainer.contains(element)) {
+            // Render the custom classes of the element
+            process(blocksContainer, element, false);
 
-                // This variable will hold the latest standalone CC block
-                let lastCCBlock: null | HTMLElement = null;
-
-                // Reset applied custom classes
-                for (const block of blocksContainer.querySelectorAll("[cc-classes]")) {
-                    const classes = block.getAttribute("cc-classes");
-                    block.classList.remove(...classes.split(","));
-                }
-
-                // Loop over every inserted block
-                for (const block of blocksContainer.children) {
-
-                    // Reset ccBlock processing state and hiding
-                    for (const ccBlock of getAllCCBlocks(block)) {
-                        ccBlock.removeAttribute("cc-processed");
-                        ccBlock.parentElement?.style.removeProperty("display");
-                    }
-
-                    // This variable holds the new last cc blocks that will be applied after the while loop
-                    let newLastCCBlock = null;
-
-                    // Loop over the CC blocks until all of them have been rendered (changesOccured === false)
-                    let haveChangesOccured = true;
-                    while (haveChangesOccured) {
-                        haveChangesOccured = false;
-
-                        let nextIsNonNestedFirstBlock = false;
-                        for (const ccBlock of getAllCCBlocks(block)) {
-
-                            // If the custom classes block has not been already processed
-                            if (ccBlock.isConnected && !ccBlock.getAttribute("cc-processed")) {
-
-                                let isStandalone = false;
-                                let isNonNestedLastBlock = false;
-                                let isNonNestedFirstBlock = false;
-                                const parent = ccBlock.parentElement;
-
-                                // If the parent's parent is a direct child of the blocksContainer, else consider the ccBlock as nested
-                                if ([...blocksContainer.children].contains(parent?.parentElement)) {
-                                    isStandalone = parent?.firstChild === ccBlock && parent?.lastChild === ccBlock;
-
-                                    isNonNestedLastBlock = parent?.lastChild === ccBlock && parent?.firstChild !== ccBlock && isLineBreak(ccBlock.previousSibling);
-
-                                    if (!isNonNestedLastBlock) {
-                                        isNonNestedFirstBlock = nextIsNonNestedFirstBlock || (parent?.firstChild === ccBlock && parent?.lastChild !== ccBlock && isLineBreak(ccBlock.nextSibling));
-
-                                    }
-                                }
-
-                                // If ccBlock is a sort standalone custom classes block
-                                if (isStandalone || isNonNestedFirstBlock || isNonNestedLastBlock) {
-                                    newLastCCBlock = ccBlock;
-
-                                    // Start by a standalone custom classes block
-                                    if (!isNonNestedLastBlock) {
-                                        block.setAttribute("cc-standalone", "true");
-                                    }
-                                }
-
-                                // If it is a non-nested first block
-                                if (isNonNestedFirstBlock) {
-
-                                    // Note that we don't have to test that ccBlock.nextElementSibling is a <br> element
-                                    // because this is already done while figuring isNonNestedFirstBlock
-                                    if (!isCustomClassBlock(ccBlock.nextElementSibling?.nextElementSibling as HTMLElement)) {
-
-                                        // Build the remaining HTML after the current ccBlock has been removed
-                                        let remainingHTML = block.firstChild.nodeName == "P" ? block.firstChild.innerHTML : block.innerHTML;
-                                        remainingHTML = remainingHTML
-                                            .replace(ccBlock.outerHTML, "")
-                                            .replaceAll("<br>", "")
-                                            .trim();
-
-                                        /* If some contents remains, render it as Markdown in case it as not been properly rendered the first time (e.g. tables require a blank line above them in Obsidian's Read mode, see this bug report : https://forum.obsidian.md/t/table-renders-in-editing-mode-live-preview-but-not-reading-mode/38667)
-                                        */
-                                        if (remainingHTML.replaceAll("\n", "") !== "") {
-                                            block.innerHTML = "";
-                                            MarkdownRenderer.renderMarkdown(
-                                                remainingHTML,
-                                                block,
-                                                "",
-                                                //@ts-ignore
-                                                null);
-                                            if (isNonNestedFirstBlock) block.classList.add(...retrieveCustomClasses(ccBlock));
-                                        }
-                                    }
-
-                                    // If it is a non-nested first block
-                                    if (isNonNestedLastBlock) {
-                                    }
-
-                                    // If the next element sibling is a CC block, don't render that one and consider the next one as non-nested first block
-                                    else {
-                                        newLastCCBlock = null;
-                                        nextIsNonNestedFirstBlock = true;
-                                    }
-                                }
-
-                                // Or if it is nested in the middle of a bigger block (a.k.a inline custom classes block)
-                                if (!isStandalone && !isNonNestedFirstBlock && !isNonNestedLastBlock) {
-                                    if (ccBlock.parentElement) {
-
-                                        // Retrive the targetted parent element
-                                        let parentElement: HTMLElement = ccBlock.parentElement;
-                                        // Support list items
-                                        if (ccBlock.parentElement.parentElement) {
-                                            if (ccBlock.parentElement.parentElement.nodeName === "LI") {
-                                                parentElement = ccBlock.parentElement.parentElement;
-                                            }
-                                        }
-                                        // Note: support of table cells is implicit since the `td` element is the first parent
-
-                                        // Append custom classes to the parent element
-                                        parentElement.classList.add(...retrieveCustomClasses(ccBlock));
-
-                                        // Hide the inline custom classes block
-                                        ccBlock.style.display = "none";
-                                    }
-                                }
-
-                                // Mark the CC block as processed and set haveChangesOccured
-                                ccBlock.setAttribute("cc-processed", "true");
-                                haveChangesOccured = true;
-                            }
-                        }
-                    }
-
-                    // If the block is not a standalone custom classes block, apply last custom classes to it
-                    if (lastCCBlock) applyLastCC(block, lastCCBlock);
-                    lastCCBlock = newLastCCBlock;
-                }
-
-                // Finally, stop listening for element insertion
-                observer.disconnect();
-            }
+            // Finally, stop listening for element insertion
+            observer.disconnect();
         });
         observer.observe(blocksContainer, { attributes: false, childList: true, characterData: false, subtree: true });
+    }
+
+    // Or if has been inserted in a Live Preview mode Custom Classes renderer
+    else if (blocksContainer.classList.contains("cc-renderer")) {
+
+        // Render the custom classes of the element
+        process(blocksContainer, element, true);
     }
 }
