@@ -1,3 +1,12 @@
+# [2.4.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.3.0...2.4.0) (2023-02-05)
+
+
+### Features
+
+* improve detection custom classes block context in Read mode ([4f2bafe](https://github.com/LilaRest/obsidian-custom-classes/commit/4f2bafe451d6dbab5737c5b37a3ed6dee079d987))
+* partially rewrite LP support to use the Read mode renderer to render nested classes blocks ([39ef717](https://github.com/LilaRest/obsidian-custom-classes/commit/39ef717926194c650cea9e5e5b4915ad0659e752))
+* rewrite post processor to support inline classes & non-rendered elements more efficiently ([d819707](https://github.com/LilaRest/obsidian-custom-classes/commit/d819707c7d78c5b657b9eda303135256ca8d5aba))
+
 # [2.3.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.2.0...2.3.0) (2023-02-02)
 
 
