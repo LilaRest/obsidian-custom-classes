@@ -1,0 +1,9 @@
+.green-title {
+  background-color: lightgreen;
+}
+
+.fancy-text:hover {
+  font-weight: bold;
+  font-size: 30px;
+  transition-duration: 500ms;
+}

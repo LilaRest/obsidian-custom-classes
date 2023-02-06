@@ -1,0 +1,10 @@
+{
+  "accentColor": "",
+  "enabledCssSnippets": [
+    "frontmatter-tests",
+    "lila-frontmatter",
+    "tests"
+  ],
+  "theme": "system",
+  "cssTheme": ""
+}

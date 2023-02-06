@@ -1,0 +1,58 @@
+div.meta {
+  display: inline-block;
+  font-family: monospace;
+  background-color: var(--background-secondary);
+  box-shadow: -1px -1px 8px var(--color-base-30);
+  border-radius: 15px;
+  padding: 15px 18px 15px 15px;
+  transition: opacity 300ms linear, max-height 300ms linear, max-width 300ms linear;
+  opacity: 0.6;
+  margin-bottom: 15px;
+  overflow: hidden;
+  min-height: 52px;
+  max-height: 52px;
+  max-width: 120px;
+}
+
+div.meta:hover {
+  opacity: 1;
+  max-height: 800px;
+  max-width: 800px;
+}
+
+div.meta::before {
+  content: "Metadata";
+  display: inline-block;
+  margin-left: 5px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+  font-size: 16px;
+
+  /* Add an opaque background */
+  position: relative;
+  background-color: var(--background-secondary);
+  z-index: 10;
+  border-radius: 10px;
+
+}
+
+div.meta ul {
+  margin: 0;
+  padding-left: 28px;
+  margin-top: -10em;
+  opacity: 0;
+  transition: margin-top 300ms linear, opacity 300ms linear;
+  white-space: nowrap;
+  max-height: 700px;
+
+  /* Display a clean scrollbar if the height exceeds 700px */
+  overflow-y: scroll;
+  margin-right: -23px;
+  padding-right: 8px;
+}
+
+div.meta:hover ul {
+  margin-top: 0;
+  opacity: 1;
+}

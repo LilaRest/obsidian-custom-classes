@@ -20,3 +20,12 @@ data.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
+
+# Test Obsidian vault
+dev-vault/.obsidian/workspace.json
+
+# Exclude the dist/ folder created while building distributions files
+dist/
+
+# Exclude the dev builds
+dev-vault/.obsidian/plugins/custom-classes

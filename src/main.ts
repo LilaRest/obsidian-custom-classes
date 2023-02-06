@@ -6,7 +6,6 @@ import {
 import { customClassLivePreviewMode } from './live-preview-mode';
 import { customClassReadMode } from './read-mode';
 
-
 export let plugin: CustomClasses | null = null;
 
 export default class CustomClasses extends Plugin {

@@ -22,7 +22,7 @@ h2.settings-header:nth-of-type(2) {
   white-space: normal;
 }
 
-.cc-container > div.cc-renderer > ul,
-.cc-container > div.cc-renderer > ol {
+.cc-container > div.cc-renderer ul,
+.cc-container > div.cc-renderer ol {
   padding-inline-start: 24px;
 }

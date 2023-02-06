@@ -42,9 +42,7 @@
 				"@semantic-release/github",
 				{
 					"assets": [
-						"main.js", 
-						"manifest.json", 
-						"styles.css",
+						"dist/*", 
 						{ "path": "obsidian-custom-classes.zip", "name": "obsidian-custom-classes-${nextRelease.version}.zip" }
 					]
 				}
