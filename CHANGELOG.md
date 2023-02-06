@@ -1,3 +1,15 @@
+# [2.5.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.4.3...2.5.0) (2023-02-06)
+
+
+### Bug Fixes
+
+* remove remaining console logs ([3bb386f](https://github.com/LilaRest/obsidian-custom-classes/commit/3bb386f4dff4f36a2111637fe5d1bc66ac2091a6))
+
+
+### Features
+
+* support short-hand "cls:" prefix in Read mode ([ac4fa09](https://github.com/LilaRest/obsidian-custom-classes/commit/ac4fa09a1325307fc015fd352a52eb7cecb080b3))
+
 ## [2.4.3](https://github.com/LilaRest/obsidian-custom-classes/compare/2.4.2...2.4.3) (2023-02-06)
 
 
