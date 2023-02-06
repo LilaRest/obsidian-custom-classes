@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext, MarkdownRenderer } from "obsidian";
+import { MarkdownRenderer } from "obsidian";
 import { isCustomClassBlock, retrieveCustomClasses } from "./utils";
 
 /**
@@ -90,11 +90,6 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
                         let isNonNestedFirstBlock = false;
                         const parent = ccBlock.parentElement as HTMLElement;
                         const parentParent = ccBlock.parentElement?.parentElement as HTMLElement;
-
-                        console.log(retrieveCustomClasses(ccBlock));
-                        console.log(isStandalone);
-                        console.log(isNonNestedFirstBlock);
-                        console.log(isNonNestedLastBlock);
 
                         // If the parent's parent is a direct child of the blocksContainer, else consider the ccBlock as nested (e.g. in a blockquote)
                         if ((!callFromLivePreview && [...blocksContainer.children].contains(parentParent)) || (callFromLivePreview && [...blocksContainer.children].contains(parent))) {
@@ -196,8 +191,6 @@ export function customClassReadMode (element: HTMLElement, context: any) {
 
     // Retrieve the blocks' container element 
     const blocksContainer = context.containerEl;
-    console.log(blocksContainer);
-    console.log(element);
 
     // If element has been inserted in Read mode's preview section
     if (blocksContainer.classList.contains("markdown-preview-section")) {
