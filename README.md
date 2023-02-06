@@ -12,12 +12,12 @@
 <p align="center"><b>A minimal Obsidian plugin that allows you to add your own HTML<br>classes to chosen Markdown blocks directly from your notes.</b></p>
 
 <br>
+<br>
 
 ## Usage
-To add a custom class to a whole Markdown block, insert ``` `class: <customClass>` ``` on the line right before it.
-
-&nbsp;&nbsp;&rarr; _Example :_ To add the `fancy-text` class to a paragraph block
-
+You can add custom classes to :
+<ul>
+<li><p><b>entire blocks</b> <samp>(e.g. a whole list)</samp> &rarr; By inserting <code><samp>`class: &lt;customClass&gt;`</samp></code> on the line right before it</p>
 <table align="center">
 <thead>
 <td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
@@ -27,20 +27,94 @@ To add a custom class to a whole Markdown block, insert ``` `class: <customClass
 <td><p>
 
 ```markdown
-`class: fancy-text`
-I'm the paragraph and you ?
+`class: fancy-list`
+- Lorem ipsum
+- Dolor
+- Amet consectetur             
 ```
 </p></td>
 <td><p>
 
 ```html
-<div class="fancy-text">
-  <p>I'm the paragraph and you ?</p>
+<div class="fancy-list">
+  <ul>
+    <li>Lorem ipsum</li>
+    <li>Dolor sit</li>
+    <li>Amet consectetur</li>            
+  </ul>
 </div>
 ```
 </p></td>
 </tbody>
 </table>
+	</li>
+  <br>
+<li><p><b>specific elements</b> <samp>(e.g. a list item)</samp> &rarr; By inserting <code><samp>`class: &lt;customClass&gt;`</samp></code> inside of it</p>
+  
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
+```markdown
+- Lorem ipsum
+- Dolor sit `class: fancy-item`
+- Amet consectetur
+```
+</p></td>
+<td><p>
+
+```html
+<div>
+  <ul>
+    <li>Lorem ipsum</li>
+    <li class="fancy-item">Dolor sit</li>
+    <li>Amet consectetur</li>
+  </ul>
+</div>
+```
+</p></td>
+</tbody>
+</table>
+	</li>
+  <br>
+  </li>
+<li><p><b>or even both :</b>
+	
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
+```markdown
+`class: fancy-list`
+- Lorem ipsum
+- Dolor `class: fancy-item` sit 
+- Amet consectetur
+```
+</p></td>
+<td><p>
+
+```html
+<div class="fancy-list">
+  <ul>
+    <li>Lorem ipsum</li>
+    <li class="fancy-item">Dolor sit</li>
+    <li>Amet consectetur</li>
+  </ul>
+</div>
+```
+</p></td>
+</tbody>
+</table>
+	</li>
+</ul>
 
 <br>
 
@@ -48,66 +122,104 @@ I'm the paragraph and you ?
 
 <br>
 <br>
+<br>
 
 ## Demonstrations
-Here are some ways to use this plugin that may inspire you for your workflows :
+Here are some ways to use this plugin that may inspire you for your workflows.
+
+<ins><b>Add a class to :</b></ins>
 
 <ol>
 <li>
 <details>
-  <summary><b>On a table</b></summary>
+  <summary><b>A whole table</b></summary>
+	
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
 
-  ```md
-  `class: mytable`
-  | AAA | BBB | CCC |
-  | --- | --- | --- |
-  | 111 | 222 | 333 |
-  ```
-  
-  In Live Preview or Read modes it will be rendered :
-  ```html
-  <div class="mytable">
-    <table>
-      <thead>
-        <tr>
-          <th>AAA</th>
-          <th>BBB</th>
-          <th>CCC</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>111</td>
-          <td>222</td>
-          <td>333</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>  
-  ```
+```markdown
+`class: mytable`
+| AAA | BBB | CCC |
+| --- | --- | --- |
+| 111 | 222 | 333 |
+```
+</p></td>
+<td><p>
+
+```html
+<div class="mytable">
+<table>
+  <thead>
+	<tr>
+	  <th>AAA</th>
+	  <th>BBB</th>
+	  <th>CCC</th>
+	</tr>
+  </thead>
+  <tbody>
+	<tr>
+	  <td>111</td>
+	  <td>222</td>
+	  <td>333</td>
+	</tr>
+  </tbody>
+</table>
+</div>  
+```
+</p></td>
+</tbody>
+</table>
   <br>
 </details>
 </li>
-<li><details>
-	<summary><b>On a list</b></summary>
 
-  ```md
-  `class: my-great-list`
-  - First item
-  - Second item
-  - Third item
-  ```
-  
-  In Live Preview or Read modes it will be rendered :
-  ```html
-  <div class="my-great-list">
-    <ul>
-      <li>First item</li>
-      <li>Second item</li>
-      <li>Third item</li>
-    </ul>
-  </div>
-  ```
+<li>
+<details>
+  <summary><b>A table cell</b></summary>
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
+```markdown
+| AAA | BBB | CCC |
+| --- | --- | --- |
+| 111 | 222 `class: mycell` | 333 |
+```
+</p></td>
+<td><p>
+
+```html
+<div class="mytable">
+<table>
+  <thead>
+	<tr>
+	  <th>AAA</th>
+	  <th>BBB</th>
+	  <th>CCC</th>
+	</tr>
+  </thead>
+  <tbody>
+	<tr>
+	  <td>111</td>
+	  <td>222</td>
+	  <td>333</td>
+	</tr>
+  </tbody>
+</table>
+</div>  
+```
+</p></td>
+</tbody>
+</table>
   <br>
 </details>
 </li>
@@ -142,6 +254,7 @@ Here are some ways to use this plugin that may inspire you for your workflows :
   
 <br>
 <br>
+<br>
 
 ## Showcase / Integrations
 That section displays some example of how people have integrated the _Custom Classes_ plugin in their workflows.
@@ -171,6 +284,7 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
 </li>
 </ol>
 
+<br>
 <br>
 <br>
 
@@ -223,6 +337,7 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
 
 <br>
 <br>
+<br>
 
 
 ## Installation
@@ -237,6 +352,7 @@ However, you can still install this one using the [BRAT plugin](https://github.c
 3) Finally, go to your plugins list (Options > Community plugins) and enable the _Custom Classes_ plugin
 4) Enjoy !
 
+<br>
 <br>
 <br>
 
