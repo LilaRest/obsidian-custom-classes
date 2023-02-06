@@ -1,3 +1,10 @@
+## [2.4.3](https://github.com/LilaRest/obsidian-custom-classes/compare/2.4.2...2.4.3) (2023-02-06)
+
+
+### Bug Fixes
+
+* wrong versions ([32fb8ae](https://github.com/LilaRest/obsidian-custom-classes/commit/32fb8aea3cbae1e97b10fc4eabddcd6fd70ae459))
+
 # [2.4.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.3.0...2.4.0) (2023-02-05)
 
 
