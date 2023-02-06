@@ -37,6 +37,15 @@
 					"assets": ["package.json", "package-lock.json", "CHANGELOG.md", "manifest.json", "versions.json"],
 					"message": "chore(release): Custom Classes ${nextRelease.version} [skip ci]"
 				}
+			],
+			[
+				"@semantic-release/github",
+				{
+					"assets": [
+						"dist/*", 
+						{ "path": "obsidian-custom-classes.zip", "name": "obsidian-custom-classes-${nextRelease.version}.zip" }
+					]
+				}
 			]
 		],
 		"preset": "angular"
