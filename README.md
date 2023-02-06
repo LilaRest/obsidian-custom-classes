@@ -341,20 +341,32 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
 <td><p>
 
 ```markdown
-`class: first-class, second-class, third-one`
+`class: first, second, third-one`
 I'm the paragraph and you ?          
 ```
 </p></td>
 <td><p>
 
 ```html
-<div class="first-class second-class third-one">
+<div class="first second third-one">
   <p>I'm the paragraph and you ?</p>
 </div>
 ```
 </p></td>
 </tbody>
 </table>
+  </blockquote>
+  <br>
+</details>
+
+<details>
+  <summary><b>Does it works in Live Preview mode ?</b></summary>
+  <blockquote align="center">
+  <br>
+  
+  Yes the Live Preview mode is fully supported by this plugin.
+  
+  By the way, elements targetted by a _Custom Classes_ block are rendered in the exact same way in both Read and LP modes, allowing you to write CSS that will work everywhere.
   </blockquote>
   <br>
 </details>
