@@ -1,5 +1,5 @@
 **Test #1** : [Lila's frontmatter](https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087/) should be displayed below
-`class:meta`
+`cls:meta`
 - creation:: 2023-01-21T18:55:12
 - author:: [[John Doe]]
 - parents:: [[Note]], [[Another note]]

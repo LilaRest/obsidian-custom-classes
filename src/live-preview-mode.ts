@@ -190,6 +190,7 @@ function retrieveCustomClasses (customClassesBlock: string): Array<string> {
     .replaceAll("`", "")
     .replaceAll(" ", "")
     .replace("class:", "")
+    .replace("cls:", "")
     .split(",");
 }
 
