@@ -155,18 +155,18 @@ Here are some ways to use this plugin that may inspire you for your workflows.
 <div class="mytable">
 <table>
   <thead>
-	<tr>
-	  <th>AAA</th>
-	  <th>BBB</th>
-	  <th>CCC</th>
-	</tr>
+    <tr>
+      <th>AAA</th>
+      <th>BBB</th>
+      <th>CCC</th>
+    </tr>
   </thead>
   <tbody>
-	<tr>
-	  <td>111</td>
-	  <td>222</td>
-	  <td>333</td>
-	</tr>
+    <tr>
+      <td>111</td>
+      <td>222</td>
+      <td>333</td>
+    </tr>
   </tbody>
 </table>
 </div>  
@@ -191,8 +191,8 @@ Here are some ways to use this plugin that may inspire you for your workflows.
 <td><p>
 
 ```markdown
-| AAA | BBB | CCC |
-| --- | --- | --- |
+| AAA | BBB                  | CCC |
+| --- | -------------------- | --- |
 | 111 | 222 `class: my-cell` | 333 |
 ```
 </p></td>
@@ -202,18 +202,18 @@ Here are some ways to use this plugin that may inspire you for your workflows.
 <div>
 <table>
   <thead>
-	<tr>
-	  <th>AAA</th>
-	  <th>BBB</th>
-	  <th>CCC</th>
-	</tr>
+    <tr>
+      <th>AAA</th>
+      <th>BBB</th>
+      <th>CCC</th>
+    </tr>
   </thead>
   <tbody>
-	<tr>
-	  <td>111</td>
-	  <td class="my-cell">222</td>
-	  <td>333</td>
-	</tr>
+    <tr>
+      <td>111</td>
+      <td class="my-cell">222</td>
+      <td>333</td>
+    </tr>
   </tbody>
 </table>
 </div>  
@@ -248,13 +248,77 @@ WHERE creation
 
 ```html
 <div class="my-dv-list">
-  <div class="block-language-dataview node-insert-event">
+  <div class="block-language-dataview">
     <ul class="dataview list-view-ul">
       // The results of your query 
       // <li>...</li>
       // ...
     </ul>
   </div>
+</div>
+```
+</p></td>
+</tbody>
+</table>
+  <br>
+</details>
+</li>
+
+<li>
+<details>
+  <summary><b>A heading</b></summary>
+<br>
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
+```markdown
+`class: important-title`
+### My super heading
+```
+</p></td>
+<td><p>
+
+```html
+<div class="important-title">
+  <h3>My super heading</h3>
+</div>
+```
+</p></td>
+</tbody>
+</table>
+  <br>
+</details>
+</li>
+
+<li>
+<details>
+  <summary><b>A blockquote</b></summary>
+<br>
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
+```markdown
+`class: interesting-quote`
+> Lorem ipsum dolor sit amet
+```
+</p></td>
+<td><p>
+
+```html
+<div class="interesting-quote">
+  <blockquote>
+    <p>Lorem ipsum dolor sit amet</p>
+  </blockquote>
 </div>
 ```
 </p></td>
@@ -367,6 +431,18 @@ I'm the paragraph and you ?
   Yes the Live Preview mode is fully supported by this plugin.
   
   By the way, elements targetted by a _Custom Classes_ block are rendered in the exact same way in both Read and LP modes, allowing you to write CSS that will work everywhere.
+  </blockquote>
+  <br>
+</details>
+
+<details>
+  <summary><b>The <code>class:</code> prefix is too long, is there any shorthand version ?</b></summary>
+  <blockquote align="center">
+  <br>
+  
+  Yes the _Custom Classes_ plugin will also consider as custom classes block every inline code-block that starts with `cls:`.
+  
+  So ``` `cls: wow` ``` is equivalent to ``` `class: wow` ```.
   </blockquote>
   <br>
 </details>
