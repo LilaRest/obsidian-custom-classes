@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/LilaRest/obsidian-custom-classes/compare/2.4.0...2.4.1) (2023-02-06)
+
+
+### Bug Fixes
+
+* try to fix CI that doesn't include bumped files + fake commit to trigger ([5d51816](https://github.com/LilaRest/obsidian-custom-classes/commit/5d51816c3cb4510e10b9d863da9c37bebda7641f))
+
 # [2.4.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.3.0...2.4.0) (2023-02-05)
 
 
