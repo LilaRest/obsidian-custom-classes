@@ -4,7 +4,7 @@
 	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LilaRest/obsidian-custom-classes/semantic-release.yml">
 	<img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/LilaRest/obsidian-custom-classes/total?color=%23ddccee">
 	<img alt="GitHub License" src="https://img.shields.io/github/license/LilaRest/obsidian-custom-classes?color=%235588ff">
-	<img alt="Semantic-release: angular" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release">
+	<img alt="Semantic-release: angular" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release">
 </div>
 
 <br>
@@ -14,20 +14,34 @@
 <br>
 
 ## Usage
-Simply precede a Markdown block with an inline code-block in the format <code>\`class: &lt;customClass&gt;\`</code> to add a custom class to it.
+To add a custom class to a whole Markdown block, insert ``` `class: <customClass>` ``` on the line right before it.
 
-_Example :_
-- To add the `fancy-text` class to a paragraph block, use :
+&nbsp;&nbsp;&rarr; _Example :_ To add the `fancy-text` class to a paragraph block
+
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
 ```markdown
 `class: fancy-text`
 I'm the paragraph and you ?
 ```
-- In Live Preview or Read modes it will be rendered :
+</p></td>
+<td><p>
+
 ```html
 <div class="fancy-text">
   <p>I'm the paragraph and you ?</p>
 </div>
 ```
+</p></td>
+</tbody>
+</table>
+
 <br>
 
 > #### ℹ️ &nbsp; For advanced usages and/or informations see the [FAQ section](#-FAQ).
