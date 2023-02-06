@@ -338,12 +338,20 @@ That section displays some example of how people have integrated the _Custom Cla
 Feel free to share yours by [opening an issue](https://github.com/LilaRest/obsidian-custom-classes/issues/new).
 
 <ol>
-	<li><h3>The Lila's frontmatter</h3>
+	<li><h3>The Lila's frontmatter :cherry_blossom:</h3>
+  
 Here the _Custom Classes_ plugin is used to render a Markdown unordered list (`ul`) as a clean frontmatter block.
 
-Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087
+&rarr; Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087
 	
-#### In Edit mode
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
 ```markdown
 `class:meta`
 - creation:: 2023-01-21T18:55:12
@@ -351,13 +359,17 @@ Source: https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-li
 - parents:: [[Note]], [[Another note]]
 - status:: #MayBePartial
 ```
-	
-#### In Read / Live Preview modes
+</p></td>
+<td><p>
+
 | Theme | |
 | -- | -- |
 | Dark | ![](https://forum.obsidian.md/uploads/default/original/3X/1/4/1418a3659b033fcf8d925105d6a3da3c6b9984fc.gif) |
 | Light | ![](https://forum.obsidian.md/uploads/default/original/3X/3/5/35b209dfa79a2b3df13166e9ddd6d1b208480fca.gif) |
 
+</p></td>
+</tbody>
+</table>
 </li>
 </ol>
 
