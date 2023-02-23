@@ -29,7 +29,7 @@ export class MDLine {
 
   static findCustomClassesBlocks (lineText: string): Array<string> {
     const customClassesBlocks: Array<string> = [];
-    [...lineText.matchAll(/`(class|cls):\s*([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/g)]
+    [...lineText.matchAll(/`\s*((class|cls):\s*|\.)([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/g)]
       .forEach(m => customClassesBlocks.push(m[0]));
     return customClassesBlocks;
   }

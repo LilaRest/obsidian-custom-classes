@@ -1,6 +1,6 @@
 {
   "showInlineTitle": false,
-  "livePreview": true,
+  "livePreview": false,
   "strictLineBreaks": false,
   "legacyEditor": false,
   "promptDelete": false
