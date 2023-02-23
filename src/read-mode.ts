@@ -86,38 +86,48 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
                     if ((ccBlock.isConnected || callFromLivePreview) && !ccBlock.getAttribute("cc-processed")) {
 
                         let isStandalone = false;
-                        let isNonNestedLastBlock = false;
-                        let isNonNestedFirstBlock = false;
+                        let isNonNestedLast = false;
+                        let isNonNestedFirst = false;
+                        let isNested = false;
                         const parent = ccBlock.parentElement as HTMLElement;
                         const parentParent = ccBlock.parentElement?.parentElement as HTMLElement;
 
                         // If the parent's parent is a direct child of the blocksContainer, else consider the ccBlock as nested (e.g. in a blockquote)
                         if ((!callFromLivePreview && [...blocksContainer.children].contains(parentParent)) || (callFromLivePreview && [...blocksContainer.children].contains(parent))) {
-                            isStandalone = parent?.firstChild === ccBlock && parent?.lastChild === ccBlock;
 
-                            isNonNestedLastBlock = parent?.lastChild === ccBlock && parent?.firstChild !== ccBlock && isLineBreak(ccBlock.previousSibling);
+                            // Trim leading and trailing space from the parent
+                            const clonedParent = parent.cloneNode(true) as HTMLElement;
+                            clonedParent.innerHTML = clonedParent.innerHTML.trim();
 
-                            if (!isNonNestedLastBlock) {
-                                isNonNestedFirstBlock = nextIsNonNestedFirstBlock || (parent?.firstChild === ccBlock && parent?.lastChild !== ccBlock && isLineBreak(ccBlock.nextSibling));
+                            // Figure the position of the ccBlock in its parent
+                            const isFirst = clonedParent.innerHTML.startsWith(ccBlock.outerHTML);
+                            const isLast = clonedParent.innerHTML.endsWith(ccBlock.outerHTML);
+                            const prevIsLineBreak = Boolean(ccBlock.previousSibling) && isLineBreak(ccBlock.previousSibling);
+                            const nextIsLineBreak = Boolean(ccBlock.nextElementSibling) && isLineBreak(ccBlock.nextSibling);
 
+                            // Figure if this is a standalone ccBlock (alone on its line / not nested in other contents)
+                            isStandalone = isFirst && isLast;
+                            isNonNestedLast = isLast && !isFirst && prevIsLineBreak;
+                            if (!isNonNestedLast) {
+                                isNonNestedFirst = nextIsNonNestedFirstBlock || (isFirst && !isLast && nextIsLineBreak);
                             }
+                            isNested = !(isStandalone && isNonNestedFirst && isNonNestedLast);
                         }
 
-                        // If ccBlock is a sort standalone custom classes block
-                        if (isStandalone || isNonNestedFirstBlock || isNonNestedLastBlock) {
+                        // If ccBlock is a sort standalone custom classes block (not a nested one)
+                        if (isStandalone || isNonNestedFirst || isNonNestedLast) {
                             newLastCCBlock = ccBlock;
 
                             // Start by a standalone custom classes block
-                            if (!isNonNestedLastBlock) {
+                            if (!isNonNestedLast) {
                                 block.setAttribute("cc-standalone", "true");
                             }
                         }
 
                         // If it is a non-nested first block
-                        if (isNonNestedFirstBlock) {
+                        if (isNonNestedFirst) {
 
-                            // Note that we don't have to test that ccBlock.nextElementSibling is a <br> element
-                            // because this is already done while figuring isNonNestedFirstBlock
+                            // Note that we don't have to test if ccBlock.nextElementSibling is a <br> element because this is already done while figuring isNonNestedFirstBlock
                             if (!isCustomClassBlock(ccBlock.nextElementSibling?.nextElementSibling as HTMLElement)) {
 
                                 // Build the remaining HTML after the current ccBlock has been removed
@@ -139,7 +149,7 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
                                             "",
                                             //@ts-ignore
                                             null);
-                                        if (isNonNestedFirstBlock) block.classList.add(...retrieveCustomClasses(ccBlock));
+                                        if (isNonNestedFirst) block.classList.add(...retrieveCustomClasses(ccBlock));
                                     }
                                 }
                             }
@@ -152,7 +162,7 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
                         }
 
                         // Or if it is nested in the middle of a bigger block (a.k.a inline custom classes block)
-                        if (!isStandalone && !isNonNestedFirstBlock && !isNonNestedLastBlock) {
+                        if (!isStandalone && !isNonNestedFirst && !isNonNestedLast) {
                             if (ccBlock.parentElement) {
 
                                 // Retrive the targetted parent element
@@ -186,6 +196,7 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
         }
     }
 }
+
 
 export function customClassReadMode (element: HTMLElement, context: any) {
 

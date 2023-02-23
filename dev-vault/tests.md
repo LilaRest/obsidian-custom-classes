@@ -1,15 +1,16 @@
 **Test #1** : [Lila's frontmatter](https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087/) should be displayed below
-`.meta`
+
+`.meta`             
 - creation:: 2023-01-21T18:55:12
 - author:: [[John Doe]]
 - parents:: [[Note]], [[Another note]]
 - status:: #MayBePartial 
 
-
 **Test #2** : Should not have any custom class
 # Lorem Ipsum
 
 **Test #3** (heading) : Should have a green background
+
 `class: green-title`
 ## Dolor sit
 
@@ -23,6 +24,7 @@ I'm the paragraph and you ?
 LIST
 WHERE creation
 ```
+
 **Test #6** (blockquote) : The `quote` class should be applied to the whole blockquote block and the `inline-quote` class should be applied to the `<p>` element
 `class: quote`
 > My blockquote 
@@ -34,8 +36,8 @@ WHERE creation
 > Lorem ipsum dolor site amet
 > `class: out-content`
 
-
 **Test #8** (consecutive standalone CC blocks) : `am-i-visible` and `and-me` should be visible and `dv-list` should be hidden and applied to the Dataview block
+
 `class: am-i-visible`
 `class: and-me`
 `class:dv-list`
@@ -51,6 +53,7 @@ I'm the last element `normal code block` of a paragraph
 **Test #10** (table render) : `should-be-visible` must be visible and the `table` class should be applied to the table block and the `cell` class should be applied only to the `azaz` cell
 
 `class: should-be-visible`
+
 `class: table`
 | aaa | bbbbb | ccc |
 | -- | -- | -- |
