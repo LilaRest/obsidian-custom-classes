@@ -1,3 +1,15 @@
+# [2.6.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.5.0...2.6.0) (2023-02-23)
+
+
+### Bug Fixes
+
+* partially rewrite the read mode renderer to fix: [#2](https://github.com/LilaRest/obsidian-custom-classes/issues/2) and makes code cleaner ([3a910d9](https://github.com/LilaRest/obsidian-custom-classes/commit/3a910d9315399bc1427bc4f9e089d12f1aad139d))
+
+
+### Features
+
+* add an event shorter way to add custom classes by simply starting a code block with a dot ([3ff6bea](https://github.com/LilaRest/obsidian-custom-classes/commit/3ff6beaa83fe55393ee774b0d97ba0fb0a3dc5b5))
+
 # [2.5.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.4.3...2.5.0) (2023-02-06)
 
 
