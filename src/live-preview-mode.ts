@@ -12,6 +12,7 @@ import {
   WidgetType,
 } from "@codemirror/view";
 import { MDLine } from "./md-line";
+import { retrieveCustomClasses } from "./utils";
 
 /**
  * This widget create a Markdown render in Read mode format and properly apply the given classes.
@@ -185,14 +186,6 @@ function getTargettedLinesNumber (doc: any, lineNumber: number): number {
   return numberOfLines;
 }
 
-function retrieveCustomClasses (customClassesBlock: string): Array<string> {
-  return customClassesBlock
-    .replaceAll("`", "")
-    .replaceAll(" ", "")
-    .replace("class:", "")
-    .replace("cls:", "")
-    .split(",");
-}
 
 
 function isRangeActive (tx: Transaction, from: number, to: number): boolean {

@@ -25,7 +25,7 @@ function applyLastCC (targetBlock: HTMLElement, ccBlock: HTMLElement) {
     if (!targetBlock.getAttribute("cc-standalone") && !targetBlock.classList.contains("mod-footer")) {
 
         // Add the custom classes
-        const classes = retrieveCustomClasses(ccBlock);
+        const classes = retrieveCustomClasses(ccBlock.innerText);
         targetBlock.classList.add(...classes);
         targetBlock.setAttribute("cc-classes", classes.join(","));
 
@@ -149,7 +149,7 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
                                             "",
                                             //@ts-ignore
                                             null);
-                                        if (isNonNestedFirst) block.classList.add(...retrieveCustomClasses(ccBlock));
+                                        if (isNonNestedFirst) block.classList.add(...retrieveCustomClasses(ccBlock.innerText));
                                     }
                                 }
                             }
@@ -176,7 +176,7 @@ function process (blocksContainer: HTMLElement, element: HTMLElement, callFromLi
                                 // Note: support of table cells is implicit since the `td` element is the first parent
 
                                 // Append custom classes to the parent element
-                                parentElement.classList.add(...retrieveCustomClasses(ccBlock));
+                                parentElement.classList.add(...retrieveCustomClasses(ccBlock.innerText));
 
                                 // Hide the inline custom classes block
                                 ccBlock.style.display = "none";

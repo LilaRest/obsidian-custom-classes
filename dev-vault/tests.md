@@ -1,3 +1,7 @@
+---
+aliases: "Blabla"
+---
+
 **Test #1** : [Lila's frontmatter](https://forum.obsidian.md/t/a-frontmatter-that-finally-supports-links-lilas-frontmatter/53087/) should be displayed below
 
 `.meta`             

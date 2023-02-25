@@ -1,7 +1,8 @@
 {
   "showInlineTitle": false,
-  "livePreview": false,
+  "livePreview": true,
   "strictLineBreaks": false,
   "legacyEditor": false,
-  "promptDelete": false
+  "promptDelete": false,
+  "showFrontmatter": false
 }
