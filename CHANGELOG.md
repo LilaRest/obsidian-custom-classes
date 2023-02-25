@@ -1,3 +1,11 @@
+## [2.6.1](https://github.com/LilaRest/obsidian-custom-classes/compare/2.6.0...2.6.1) (2023-02-25)
+
+
+### Bug Fixes
+
+* dot format was not rendered in Live Preview mode ([cf6d00b](https://github.com/LilaRest/obsidian-custom-classes/commit/cf6d00bc04b720b998fa96bd48a0fe8d6a2aead8))
+* repair regex matching wrong patterns of CC blocks + merge those ones to prevent code repetition ([9761c90](https://github.com/LilaRest/obsidian-custom-classes/commit/9761c90c8b560e9f52424079d4f6badd7eccf49d)), closes [#5](https://github.com/LilaRest/obsidian-custom-classes/issues/5) [#7](https://github.com/LilaRest/obsidian-custom-classes/issues/7)
+
 # [2.6.0](https://github.com/LilaRest/obsidian-custom-classes/compare/2.5.0...2.6.0) (2023-02-23)
 
 
