@@ -1,3 +1,5 @@
+import { ccBlockRegexGlob } from "./utils";
+
 /**
  * This class contains some utils to deal with Markdown raw text lines
  */
@@ -9,8 +11,8 @@ export class MDLine {
 
   static isListItem (lineText: string): Array<boolean | string | null> {
     let listType = null;
-    if (/^(\s*)(\-)(\s+)(.*)/.test(lineText)) listType = "ul";
-    else if (/^(\s*)(\d+[\.\)])(\s+)(.*)/.test(lineText)) listType = "ol";
+    if (/^( *)(\-)( +)(.*)/.test(lineText)) listType = "ul";
+    else if (/^( *)(\d+[\.\)])( +)(.*)/.test(lineText)) listType = "ol";
     const isList = listType ? true : false;
     return [isList, listType];
   }
@@ -29,7 +31,7 @@ export class MDLine {
 
   static findCustomClassesBlocks (lineText: string): Array<string> {
     const customClassesBlocks: Array<string> = [];
-    [...lineText.matchAll(/`\s*((class|cls):\s*|\.)([a-zA-Z\-_]+[a-zA-Z\-_0-9]*(\s*\,\s*)?)+\s*`/g)]
+    [...lineText.matchAll(ccBlockRegexGlob)]
       .forEach(m => customClassesBlocks.push(m[0]));
     return customClassesBlocks;
   }
