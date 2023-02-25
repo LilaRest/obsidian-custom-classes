@@ -480,9 +480,9 @@ I'm the paragraph and you ?
   <blockquote align="center">
   <br>
   
-  Yes the _Custom Classes_ plugin will also consider as custom classes block every inline code-block that starts with `cls:`.
+  Yes the _Custom Classes_ plugin will also consider as custom classes block every inline code-block that starts with `cls:`or with `.`
   
-  So ``` `cls: wow` ``` is equivalent to ``` `class: wow` ```.
+  So ``` `cls: wow` ``` and ``` `.wow` ``` are equivalent to ``` `class: wow` ```.
   </blockquote>
   <br>
 </details>
