@@ -463,18 +463,13 @@ I'm the paragraph and you ?
 <br>
 <br>
 
-
 ## Installation
-**The _Custom Classes_ plugin is currently not available from the official plugins list** (see [this PR](https://github.com/obsidianmd/obsidian-releases/pull/1576) for updates).
+1) Go to **Community Plugins** section of your Obsidian's settings
+2) Click on **Browse** and search for "Custom classes"
+3) Select the _Custom Classes_ plugin and click on **Install**
+4) Once installed, click on **Enable**
+5) Enjoy !
 
-However, you can still install this one using the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat) :
-1) Install and enable the BRAT plugin (which is available from the official plugins list)
-2) On the BRAT settings tab :
-   - Click the `Add Beta plugin` button
-   - Paste this URL in the input field : https://github.com/LilaRest/obsidian-custom-classes
-   - Click the `Add Plugin` button
-3) Finally, go to your plugins list (Options > Community plugins) and enable the _Custom Classes_ plugin
-4) Enjoy !
 
 <br>
 <br>
