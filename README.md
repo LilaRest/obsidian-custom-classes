@@ -327,6 +327,34 @@ WHERE creation
   <br>
 </details>
 </li>
+
+<li>
+<details>
+  <summary><b>An inline formatting</b></summary>
+<br>
+<table align="center">
+<thead>
+<td align="center"><b>This markdown</b><br/><samp>(Edit mode)</samp></td>
+<td align="center"><b>Will be rendered</b><br/><samp>(Live Preview / Read mode)</samp></td>
+</thead>
+<tbody>
+<td><p>
+
+```markdown
+I'm a **bold text `class: big`** and _`.small` me an italic one_
+```
+</p></td>
+<td><p>
+
+```html
+<p>I'm a <strong class="big">bold text</strong> and <em class="small">me an italic one</em></p>
+```
+</p></td>
+</tbody>
+</table>
+  <br>
+</details>
+</li>
 </ol>
   
 <br>
